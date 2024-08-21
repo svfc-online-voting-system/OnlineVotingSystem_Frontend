@@ -1,7 +1,7 @@
 # Project General Information
 
-Group Name: GROUP NAME
-Project Title: SYSTEM NAME
+Group Name: TRIO
+Project Title: Online Voting System
 
 ## A. Problem Statement:
 
