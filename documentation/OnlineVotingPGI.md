@@ -5,7 +5,8 @@ Project Title: Online Voting System
 
 ## A. Problem Statement:
 1. Accessibility and Inclusivity: Despite advancements in technology, many eligible voters still face barriers to participating in elections, such as lack of access to the internet or digital literacy. This research aims to investigate how the Online Voting System can be designed to ensure that all demographics, including the elderly and those in rural areas, can participate effectively.
-2. 
+2. Security and Integrity: Ensuring the security and integrity of the voting process. Current systems may be susceptible to cyberattacks, including hacking, phising, and malware, which could compromise voter data and alter election outcomes. Additionally, the lack of robust encryption and secure authentication methods raises concerns about unauthorized access and voter impersonation.
+3.   
 ## B. Project Description:
 
 
