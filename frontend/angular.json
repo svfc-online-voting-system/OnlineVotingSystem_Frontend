@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/online-voting-system",
+            "outputPath": "frontend/dist/online-voting-system",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -103,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "9fa3f0b9-05ac-4b8b-9e0b-f3e099f7b503"
   }
 }
