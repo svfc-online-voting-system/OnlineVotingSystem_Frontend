@@ -1,0 +1,15 @@
+{
+	"builds": [
+		{
+			"src": "frontend/**",
+			"use": "@vercel/static-build"
+		}
+	],
+	"routes": [
+		{
+			"src": "/(.*)",
+			"dest": "frontend/dist/online-voting-system/index.html"
+		}
+	],
+	"outputDirectory": "frontend/dist/online-voting-system"
+}
