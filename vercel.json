@@ -8,8 +8,8 @@
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "frontend/dist/online-voting-system/src/index.html"
+			"dest": "frontend/dist/frontend/src/index.html"
 		}
 	],
-	"outputDirectory": "frontend/dist/online-voting-system"
+	"outputDirectory": "frontend/dist/frontend"
 }
