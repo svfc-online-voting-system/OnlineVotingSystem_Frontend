@@ -17,7 +17,9 @@ As we navigate through the complexities of this system, we invite you to explore
 
 ## Project Scope
 
-<!-- Goes here... -->
+The Online Voting System project aims to bring modern technology, ensuring that voting is secure and efficient for all eligible voters. Emphasizing the need for scalability, security, and performance optimization, the integration of diverse technologies and protocols must be orchestrated with precision to create a robust and user-friendly online voting platform. 
+
+The online voting system's architecture must be enough to handle high volumes of traffic during peak periods, ensuring that each vote is accurately recorded and securely stored. Stakeholders can ensure maximum voter participation, while also safeguarding the integrity and confidentiality of the voting process. This entails the meticulous planning and implementation of data encryption, authentication mechanisms, and failover systems to prevent any potential disruptions or security breaches. By adhering to best practices in system integration and architecture, the online voting system can significantly enhance the democratic process by providing a convenient, accessible, and transparent platform for citizens to exercise their right to vote.
 
 
 
