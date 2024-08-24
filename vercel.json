@@ -7,7 +7,7 @@
 	],
 	"routes": [
 		{
-			"src": "/",
+			"src": "/(.*)",
 			"dest": "frontend/dist/online-voting-system/src/index.html"
 		}
 	],
