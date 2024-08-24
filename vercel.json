@@ -8,7 +8,7 @@
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "frontend/dist/online-voting-system/index.html"
+			"dest": "frontend/dist/online-voting-system/src/index.html"
 		}
 	],
 	"outputDirectory": "frontend/dist/online-voting-system"
