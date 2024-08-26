@@ -1,15 +1,15 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Compiled output frontend
+# Compiled output
 /dist
 /tmp
 /out-tsc
 /bazel-out
 
-# Node frontend
+# Node
 /node_modules
-/npm-debug.log
-/yarn-error.log
+npm-debug.log
+yarn-error.log
 
 # IDEs and editors
 .idea/
@@ -21,14 +21,14 @@
 *.sublime-workspace
 
 # Visual Studio Code
-.vscode
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous frontend
+# Miscellaneous
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -40,8 +40,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-# Backend
-/backend/.idea
-/backend/.venv
-node_modules
