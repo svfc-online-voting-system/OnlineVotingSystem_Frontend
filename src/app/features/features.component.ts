@@ -5,7 +5,11 @@ import { RouterModule } from '@angular/router';
 	selector: 'app-features',
 	standalone: true,
 	imports: [RouterModule],
-	template: ` <h1>Features Page</h1> `,
+	template: `
+		<main>
+			<h1>Features Page</h1>
+		</main>
+	`,
 	styleUrl: './features.component.css',
 })
 export class FeaturesComponent {
