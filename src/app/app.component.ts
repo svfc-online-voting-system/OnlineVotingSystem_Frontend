@@ -7,9 +7,7 @@ import { RouterModule } from '@angular/router';
 	standalone: true,
 	imports: [RouterLink, RouterModule],
 	template: `
-
 			<router-outlet></router-outlet>
-
 	`,
 	styleUrls: ['./app.component.css'],
 })
