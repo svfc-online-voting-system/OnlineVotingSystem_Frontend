@@ -29,11 +29,11 @@ The online voting system's architecture must be enough to handle high volumes of
 
 ### Database Architecture
 
-### This is not yet final.
-
 ### Data Dictionary
 
 # Database Tables
+
+## This is not yet final.
 
 ## Table 1: `administrators`
 
@@ -157,16 +157,6 @@ The online voting system's architecture must be enough to handle high volumes of
 ![EERDD](res/eerd.png)
 
 ## Non Functional Requirements
-
-### Product Requirement (PLEASE SKIP THIS)
-
-### Organizational Requirement (PLEASE SKIP THIS)
-
-### External Requirements (PLEASE SKIP THIS)
-
-## System Testing and Evaluation (PLEASE SKIP THIS)
-
-### Functional Testing Procedure (PLEASE SKIP THIS)
 
 ### Functional Testing Summary
 
