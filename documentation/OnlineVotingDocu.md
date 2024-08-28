@@ -29,11 +29,11 @@ The online voting system's architecture must be enough to handle high volumes of
 
 ### Database Architecture
 
+### This is not yet final.
+
 ### Data Dictionary
 
 # Database Tables
-
-## This is not yet final.
 
 ## Table 1: `administrators`
 
