@@ -158,16 +158,6 @@ The online voting system's architecture must be enough to handle high volumes of
 
 ## Non Functional Requirements
 
-### Product Requirement (PLEASE SKIP THIS)
-
-### Organizational Requirement (PLEASE SKIP THIS)
-
-### External Requirements (PLEASE SKIP THIS)
-
-## System Testing and Evaluation (PLEASE SKIP THIS)
-
-### Functional Testing Procedure (PLEASE SKIP THIS)
-
 ### Functional Testing Summary
 
 ### Evaluation Procedure
