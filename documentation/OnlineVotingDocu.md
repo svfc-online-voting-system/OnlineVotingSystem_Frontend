@@ -25,19 +25,136 @@ The online voting system's architecture must be enough to handle high volumes of
 
 ### User Requirements
 
-### use case
+### Use case
 
-## Database Architecture
+### Database Architecture
+
+### This is not yet final.
 
 ### Data Dictionary
 
-### Table 1:
+# Database Tables
 
-### Table 2:
+## Table 1: `administrators`
 
-### Table 3:
+| Column Name            | Data Type              | Constraints                                                                      |
+| ---------------------- | ---------------------- | -------------------------------------------------------------------------------- |
+| `admin_id`             | `int`                  | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                                      |
+| `user_id`              | `int`                  | `NOT NULL`, `KEY fk_user_id_admin_idx`, `FOREIGN KEY`                            |
+| `role`                 | `enum('system_admin')` | `NOT NULL`                                                                       |
+| **Indexes**            | **Description**        |                                                                                  |
+| `PRIMARY`              | (`admin_id`)           |                                                                                  |
+| `fk_user_id_admin_idx` | (`user_id`)            | `FOREIGN KEY` REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE |
+
+## Table 2: `audit_log`
+
+| Column Name         | Data Type                                                              | Constraints                                                    |
+| ------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `log_id`            | `int`                                                                  | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                    |
+| `timestamp`         | `timestamp`                                                            | `NOT NULL`, `DEFAULT CURRENT_TIMESTAMP`                        |
+| `event_type`        | `enum('USER_LOGIN','VOTE_CAST','ELECTION_CREATED','SETTINGS_CHANGED')` | `NOT NULL`                                                     |
+| `event_description` | `varchar(255)`                                                         | `NOT NULL`                                                     |
+| `user_id`           | `int`                                                                  | `NOT NULL`, `KEY fk_user_id_idx`, `FOREIGN KEY`                |
+| `ip_address`        | `varchar(255)`                                                         | `NOT NULL`                                                     |
+| `severity_level`    | `enum('INFO','WARNING','CRITICAL')`                                    | `NOT NULL`                                                     |
+| **Indexes**         | **Description**                                                        |                                                                |
+| `PRIMARY`           | (`log_id`)                                                             |                                                                |
+| `fk_user_id_idx`    | (`user_id`)                                                            | `FOREIGN KEY` REFERENCES `users` (`user_id`) ON UPDATE CASCADE |
+
+## Table 3: `ballots`
+
+| Column Name                  | Data Type        | Constraints                                                                                |
+| ---------------------------- | ---------------- | ------------------------------------------------------------------------------------------ |
+| `ballot_id`                  | `int`            | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                                                |
+| `election_id`                | `int`            | `NOT NULL`, `KEY fk_election_id_ballot_idx`, `FOREIGN KEY`                                 |
+| `candidate_id`               | `int`            | `NOT NULL`, `KEY fk_candidate_id_ballot_idx`, `FOREIGN KEY`                                |
+| **Indexes**                  | **Description**  |                                                                                            |
+| `PRIMARY`                    | (`ballot_id`)    |                                                                                            |
+| `fk_election_id_ballot_idx`  | (`election_id`)  | `FOREIGN KEY` REFERENCES `elections` (`election_id`) ON DELETE CASCADE ON UPDATE CASCADE   |
+| `fk_candidate_id_ballot_idx` | (`candidate_id`) | `FOREIGN KEY` REFERENCES `candidates` (`candidate_id`) ON DELETE CASCADE ON UPDATE CASCADE |
+
+## Table 4: `candidates`
+
+| Column Name          | Data Type        | Constraints                                                                              |
+| -------------------- | ---------------- | ---------------------------------------------------------------------------------------- |
+| `candidate_id`       | `int`            | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                                              |
+| `election_id`        | `int`            | `NOT NULL`, `KEY fk_election_id_idx`, `FOREIGN KEY`                                      |
+| `name`               | `varchar(255)`   | `NOT NULL`                                                                               |
+| `party`              | `varchar(45)`    | `NOT NULL`                                                                               |
+| `biography`          | `text`           | `NOT NULL`                                                                               |
+| **Indexes**          | **Description**  |                                                                                          |
+| `PRIMARY`            | (`candidate_id`) |                                                                                          |
+| `fk_election_id_idx` | (`election_id`)  | `FOREIGN KEY` REFERENCES `elections` (`election_id`) ON DELETE CASCADE ON UPDATE CASCADE |
+
+## Table 5: `elections`
+
+| Column Name   | Data Type                                | Constraints                                 |
+| ------------- | ---------------------------------------- | ------------------------------------------- |
+| `election_id` | `int`                                    | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY` |
+| `title`       | `varchar(100)`                           | `NOT NULL`                                  |
+| `description` | `text`                                   | `NOT NULL`                                  |
+| `start_date`  | `date`                                   | `NOT NULL`                                  |
+| `end_date`    | `date`                                   | `NOT NULL`                                  |
+| `status`      | `enum('upcoming','ongoing','completed')` | `NOT NULL`                                  |
+| **Indexes**   | **Description**                          |                                             |
+| `PRIMARY`     | (`election_id`)                          |                                             |
+
+## Table 6: `results`
+
+| Column Name                  | Data Type        | Constraints                                                                                |
+| ---------------------------- | ---------------- | ------------------------------------------------------------------------------------------ |
+| `result_id`                  | `int`            | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                                                |
+| `election_id`                | `int`            | `NOT NULL`, `KEY fk_election_id_results_idx`, `FOREIGN KEY`                                |
+| `candidate_id`               | `int`            | `NOT NULL`, `KEY fk_candidate_id_idx`, `FOREIGN KEY`                                       |
+| `votes_received`             | `int`            | `NOT NULL`                                                                                 |
+| `percentage`                 | `decimal(5,3)`   | `NOT NULL`                                                                                 |
+| **Indexes**                  | **Description**  |                                                                                            |
+| `PRIMARY`                    | (`result_id`)    |                                                                                            |
+| `fk_election_id_results_idx` | (`election_id`)  | `FOREIGN KEY` REFERENCES `elections` (`election_id`) ON DELETE CASCADE ON UPDATE CASCADE   |
+| `fk_candidate_id_idx`        | (`candidate_id`) | `FOREIGN KEY` REFERENCES `candidates` (`candidate_id`) ON DELETE CASCADE ON UPDATE CASCADE |
+
+## Table 7: `users`
+
+| Column Name          | Data Type               | Constraints                                 |
+| -------------------- | ----------------------- | ------------------------------------------- |
+| `user_id`            | `int`                   | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY` |
+| `username`           | `varchar(45)`           | `NOT NULL`, `PRIMARY KEY`                   |
+| `password_hashed`    | `varchar(255)`          | `NOT NULL`                                  |
+| `email`              | `varchar(100)`          | `NOT NULL`                                  |
+| `date_of_birth`      | `date`                  | `NOT NULL`                                  |
+| `resgistration_date` | `datetime`              | `NOT NULL`, `DEFAULT CURRENT_TIMESTAMP`     |
+| **Indexes**          | **Description**         |                                             |
+| `PRIMARY`            | (`user_id`, `username`) |                                             |
+
+## Table 8: `votes`
+
+| Column Name            | Data Type       | Constraints                                                                              |
+| ---------------------- | --------------- | ---------------------------------------------------------------------------------------- |
+| `vote_id`              | `int`           | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                                              |
+| `user_id`              | `int`           | `NOT NULL`, `KEY fk_user_id_votes_idx`, `FOREIGN KEY`                                    |
+| `election_id`          | `int`           | `NOT NULL`, `KEY fk_election_id_idx`, `FOREIGN KEY`                                      |
+| `ballot_id`            | `int`           | `NOT NULL`, `KEY fk_ballot_id_idx`, `FOREIGN KEY`                                        |
+| `timestamp`            | `timestamp`     | `NOT NULL`, `DEFAULT CURRENT_TIMESTAMP`                                                  |
+| **Indexes**            | **Description** |                                                                                          |
+| `PRIMARY`              | (`vote_id`)     |                                                                                          |
+| `fk_user_id_votes_idx` | (`user_id`)     | `FOREIGN KEY` REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE         |
+| `fk_election_id_idx`   | (`election_id`) | `FOREIGN KEY` REFERENCES `elections` (`election_id`) ON DELETE CASCADE ON UPDATE CASCADE |
+| `fk_ballot_id_idx`     | (`ballot_id`)   | `FOREIGN KEY` REFERENCES `ballots` (`ballot_id`) ON DELETE CASCADE ON UPDATE CASCADE     |
+
+# Legend
+
+1. **`administrators`**: Table 1
+2. **`audit_log`**: Table 2
+3. **`ballots`**: Table 3
+4. **`candidates`**: Table 4
+5. **`elections`**: Table 5
+6. **`results`**: Table 6
+7. **`users`**: Table 7
+8. **`votes`**: Table 8
 
 ## ERD
+
+![EERDD](res/eerd.png)
 
 ## Non Functional Requirements
 
