@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
 	templateUrl: './reusable-card.component.html',
 })
 export class ReusableCardComponent {
-	@Input() title?: string;
-	@Input() description?: string;
-	@Input() footer?: string;
+	@Input() cardTitle?: string;
+	@Input() cardDescription?: string;
+	@Input() cardFooter?: string;
 	@Input() className?: string;
 }
