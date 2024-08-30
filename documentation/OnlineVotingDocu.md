@@ -9,10 +9,14 @@ As highlighted by recent discussions, electronic voting systems have gained trac
 As we navigate through the complexities of this system, we invite you to explore the thoughtful design and robust security measures that have been put in place. From user-friendly interfaces to advanced encryption protocols, every aspect of the Online Voting System has been crafted with the voter in mind. Research indicates that while the convenience of online voting is undeniable, it is crucial to balance this with security and reliability concerns. The integrity of elections must remain paramount, as vulnerabilities in online systems could undermine public confidence in the electoral process. Therefore, the development of secure and trustworthy online voting systems is essential in ensuring that the democratic process remains robust and effective in the digital age.
 
 This overview underscores the importance of embracing technological advancements in voting while remaining vigilant about the challenges they present, ensuring that our democratic practices evolve in a manner that is both innovative and secure.
+Smith, A. D., & Clark, J. S. (2005). Revolutionising the voting process through online strategies. Online Information Review, 29(5), 513-530.
 
 ## Project Features and Characteristics
 
-<!-- Goes here... -->
+1. Accessible User Interface
+2. User Authentication
+3. Responsive Application
+4. Detailed Information about the Candidate
 
 ## Project Scope
 
