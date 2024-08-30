@@ -5,10 +5,17 @@ Project Title: Online Voting System
 
 ## A. Problem Statement
 
-1. Accessibility and Inclusivity: Despite advancements in technology, many eligible voters still face barriers to participating in elections, such as lack of access to the internet or digital literacy. This research aims to investigate how the Online Voting System can be designed to ensure that all demographics, including the elderly and those in rural areas, can participate effectively.
-2. User Experience and design: As modern technology increasingly shift towards digital platforms, the user experience associated with online voting systems has emerged as a critical factor influencing voter participation and the integrity of electoral processes. Despite the convenience offered by online voting, numerous issues have been identified that hamper its effectiveness, accessibility, and overall user satisfaction. The goal is to develop a user-centered design approach that enhances accessibility, simplifies the voting experience, fortifies security measures, and promotes transparency. Through research and testing, we aim to create an online voting system that instills confidence in voters, encouraging higher turnout and active participation in the democratic process.
-3. Accessible voting system for remote places: In places with strong internet connectivity, conducting remote voting might be challenging in some remote locations due to logistical challenges or difficult access. The goal is to make the voters in the remote area who are also capable of connecting to the internet cast their votes. In this way we can maximize the scope of the participation of voters. Moreover, people abroad can get this benefit to cast their vote without hassle on boarding and flights.
-   _Dyck, J. J., & Gimpel, J. G. (2005). Distance, turnout, and the convenience of voting. Social Science Quarterly, 86(3), 531-548._
+1. Security and Integrity
+
+The primary concern with online voting systems is ensuring the security and integrity of the voting process. Current systems may be susceptible to cyberattacks, including hacking, phishing, and malware, which could compromise voter data and alter election outcomes. Additionally, the lack of robust encryption and secure authentication methods raises concerns about unauthorized access and voter impersonation. If these security vulnerabilities are not addressed, the trust in the electoral process may diminish, leading to decreased voter participation and questions regarding the legitimacy of election results
+
+2. Voter Verification and Privacy
+
+Another significant issue is the challenge of providing voters with a means to verify their votes while maintaining the privacy of their choices. Many online voting systems lack a reliable method for voters to confirm that their votes have been accurately recorded and counted without revealing their identity or choice. Without a verifiable process, voters may feel insecure about the confidentiality of their votes, which can deter participation and undermine the overall credibility of the electoral system.
+
+3. Usability and Accessibility
+
+The usability and accessibility of online voting systems are critical for ensuring that all eligible voters can participate in elections. Many existing systems may be overly complex or not designed with inclusivity in mind, potentially alienating certain voter demographics, including the elderly, disabled, or those with limited technological proficiency. If the online voting system is not user-friendly and accessible, it could lead to disenfranchisement of certain groups, resulting in skewed election outcomes and a lack of representation in the democratic process.
 
 ## B. Project Description
 
