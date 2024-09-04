@@ -5,14 +5,14 @@
 	<div class="flex flex-col gap-2">
 		<div *ngIf="cardTitle" class="w-full">
 			<h1
-				class="text-lg md:text-xl lg:text-2xl font-semibold leading-none tracking-tight"
+				class="text-lg md:text-xl lg:text-2xl font-bold leading-none tracking-tight"
 			>
 				{{ cardTitle }}
 			</h1>
 		</div>
 
 		<div *ngIf="cardDescription" class="text-base">
-			<p class="font-normal text-muted-foreground text-base md:text-lg">
+			<p class="font-normal text-muted-foreground text-sm md:text-base">
 				{{ cardDescription }}
 			</p>
 		</div>

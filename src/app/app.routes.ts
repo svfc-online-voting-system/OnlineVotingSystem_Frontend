@@ -4,15 +4,29 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { OtpComponent } from './otp/otp.component';
 
 export const routes: Routes = [
-	{ path: '', component: HomeComponent, title: 'Coming Soon' },
-	{ path: 'features', component: FeaturesComponent, title: 'Features' },
-	{ path: 'login', component: LoginComponent, title: 'Login' },
-	{ path: 'sign-up', component: SignupComponent, title: 'Signup' },
+	{ path: '', component: HomeComponent, title: 'Home | votevoyage' },
+	{
+		path: 'features',
+		component: FeaturesComponent,
+		title: 'Features | votevoyage',
+	},
+	{ path: 'login', component: LoginComponent, title: 'Login | votevoyage' },
+	{
+		path: 'sign-up',
+		component: SignupComponent,
+		title: 'Signup | votevoyage',
+	},
 	{
 		path: 'forgot-password',
 		component: ForgotPasswordComponent,
-		title: 'Forgot Password',
+		title: 'votevoyage | Forgot Password',
+	},
+	{
+		path: 'otp-verification',
+		component: OtpComponent,
+		title: 'votevoyage | OTP Verification',
 	},
 ];
