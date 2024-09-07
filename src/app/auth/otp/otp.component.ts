@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { ReusableCardComponent } from '../reusable-card/reusable-card.component';
+import { Card } from '@app/shared-component/card/card.component';
 
 @Component({
 	selector: 'app-otp',
 	standalone: true,
-	imports: [ReusableCardComponent],
+	imports: [Card],
 	templateUrl: './otp.component.html',
-	styleUrl: './otp.component.css',
 })
 export class OtpComponent {}

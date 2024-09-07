@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReusableCardComponent } from '../reusable-card/reusable-card.component';
 import { RouterLink } from '@angular/router';
 import {
 	FormBuilder,
@@ -19,13 +18,14 @@ import {
 	type MatCheckbox,
 } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Card } from '@app/shared-component/card/card.component';
 
 @Component({
 	selector: 'app-signup',
 	standalone: true,
 	imports: [
 		CommonModule,
-		ReusableCardComponent,
+		Card,
 		RouterLink,
 		ReactiveFormsModule,
 		MatButtonModule,
