@@ -1,5 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,9 +9,28 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: "Lato", sans-serif;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+input,
+button,
+label,
+a,
+span {
+	font-family: "Inter", sans-serif !important;
+}
+
+/* For bypassing the defined roboto style */
+.font-primary {
+	font-family: "Inter", sans-serif !important;
+}
 html,
 body {
 	height: 100%;

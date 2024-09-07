@@ -1,5 +1,7 @@
-<main class="min-h-screen flex flex-row w-full">
-	<div class="w-1/2 min-h-fit bg-black hidden relative lg:block">
+<main
+	class="min-h-screen flex md:flex-row justify-center items-center w-full relative"
+>
+	<div class="w-1/2 min-h-screen bg-black hidden relative lg:block">
 		<a
 			class="font-bold text-white text-lg absolute top-5 left-5"
 			routerLink="/"
@@ -7,179 +9,194 @@
 			<span class="text-primary">vote</span>voyage
 		</a>
 	</div>
-	<div class="w-full lg:w-1/2 grid place-content-center relative">
-		<a
-			class="absolute top-4 right-4 p-4 hover:bg-slate-300 rounded-xl transition-all"
-			routerLink="/auth/login"
-			>Log In instead</a
-		>
-		<shared-component-card
-			cardTitle="SignUp"
-			cardDescription="Create an account."
-			className="m-10 p-7 bg-white border rounded-lg"
-		>
-			<mat-stepper orientation="vertical" linear="true" #stepper>
-				<mat-step [stepControl]="nameFormGroup">
-					<form
-						(ngSubmit)="submitNameForm()"
-						[formGroup]="nameFormGroup"
-					>
-						<ng-template matStepLabel
-							>Fill out your name</ng-template
+	<a
+		class="absolute top-4 right-4 p-4 hover:bg-slate-300 rounded-xl transition-all"
+		routerLink="/auth/login"
+		>Log In instead</a
+	>
+	<div class="w-11/12 lg:w-1/2 flex justify-center items-center">
+		<mat-card class="w-11/12 max-w-lg" appearance="outlined">
+			<mat-card-header>
+				<mat-card-title class="font-bold font-primary"
+					>Sign Up</mat-card-title
+				>
+				<mat-card-subtitle class="font-normal font-primary"
+					>Create an account</mat-card-subtitle
+				>
+			</mat-card-header>
+			<mat-card-content>
+				<mat-stepper
+					class="w-full"
+					orientation="vertical"
+					linear="true"
+					#stepper
+				>
+					<mat-step [stepControl]="nameFormGroup">
+						<form
+							(ngSubmit)="submitNameForm()"
+							[formGroup]="nameFormGroup"
 						>
+							<ng-template matStepLabel
+								>Fill out your name</ng-template
+							>
 
-						<mat-form-field class="w-full mt-2">
-							<mat-label>First Name</mat-label>
-							<input
-								required
-								type="text"
-								aria-label="First Name"
-								autocomplete="given-name"
-								formControlName="firstName"
-								matInput
-								placeholder="Juan"
-							/>
-						</mat-form-field>
+							<mat-form-field class="w-full mt-2">
+								<mat-label>First Name</mat-label>
+								<input
+									required
+									type="text"
+									aria-label="First Name"
+									autocomplete="given-name"
+									formControlName="firstName"
+									matInput
+									placeholder="Juan"
+								/>
+							</mat-form-field>
 
-						<mat-form-field class="w-full">
-							<mat-label>Last Name</mat-label>
-							<input
-								required
-								aria-label="Last Name"
-								autocomplete="family-name"
-								type="text"
-								formControlName="lastName"
-								matInput
-								placeholder="Dela Cruz"
-							/>
-						</mat-form-field>
+							<mat-form-field class="w-full">
+								<mat-label>Last Name</mat-label>
+								<input
+									required
+									aria-label="Last Name"
+									autocomplete="family-name"
+									type="text"
+									formControlName="lastName"
+									matInput
+									placeholder="Dela Cruz"
+								/>
+							</mat-form-field>
 
+							<div>
+								<button
+									type="submit"
+									mat-flat-button
+									matStepperNext
+								>
+									Next
+								</button>
+							</div>
+						</form>
+					</mat-step>
+
+					<mat-step [stepControl]="emailFormGroup">
+						<form
+							(ngSubmit)="submitEmailForm()"
+							[formGroup]="emailFormGroup"
+						>
+							<ng-template matStepLabel
+								>Fill out with your email address</ng-template
+							>
+							<mat-form-field class="w-full mt-2">
+								<mat-label>Email</mat-label>
+								<input
+									required
+									autocomplete="email"
+									type="email"
+									formControlName="email"
+									matInput
+									pattern="^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$"
+									placeholder="your.email@example.com"
+								/>
+							</mat-form-field>
+							<div
+								class="flex flex-row gap-3 justify-start items-center"
+							>
+								<button
+									type="button"
+									mat-stroked-button
+									matStepperPrevious
+								>
+									Back
+								</button>
+								<button
+									type="submit"
+									mat-flat-button
+									matStepperNext
+								>
+									Next
+								</button>
+							</div>
+						</form>
+					</mat-step>
+
+					<mat-step [stepControl]="passwordFormGroup">
+						<form
+							(ngSubmit)="submitPasswordForm()"
+							[formGroup]="passwordFormGroup"
+						>
+							<ng-template matStepLabel
+								>Fill out with your chosen password</ng-template
+							>
+							<mat-form-field class="w-full mt-2">
+								<mat-label>Password</mat-label>
+								<input
+									required
+									autocomplete="new-password"
+									type="password"
+									formControlName="password"
+									matInput
+									min="8"
+									minlength="8"
+									placeholder="********"
+									oninput="checkPasswordMatch()"
+								/>
+							</mat-form-field>
+							<mat-form-field class="w-full">
+								<mat-label>Confirm Password</mat-label>
+								<input
+									required
+									type="password"
+									formControlName="confirmPassword"
+									matInput
+									min="8"
+									minlength="8"
+									placeholder="********"
+									oninput="checkPasswordMatch()"
+								/>
+							</mat-form-field>
+							<mat-checkbox
+								(change)="togglePasswordVisibility()"
+								#showPasswordToggler
+							>
+								Show Password
+							</mat-checkbox>
+							<div
+								class="flex flex-row gap-3 justify-start items-center"
+							>
+								<button
+									type="button"
+									mat-button
+									matStepperPrevious
+								>
+									Back
+								</button>
+								<button
+									type="submit"
+									mat-flat-button
+									matStepperNext
+								>
+									Next
+								</button>
+							</div>
+						</form>
+					</mat-step>
+
+					<mat-step>
+						<ng-template matStepLabel>Done</ng-template>
+						<p>Ensure that all information are correct</p>
 						<div>
+							<button mat-button matStepperPrevious>Back</button>
 							<button
-								type="submit"
 								mat-flat-button
-								matStepperNext
+								type="submit"
+								(click)="onSignUpFormSubmit()"
 							>
-								Next
+								Sign Up
 							</button>
 						</div>
-					</form>
-				</mat-step>
-
-				<mat-step [stepControl]="emailFormGroup">
-					<form
-						(ngSubmit)="submitEmailForm()"
-						[formGroup]="emailFormGroup"
-					>
-						<ng-template matStepLabel
-							>Fill out with your email address</ng-template
-						>
-						<mat-form-field class="w-full mt-2">
-							<mat-label>Email</mat-label>
-							<input
-								required
-								autocomplete="email"
-								type="email"
-								formControlName="email"
-								matInput
-								pattern="^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$"
-								placeholder="your.email@example.com"
-							/>
-						</mat-form-field>
-						<div
-							class="flex flex-row gap-3 justify-start items-center"
-						>
-							<button
-								type="button"
-								mat-stroked-button
-								matStepperPrevious
-							>
-								Back
-							</button>
-							<button
-								type="submit"
-								mat-flat-button
-								matStepperNext
-							>
-								Next
-							</button>
-						</div>
-					</form>
-				</mat-step>
-
-				<mat-step [stepControl]="passwordFormGroup">
-					<form
-						(ngSubmit)="submitPasswordForm()"
-						[formGroup]="passwordFormGroup"
-					>
-						<ng-template matStepLabel
-							>Fill out with your chosen password</ng-template
-						>
-						<mat-form-field class="w-full mt-2">
-							<mat-label>Password</mat-label>
-							<input
-								required
-								autocomplete="new-password"
-								type="password"
-								formControlName="password"
-								matInput
-								min="8"
-								minlength="8"
-								placeholder="********"
-								oninput="checkPasswordMatch()"
-							/>
-						</mat-form-field>
-						<mat-form-field class="w-full">
-							<mat-label>Confirm Password</mat-label>
-							<input
-								required
-								type="password"
-								formControlName="confirmPassword"
-								matInput
-								min="8"
-								minlength="8"
-								placeholder="********"
-								oninput="checkPasswordMatch()"
-							/>
-						</mat-form-field>
-						<mat-checkbox
-							(change)="togglePasswordVisibility()"
-							#showPasswordToggler
-						>
-							Show Password
-						</mat-checkbox>
-						<div
-							class="flex flex-row gap-3 justify-start items-center"
-						>
-							<button type="button" mat-button matStepperPrevious>
-								Back
-							</button>
-							<button
-								type="submit"
-								mat-flat-button
-								matStepperNext
-							>
-								Next
-							</button>
-						</div>
-					</form>
-				</mat-step>
-
-				<mat-step>
-					<ng-template matStepLabel>Done</ng-template>
-					<p>Ensure that all information are correct</p>
-					<div>
-						<button mat-button matStepperPrevious>Back</button>
-						<button
-							mat-flat-button
-							type="submit"
-							(click)="onSignUpFormSubmit()"
-						>
-							Sign Up
-						</button>
-					</div>
-				</mat-step>
-			</mat-stepper>
-		</shared-component-card>
+					</mat-step>
+				</mat-stepper>
+			</mat-card-content>
+		</mat-card>
 	</div>
 </main>

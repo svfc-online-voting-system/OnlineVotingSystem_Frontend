@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
 import {
 	MatCheckboxModule,
@@ -25,6 +26,7 @@ import { Card } from '@app/shared-component/card/card.component';
 	imports: [
 		Card,
 		RouterLink,
+		MatCardModule,
 		ReactiveFormsModule,
 		MatButtonModule,
 		MatDividerModule,

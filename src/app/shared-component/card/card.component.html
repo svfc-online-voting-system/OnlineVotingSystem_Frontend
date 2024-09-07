@@ -1,15 +1,12 @@
 <div
-	class="flex flex-col gap-3 border-gray-300 rounded-xl border bg-card text-card-foreground shadow"
-	[ngClass]="className"
+	class="flex flex-col justify-center items-center gap-3 p-5 border-gray-300 rounded-xl border shadow {{
+		className
+	}}"
 >
-	<div class="flex flex-col gap-2">
-		<div *ngIf="cardTitle" class="w-full">
-			<h1
-				class="text-lg md:text-xl lg:text-2xl font-bold leading-none tracking-tight"
-			>
-				{{ cardTitle }}
-			</h1>
-		</div>
+	<div class="flex flex-col justify-start items-start w-full gap-2">
+		<h3 *ngIf="cardTitle" class="text-sm md:text-xl lg:text-2xl font-bold">
+			{{ cardTitle }}
+		</h3>
 
 		<div *ngIf="cardDescription" class="text-base">
 			<p class="font-normal text-muted-foreground text-sm md:text-base">
@@ -20,9 +17,5 @@
 
 	<div class="card-content">
 		<ng-content></ng-content>
-	</div>
-
-	<div *ngIf="cardFooter">
-		{{ cardFooter }}
 	</div>
 </div>
