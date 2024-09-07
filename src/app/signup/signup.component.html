@@ -86,7 +86,9 @@
 								placeholder="your.email@example.com"
 							/>
 						</mat-form-field>
-						<div>
+						<div
+							class="flex flex-row gap-3 justify-start items-center"
+						>
 							<button
 								type="button"
 								mat-stroked-button
@@ -140,12 +142,23 @@
 								oninput="checkPasswordMatch()"
 							/>
 						</mat-form-field>
-						<mat-checkbox> Show Password </mat-checkbox>
-						<div>
+						<mat-checkbox
+							(change)="togglePasswordVisibility()"
+							#showPasswordToggler
+						>
+							Show Password
+						</mat-checkbox>
+						<div
+							class="flex flex-row gap-3 justify-start items-center"
+						>
 							<button type="button" mat-button matStepperPrevious>
 								Back
 							</button>
-							<button type="submit" mat-button matStepperNext>
+							<button
+								type="submit"
+								mat-flat-button
+								matStepperNext
+							>
 								Next
 							</button>
 						</div>
@@ -154,15 +167,15 @@
 
 				<mat-step>
 					<ng-template matStepLabel>Done</ng-template>
-					<p>Click Done to proceed.</p>
+					<p>Ensure that all information are correct</p>
 					<div>
 						<button mat-button matStepperPrevious>Back</button>
 						<button
-							mat-button
+							mat-flat-button
 							type="submit"
 							(click)="onSignUpFormSubmit()"
 						>
-							Done
+							Sign Up
 						</button>
 					</div>
 				</mat-step>

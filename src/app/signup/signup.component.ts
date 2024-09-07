@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReusableCardComponent } from '../reusable-card/reusable-card.component';
 import { RouterLink } from '@angular/router';
 import {
@@ -14,7 +14,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+	MatCheckboxModule,
+	type MatCheckbox,
+} from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -36,6 +39,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	templateUrl: './signup.component.html',
 })
 export class SignupComponent implements OnInit {
+	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 	nameFormGroup!: FormGroup;
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
@@ -74,7 +78,7 @@ export class SignupComponent implements OnInit {
 					Validators.required,
 					Validators.email,
 					Validators.pattern(
-						'^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'
+						/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 					),
 				],
 			],
@@ -115,11 +119,42 @@ export class SignupComponent implements OnInit {
 			this.showError('Please enter a valid email address.');
 	}
 
+	togglePasswordVisibility(): void {
+		const isChecked = this.showPasswordToggler.checked;
+		const passwordInput = document.querySelector(
+			'input[formControlName="password"]'
+		) as HTMLInputElement;
+		const confirmPasswordInput = document.querySelector(
+			'input[formControlName="confirmPassword"]'
+		) as HTMLInputElement;
+
+		if (isChecked) {
+			passwordInput.type = 'text';
+			confirmPasswordInput.type = 'text';
+		} else {
+			passwordInput.type = 'password';
+			confirmPasswordInput.type = 'password';
+		}
+	}
+
 	submitPasswordForm(): void {
-		if (this.passwordFormGroup.invalid)
-			this.showError(
-				'Please ensure your passwords match and meet the requirements.'
-			);
+		const passwordValue = this.passwordFormGroup.get('password')?.value;
+		const confirmPasswordValue =
+			this.passwordFormGroup.get('confirmPassword')?.value;
+		const passwordErrors = this.passwordFormGroup.get('password')?.errors;
+
+		if (passwordErrors) {
+			let errorMessage = 'Please enter a valid password.';
+
+			if (passwordErrors['required']) {
+				errorMessage = 'Password is required.';
+			} else if (passwordErrors['minlength']) {
+				errorMessage = `Password must be at least ${passwordErrors['minlength'].requiredLength} characters long.`;
+			}
+
+			this.showError(errorMessage);
+		} else if (passwordValue !== confirmPasswordValue)
+			this.showError('Passwords do not match.');
 	}
 
 	isInvalidAndTouched(formGroup: FormGroup, controlName: string): boolean {
@@ -138,9 +173,5 @@ export class SignupComponent implements OnInit {
 			// TODO: Implement form submission with server side validation
 			this.showSuccess('Account created successfully!');
 		}
-	}
-
-	checkPasswordMatch() {
-		// TODO: Implement password match check
 	}
 }
