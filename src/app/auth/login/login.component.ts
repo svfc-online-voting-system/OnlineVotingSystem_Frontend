@@ -18,13 +18,11 @@ import {
 	type MatCheckbox,
 } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Card } from '@app/shared-component/card/card.component';
 
 @Component({
 	selector: 'app-login',
 	standalone: true,
 	imports: [
-		Card,
 		RouterLink,
 		MatCardModule,
 		ReactiveFormsModule,
@@ -95,6 +93,7 @@ export class LoginComponent {
 	submitEmailForm(): void {
 		if (this.emailFormGroup.invalid)
 			this.showSnackbarMessage('Please enter a valid email address.');
+		// TODO: Check if the email does have an associated account
 	}
 
 	submitPasswordForm(): void {

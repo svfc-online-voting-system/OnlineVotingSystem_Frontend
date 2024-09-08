@@ -19,14 +19,12 @@ import {
 	type MatCheckbox,
 } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Card } from '@app/shared-component/card/card.component';
 
 @Component({
 	selector: 'app-signup',
 	standalone: true,
 	imports: [
 		CommonModule,
-		Card,
 		MatCardModule,
 		RouterLink,
 		ReactiveFormsModule,
@@ -57,6 +55,11 @@ export class SignupComponent implements OnInit {
 			horizontalPosition: 'center',
 			verticalPosition: 'top',
 		});
+	}
+
+	// Helper function to close the snackbar if deemed necessary to do so
+	closeSnackbar(): void {
+		this._snackBar.dismiss();
 	}
 
 	ngOnInit(): void {
@@ -111,6 +114,9 @@ export class SignupComponent implements OnInit {
 	submitEmailForm(): void {
 		if (this.emailFormGroup.invalid)
 			this.showSnackbarMessage('Please enter a valid email address.');
+
+		// TODO: Implement form submission with server side validation
+		// TODO: Check whether the email is already in use before letting the user proceed.
 	}
 
 	togglePasswordVisibility(): void {
