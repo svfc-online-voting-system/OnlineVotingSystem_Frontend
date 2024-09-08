@@ -134,6 +134,7 @@ The online voting system's architecture must be enough to handle high volumes of
 | -------------------- | ----------------------- | ------------------------------------------- |
 | `user_id`            | `int`                   | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY` |
 | `username`           | `varchar(45)`           | `NOT NULL`, `PRIMARY KEY`                   |
+| `salt`               | `varchar(45)`           | `NOT NULL`                                  |
 | `password_hashed`    | `varchar(255)`          | `NOT NULL`                                  |
 | `email`              | `varchar(100)`          | `NOT NULL`                                  |
 | `date_of_birth`      | `date`                  | `NOT NULL`                                  |
