@@ -31,6 +31,13 @@ span {
 .font-primary {
 	font-family: "Inter", sans-serif !important;
 }
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
 html,
 body {
 	height: 100%;
