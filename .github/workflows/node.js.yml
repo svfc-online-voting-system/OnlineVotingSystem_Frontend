@@ -42,7 +42,10 @@ jobs:
 
             - run: npm run build --if-present
 
-            - run: |
+            - name: Run tests
+              env:
+                CI: true
+              run: |
                   Xvfb :99 -ac &
                   export DISPLAY=:99
                   npm test
