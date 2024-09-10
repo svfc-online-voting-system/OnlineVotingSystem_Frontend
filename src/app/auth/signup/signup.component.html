@@ -78,6 +78,53 @@
 						</form>
 					</mat-step>
 
+					<mat-step [stepControl]="birthdayFormGroup">
+						<form
+							(ngSubmit)="submitBirthdayForm()"
+							[formGroup]="birthdayFormGroup"
+						>
+							<ng-template matStepLabel
+								>Your Birthdate</ng-template
+							>
+
+							<mat-form-field class="w-full mt-2">
+								<mat-label>Birth Date</mat-label>
+								<input
+									min="1900-01-01"
+									autocomplete="bday"
+									required
+									matInput
+									[matDatepicker]="picker"
+								/>
+								<mat-hint>MM/DD/YYYY</mat-hint>
+								<mat-datepicker-toggle
+									matIconSuffix
+									[for]="picker"
+								></mat-datepicker-toggle>
+								<mat-datepicker #picker></mat-datepicker>
+							</mat-form-field>
+
+							<div
+								class="flex flex-row mt-3 gap-3 justify-start items-center"
+							>
+								<button
+									type="button"
+									mat-stroked-button
+									matStepperPrevious
+								>
+									Back
+								</button>
+								<button
+									type="submit"
+									mat-flat-button
+									matStepperNext
+								>
+									Next
+								</button>
+							</div>
+						</form>
+					</mat-step>
+
 					<mat-step [stepControl]="emailFormGroup">
 						<form
 							(ngSubmit)="submitEmailForm()"

@@ -1,4 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { RouterLink } from '@angular/router';
 import {
 	FormBuilder,
@@ -7,10 +11,7 @@ import {
 	FormGroup,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -22,8 +23,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
 	selector: 'app-signup',
 	standalone: true,
+	providers: [provideNativeDateAdapter()],
 	imports: [
-		CommonModule,
+		MatDatepickerModule,
 		MatCardModule,
 		RouterLink,
 		ReactiveFormsModule,
@@ -39,6 +41,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SignupComponent implements OnInit {
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 	nameFormGroup!: FormGroup;
+	birthdayFormGroup!: FormGroup;
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
 
@@ -64,6 +67,10 @@ export class SignupComponent implements OnInit {
 		this.nameFormGroup = this._formBuilder.group({
 			firstName: ['', [Validators.required, Validators.minLength(2)]],
 			lastName: ['', [Validators.required, Validators.minLength(2)]],
+		});
+
+		this.birthdayFormGroup = this._formBuilder.group({
+			birthday: [Date.now(), [Validators.required]],
 		});
 
 		this.emailFormGroup = this._formBuilder.group({
@@ -100,12 +107,37 @@ export class SignupComponent implements OnInit {
 			this.showSnackbarMessage(errorMessage);
 		}
 	}
+
+	submitBirthdayForm(): void {
+		if (this.birthdayFormGroup.invalid) {
+			this.showSnackbarMessage('Please enter a valid birthdate.');
+			return;
+		}
+
+		const birthDateValue = this.birthdayFormGroup.get('birthday')?.value;
+		const birthDate = new Date(birthDateValue);
+		const currentDate = new Date();
+		let age = currentDate.getFullYear() - birthDate.getFullYear();
+		const monthDifference = currentDate.getMonth() - birthDate.getMonth();
+		const dayDifference = currentDate.getDate() - birthDate.getDate();
+
+		if (
+			monthDifference < 0 ||
+			(monthDifference === 0 && dayDifference < 0)
+		) {
+			age--;
+		}
+
+		if (age < 18) {
+			this.showSnackbarMessage('You must be at least 18 years old.');
+			this.birthdayFormGroup.setErrors({ underage: true });
+		} else {
+			this.showSnackbarMessage('Valid birthdate!');
+		}
+	}
 	submitEmailForm(): void {
 		if (this.emailFormGroup.invalid)
 			this.showSnackbarMessage('Please enter a valid email address.');
-
-		// TODO: Implement form submission with server side validation
-		// TODO: Check whether the email is already in use before letting the user proceed.
 	}
 
 	togglePasswordVisibility(): void {
