@@ -133,14 +133,20 @@ The online voting system's architecture must be enough to handle high volumes of
 | Column Name          | Data Type               | Constraints                                 |
 | -------------------- | ----------------------- | ------------------------------------------- |
 | `user_id`            | `int`                   | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY` |
-| `username`           | `varchar(45)`           | `NOT NULL`, `PRIMARY KEY`                   |
+| `username`           | `varchar(45)`           | `NOT NULL`                                  |
 | `salt`               | `varchar(45)`           | `NOT NULL`                                  |
 | `password_hashed`    | `varchar(255)`          | `NOT NULL`                                  |
 | `email`              | `varchar(100)`          | `NOT NULL`                                  |
 | `date_of_birth`      | `date`                  | `NOT NULL`                                  |
-| `resgistration_date` | `datetime`              | `NOT NULL`, `DEFAULT CURRENT_TIMESTAMP`     |
-| **Indexes**          | **Description**         |                                             |
-| `PRIMARY`            | (`user_id`, `username`) |                                             |
+| `registration_date`  | `datetime`              | `NOT NULL`, `DEFAULT CURRENT_TIMESTAMP`     |
+| `first_name`         | `varchar(100)`          | `NOT NULL`                                  |
+| `last_name`          | `varchar(100)`          | `NOT NULL`                                  |
+
+### Indexes
+| Index Name           | Description                                   |
+| -------------------- | --------------------------------------------- |
+| `PRIMARY`            | (`user_id`, `email`, `username`)              |
+
 
 ## Table 8: `votes`
 
