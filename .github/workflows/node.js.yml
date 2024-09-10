@@ -23,21 +23,20 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
 
-            # Install Chrome via apt (stable or Canary)
-            - name: Install Chrome
+            - name: Install Chrome and Xvfb
               run: |
                   sudo apt-get update
                   sudo apt-get install -y wget
                   sudo apt-get install -y google-chrome-stable
+                  sudo apt-get install -y xvfb
 
-            # Install dependencies
             - run: npm ci
 
-            # Lint the project
             - run: npm run lint
 
-            # Build the project
             - run: npm run build --if-present
 
-            # Run tests
-            - run: npm test
+            - run: |
+                  Xvfb :99 -ac &
+                  export DISPLAY=:99
+                  npm test
