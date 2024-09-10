@@ -1,5 +1,5 @@
 import { RouterLink } from '@angular/router';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import {
 	FormBuilder,
 	Validators,
@@ -8,7 +8,6 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -27,7 +26,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 		MatCardModule,
 		ReactiveFormsModule,
 		MatButtonModule,
-		MatDividerModule,
 		MatInputModule,
 		MatFormFieldModule,
 		FormsModule,
@@ -36,7 +34,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	],
 	templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 
 	emailFormGroup!: FormGroup;
@@ -48,16 +46,7 @@ export class LoginComponent {
 
 	ngOnInit(): void {
 		this.emailFormGroup = this._formBuilder.group({
-			email: [
-				'',
-				[
-					Validators.required,
-					Validators.email,
-					Validators.pattern(
-						/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-					),
-				],
-			],
+			email: ['', [Validators.required, Validators.email]],
 		});
 		this.passwordFormGroup = this._formBuilder.group({
 			password: ['', Validators.required],

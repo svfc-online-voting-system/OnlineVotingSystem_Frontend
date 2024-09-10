@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Card } from '@app/shared-component/card/card.component';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,7 +10,6 @@ import { SnackbarService } from '@app/shared/snackbar.service';
 	selector: 'app-otp',
 	standalone: true,
 	imports: [
-		Card,
 		MatCardModule,
 		MatButtonModule,
 		MatInputModule,
@@ -19,7 +17,7 @@ import { SnackbarService } from '@app/shared/snackbar.service';
 	],
 	templateUrl: './otp.component.html',
 })
-export class OtpComponent {
+export class OtpComponent implements OnInit {
 	otpFormGroup!: FormGroup;
 
 	constructor(
