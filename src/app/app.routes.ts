@@ -1,32 +1,43 @@
-import { Routes } from '@angular/router';
-import { FeaturesComponent } from './features/features.component';
+import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
-import { OtpComponent } from './auth/otp/otp.component';
+import { NgModule } from '@angular/core';
 
 export const routes: Routes = [
 	{ path: '', component: HomeComponent, title: 'Home | votevoyage' },
 	{
-		path: 'features',
-		component: FeaturesComponent,
-		title: 'Features | votevoyage',
+		path: 'auth/login',
+		loadComponent: () =>
+			import('@app/auth/login/login.component').then(
+				(m) => m.LoginComponent
+			),
+		title: 'Login | votevoyage',
 	},
-	{ path: 'auth/login', component: LoginComponent, title: 'Login | votevoyage' },
 	{
 		path: 'auth/sign-up',
-		component: SignupComponent,
+		loadComponent: () =>
+			import('@app/auth/signup/signup.component').then(
+				(m) => m.SignupComponent
+			),
 		title: 'Signup | votevoyage',
 	},
 	{
 		path: 'auth/forgot-password',
-		component: ForgotPasswordComponent,
+		loadComponent: () =>
+			import('@app/auth/forgot-password/forgot-password.component').then(
+				(m) => m.ForgotPasswordComponent
+			),
 		title: 'votevoyage | Forgot Password',
 	},
 	{
 		path: 'auth/otp-verification',
-		component: OtpComponent,
+		loadComponent: () =>
+			import('@app/auth/otp/otp.component').then((m) => m.OtpComponent),
 		title: 'votevoyage | OTP Verification',
 	},
 ];
+
+@NgModule({
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
+})
+export class AppRoutingModule {}

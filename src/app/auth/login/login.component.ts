@@ -82,7 +82,6 @@ export class LoginComponent implements OnInit {
 	submitEmailForm(): void {
 		if (this.emailFormGroup.invalid)
 			this.showSnackbarMessage('Please enter a valid email address.');
-		// TODO: Check if the email does have an associated account
 	}
 
 	submitPasswordForm(): void {

@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
-import { SnackbarService } from '@app/shared/snackbar.service';
+import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-forgot-password',

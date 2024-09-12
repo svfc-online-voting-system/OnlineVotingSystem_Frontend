@@ -192,6 +192,7 @@
 								<mat-label>Confirm Password</mat-label>
 								<input
 									required
+									autocomplete="new-password"
 									type="password"
 									formControlName="confirmPassword"
 									matInput
@@ -201,10 +202,7 @@
 									oninput="checkPasswordMatch()"
 								/>
 							</mat-form-field>
-							<mat-checkbox
-								(change)="togglePasswordVisibility()"
-								#showPasswordToggler
-							>
+							<mat-checkbox #showPasswordToggler>
 								Show Password
 							</mat-checkbox>
 							<div
