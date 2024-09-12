@@ -1,4 +1,5 @@
 import { RouterLink } from '@angular/router';
+import { AuthServiceService } from '@app/services/api/auth/auth-service.service';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import {
 	FormBuilder,
@@ -41,7 +42,8 @@ export class LoginComponent implements OnInit {
 	passwordFormGroup!: FormGroup;
 	constructor(
 		private _snackBar: MatSnackBar,
-		private _formBuilder: FormBuilder
+		private _formBuilder: FormBuilder,
+		private _authService: AuthServiceService
 	) {}
 
 	ngOnInit(): void {
@@ -102,7 +104,13 @@ export class LoginComponent implements OnInit {
 		this.submitPasswordForm();
 
 		if (this.emailFormGroup.valid && this.passwordFormGroup.valid) {
-			this.showSnackbarMessage('Logging in...');
+			const emailFormGroupValue = this.emailFormGroup.value;
+			const passwordFormgroupValue = this.passwordFormGroup.value;
+			this._authService.login({
+				email: emailFormGroupValue.email,
+				password: passwordFormgroupValue.password,
+			});
+			console.log('Logging in...');
 		}
 	}
 }
