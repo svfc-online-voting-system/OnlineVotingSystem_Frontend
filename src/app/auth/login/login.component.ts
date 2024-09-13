@@ -1,6 +1,6 @@
 import { RouterLink } from '@angular/router';
-import { AuthServiceService } from '@app/services/api/auth/auth-service.service';
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { AuthService } from '@app/services/api/auth/auth-service.service';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {
 	FormBuilder,
 	Validators,
@@ -17,7 +17,10 @@ import {
 	MatCheckboxModule,
 	type MatCheckbox,
 } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
+import { apiLoginResponse } from '@app/types/authResponseType';
 
 @Component({
 	selector: 'app-login',
@@ -37,13 +40,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
+	readonly dialog = inject(MatDialog);
 
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
 	constructor(
 		private _snackBar: MatSnackBar,
 		private _formBuilder: FormBuilder,
-		private _authService: AuthServiceService
+		private _authService: AuthService
 	) {}
 
 	ngOnInit(): void {
@@ -53,6 +57,16 @@ export class LoginComponent implements OnInit {
 		this.passwordFormGroup = this._formBuilder.group({
 			password: ['', Validators.required],
 		});
+	}
+
+	openLoadingDialog(): void {
+		this.dialog.open(SpinnerComponent, {
+			data: { message: 'Logging in...' },
+		});
+	}
+
+	closeLoadingDialog(): void {
+		this.dialog.closeAll();
 	}
 
 	showSnackbarMessage(message: string): void {
@@ -99,18 +113,50 @@ export class LoginComponent implements OnInit {
 		}
 	}
 
-	submitLogInForm(): void {
+	async submitLogInForm(): Promise<void> {
 		this.submitEmailForm();
 		this.submitPasswordForm();
 
 		if (this.emailFormGroup.valid && this.passwordFormGroup.valid) {
 			const emailFormGroupValue = this.emailFormGroup.value;
 			const passwordFormgroupValue = this.passwordFormGroup.value;
-			this._authService.login({
-				email: emailFormGroupValue.email,
-				password: passwordFormgroupValue.password,
-			});
-			console.log('Logging in...');
+
+			try {
+				console.log('Logging in...');
+				this.openLoadingDialog();
+				const response: apiLoginResponse =
+					await this._authService.login({
+						email: emailFormGroupValue.email,
+						password: passwordFormgroupValue.password,
+					});
+				this.closeLoadingDialog();
+				if (response.code === 'success') {
+					this._snackBar.open(response.message, 'Close', {
+						duration: 3000,
+						horizontalPosition: 'center',
+						verticalPosition: 'top',
+					});
+				} else {
+					this._snackBar.open(response.message, 'Close', {
+						duration: 3000,
+						horizontalPosition: 'center',
+						verticalPosition: 'top',
+					});
+				}
+			} catch (error) {
+				this.closeLoadingDialog();
+				this._snackBar.open(
+					`An error occurred while logging in.: ${error}`,
+					'Close',
+					{
+						duration: 3000,
+						horizontalPosition: 'center',
+						verticalPosition: 'top',
+					}
+				);
+			}
+		} else {
+			this.showSnackbarMessage('Please enter valid email and password.');
 		}
 	}
 }

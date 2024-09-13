@@ -1,40 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { apiLoginResponse } from '@app/types/loginTypes';
+import { apiLoginResponse } from '@app/types/authResponseType';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class AuthServiceService {
+export class AuthService {
 	private apiBaseURL = 'http://127.0.0.1';
 	private apiPort = '5000';
 	private apiAuthLoginRoute = 'auth/login';
+	private createAccountRoute = 'auth/create-account';
+	private apiLogoutRoute = 'auth/logout';
 	constructor(private httpClient: HttpClient) {}
 
-	login(loginInformation: { email: string; password: string }) {
-		this.httpClient
-			.post<apiLoginResponse>(
+	login(loginInformation: {
+		email: string;
+		password: string;
+	}): Promise<apiLoginResponse> {
+		return lastValueFrom(
+			this.httpClient.post<apiLoginResponse>(
 				`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
-				loginInformation
+				loginInformation,
+				{ withCredentials: true }
 			)
-			.subscribe((response) => {
-				localStorage.setItem(
-					'auth-token',
-					response.authorization_token
-				);
-				console.log(response);
-			});
+		);
 	}
 
-	logoutSession(): boolean {
-		localStorage.removeItem('auth-token');
-		if (!localStorage.getItem('auth-token')) {
-			return false;
-		}
-		return true;
-	}
-
-	get getCurrentSession(): boolean {
-		return !!localStorage.getItem('auth-token');
+	logoutSession(): Promise<apiLoginResponse> {
+		return lastValueFrom(
+			this.httpClient.get<apiLoginResponse>(
+				`${this.apiBaseURL}:${this.apiPort}/${this.apiLogoutRoute}`,
+				{ withCredentials: true }
+			)
+		);
 	}
 }
