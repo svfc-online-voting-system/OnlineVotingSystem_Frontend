@@ -23,7 +23,7 @@ Smith, A. D., & Clark, J. S. (2005). Revolutionising the voting process through 
 8. Real-Time Vote Tracking and Monitoring
 9. Automatic Vote Counting and Result Generation
 10. Auditability and Transparency
-11. Multi-Language Support
+11. BiLanguage Support
 12. Data Protection and Compliance
     
 
