@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('LoginComponent', () => {
 	let component: LoginComponent;
@@ -11,8 +11,9 @@ describe('LoginComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [LoginComponent, BrowserAnimationsModule, HttpClient],
+			imports: [LoginComponent, BrowserAnimationsModule],
 			providers: [
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {

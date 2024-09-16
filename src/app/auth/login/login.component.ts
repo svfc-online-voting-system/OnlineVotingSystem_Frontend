@@ -1,5 +1,5 @@
 import { RouterLink } from '@angular/router';
-import { AuthService } from '@app/services/api/auth/auth-service.service';
+import { AuthService } from '@app/services/api/auth/auth.service';
 import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {
 	FormBuilder,

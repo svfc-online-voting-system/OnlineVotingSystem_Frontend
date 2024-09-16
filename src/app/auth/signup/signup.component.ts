@@ -30,7 +30,7 @@ import { MatCheckboxModule, MatCheckbox } from '@angular/material/checkbox';
 import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 import { SignupValidatorsService } from '@app/services/validators/signup/signup-validators.service';
 import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
-import { AuthService } from '@app/services/api/auth/auth-service.service';
+import { AuthService } from '@app/services/api/auth/auth.service';
 import {
 	ApiAuthResponse,
 	ApiAuthErrorResponse,
