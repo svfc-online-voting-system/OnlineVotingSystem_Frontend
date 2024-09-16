@@ -1,32 +1,59 @@
-import { Routes } from '@angular/router';
-import { FeaturesComponent } from './features/features.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
-import { OtpComponent } from './auth/otp/otp.component';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent as LandingPage } from './home/home.component';
+import { NgModule } from '@angular/core';
+import { AuthGuard } from './guard/auth/auth.guard';
+import { NotFoundComponent } from '@app/404/404.component';
 
 export const routes: Routes = [
-	{ path: '', component: HomeComponent, title: 'Home | votevoyage' },
+	{ path: '', component: LandingPage, title: 'Home | votevoyage' },
 	{
-		path: 'features',
-		component: FeaturesComponent,
-		title: 'Features | votevoyage',
+		path: '**',
+		component: NotFoundComponent,
+		title: '404 | Oh no!',
 	},
-	{ path: 'auth/login', component: LoginComponent, title: 'Login | votevoyage' },
+	{
+		path: 'auth/login',
+		loadComponent: () =>
+			import('@app/auth/login/login.component').then(
+				(m) => m.LoginComponent
+			),
+		title: 'Login | votevoyage',
+	},
 	{
 		path: 'auth/sign-up',
-		component: SignupComponent,
+		loadComponent: () =>
+			import('@app/auth/signup/signup.component').then(
+				(m) => m.SignupComponent
+			),
 		title: 'Signup | votevoyage',
 	},
 	{
 		path: 'auth/forgot-password',
-		component: ForgotPasswordComponent,
+		loadComponent: () =>
+			import('@app/auth/forgot-password/forgot-password.component').then(
+				(m) => m.ForgotPasswordComponent
+			),
 		title: 'votevoyage | Forgot Password',
 	},
 	{
 		path: 'auth/otp-verification',
-		component: OtpComponent,
+		loadComponent: () =>
+			import('@app/auth/otp/otp.component').then((m) => m.OtpComponent),
 		title: 'votevoyage | OTP Verification',
 	},
+	{
+		path: 'u/home',
+		loadComponent: () =>
+			import('@app/authenticated/home/home/home.component').then(
+				(m) => m.HomeComponent
+			),
+		title: 'Home',
+		canActivate: [AuthGuard],
+	},
 ];
+
+@NgModule({
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
+})
+export class AppRoutingModule {}

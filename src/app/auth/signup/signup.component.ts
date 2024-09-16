@@ -1,9 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	inject,
+	PLATFORM_ID,
+	Inject,
+	ViewChild,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
+import { MatInputModule, type MatInput } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+	MAT_DATE_LOCALE,
+	provideNativeDateAdapter,
+} from '@angular/material/core';
 import { RouterLink } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import {
 	FormBuilder,
 	Validators,
@@ -12,18 +24,25 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule, MatCheckbox } from '@angular/material/checkbox';
+import { SnackbarService } from '@app/services/snackbar/snackbar.service';
+import { SignupValidatorsService } from '@app/services/validators/signup/signup-validators.service';
+import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
+import { AuthService } from '@app/services/api/auth/auth.service';
 import {
-	MatCheckboxModule,
-	type MatCheckbox,
-} from '@angular/material/checkbox';
-import { MatSnackBar } from '@angular/material/snack-bar';
+	ApiAuthResponse,
+	ApiAuthErrorResponse,
+} from '@app/types/authResponseType';
 
 @Component({
 	selector: 'app-signup',
 	standalone: true,
-	providers: [provideNativeDateAdapter()],
+	providers: [
+		{ provide: MAT_DATE_LOCALE, useValue: 'en-CA' },
+		provideNativeDateAdapter(),
+	],
 	imports: [
 		MatDatepickerModule,
 		MatCardModule,
@@ -39,143 +58,149 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	templateUrl: './signup.component.html',
 })
 export class SignupComponent implements OnInit {
+	@ViewChild('stepper') stepper!: MatStepper;
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
+	@ViewChild('passwordField') passwordField!: MatInput;
 	nameFormGroup!: FormGroup;
 	birthdayFormGroup!: FormGroup;
-	emailFormGroup!: FormGroup;
+	emailPasswordFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
+	passwordValue = '';
+	readonly dialog = inject(MatDialog);
+	isBrowser: boolean;
+	readonly minInimumDate = new Date(1900, 0, 1);
+	readonly maximumDate = new Date(
+		new Date().setFullYear(new Date().getFullYear() - 18)
+	);
 
 	constructor(
-		private _snackBar: MatSnackBar,
-		private _formBuilder: FormBuilder
-	) {}
-
-	showSnackbarMessage(message: string): void {
-		this._snackBar.open(message, 'Close', {
-			duration: 3000,
-			horizontalPosition: 'center',
-			verticalPosition: 'top',
-		});
+		private _formBuilder: FormBuilder,
+		private _snackBarService: SnackbarService,
+		private _authService: AuthService,
+		private _signUpValidatorService: SignupValidatorsService,
+		@Inject(PLATFORM_ID) private platformId: object
+	) {
+		this.isBrowser = isPlatformBrowser(this.platformId);
 	}
 
-	// Helper function to close the snackbar if deemed necessary to do so
-	closeSnackbar(): void {
-		this._snackBar.dismiss();
+	changePasswordValue(event: Event): void {
+		const inputElement = event.target as HTMLInputElement;
+		this.passwordValue = inputElement.value;
 	}
 
-	ngOnInit(): void {
+	private _initSignUpFormGroups(): void {
 		this.nameFormGroup = this._formBuilder.group({
 			firstName: ['', [Validators.required, Validators.minLength(2)]],
 			lastName: ['', [Validators.required, Validators.minLength(2)]],
 		});
 
 		this.birthdayFormGroup = this._formBuilder.group({
-			birthday: [Date.now(), [Validators.required]],
+			birthday: [null, [Validators.required, Validators.min(18)]],
 		});
 
-		this.emailFormGroup = this._formBuilder.group({
+		this.emailPasswordFormGroup = this._formBuilder.group({
 			email: ['', [Validators.required, Validators.email]],
-		});
-
-		this.passwordFormGroup = this._formBuilder.group({
 			password: ['', [Validators.required, Validators.minLength(6)]],
-			confirmPassword: ['', [Validators.required]],
+			confirmPassword: [
+				'',
+				[
+					Validators.required,
+					// this._signUpValidatorService.validatePasswordMatch(
+					// 	this.passwordValue
+					// ),
+				],
+			],
 		});
 	}
 
-	submitNameForm(): void {
-		if (this.nameFormGroup.invalid) {
-			const firstNameErrors = this.nameFormGroup.get('firstName')?.errors;
-			const lastNameErrors = this.nameFormGroup.get('lastName')?.errors;
+	togglePasswordVisibility(): void {
+		// TODO: To be implemented...
+	}
 
-			let errorMessage = 'Please fill out your name correctly.';
-
-			if (firstNameErrors) {
-				if (firstNameErrors['required']) {
-					errorMessage = 'First Name is required.';
-				} else if (firstNameErrors['minlength']) {
-					errorMessage = `First Name must be at least ${firstNameErrors['minlength'].requiredLength} characters long.`;
-				}
-			} else if (lastNameErrors) {
-				if (lastNameErrors['required']) {
-					errorMessage = 'Last Name is required.';
-				} else if (lastNameErrors['minlength']) {
-					errorMessage = `Last Name must be at least ${lastNameErrors['minlength'].requiredLength} characters long.`;
-				}
+	checkPasswordMatch(): void {
+		if (this.isBrowser) {
+			if (
+				this.emailPasswordFormGroup.get('password')?.value !==
+				this.emailPasswordFormGroup.get('confirmPassword')?.value
+			) {
+				this._snackBarService.showSnackBar('Passwords do not match.');
+			} else {
+				this._snackBarService.closeSnackBar();
 			}
+		}
+	}
 
-			this.showSnackbarMessage(errorMessage);
+	ngOnInit(): void {
+		this._initSignUpFormGroups();
+		if (this.isBrowser) {
+			this._initializeBrowserSpecificModules();
+		}
+	}
+
+	private _initializeBrowserSpecificModules(): void {
+		import('@angular/material/datepicker').then(() => {
+			this._formBuilder.group({
+				birthday: [Date.now(), [Validators.required]],
+			});
+		});
+	}
+
+	openLoadingDialog(): void {
+		if (this.isBrowser) {
+			this.dialog.open(SpinnerComponent, {
+				data: { message: 'Logging in...' },
+			});
+		}
+	}
+
+	closeLoadingDialog(): void {
+		if (this.isBrowser) this.dialog.closeAll();
+	}
+
+	submitNameForm(): void {
+		if (this.isBrowser) {
+			const errorMessage = this._signUpValidatorService.validateName(
+				this.nameFormGroup
+			);
+			if (errorMessage) {
+				this._snackBarService.showSnackBar(errorMessage);
+			} else {
+				this._snackBarService.closeSnackBar();
+				this.nameFormGroup.markAsUntouched();
+			}
 		}
 	}
 
 	submitBirthdayForm(): void {
-		if (this.birthdayFormGroup.invalid) {
-			this.showSnackbarMessage('Please enter a valid birthdate.');
-			return;
-		}
-
-		const birthDateValue = this.birthdayFormGroup.get('birthday')?.value;
-		const birthDate = new Date(birthDateValue);
-		const currentDate = new Date();
-		let age = currentDate.getFullYear() - birthDate.getFullYear();
-		const monthDifference = currentDate.getMonth() - birthDate.getMonth();
-		const dayDifference = currentDate.getDate() - birthDate.getDate();
-
-		if (
-			monthDifference < 0 ||
-			(monthDifference === 0 && dayDifference < 0)
-		) {
-			age--;
-		}
-
-		if (age < 18) {
-			this.showSnackbarMessage('You must be at least 18 years old.');
-			this.birthdayFormGroup.setErrors({ underage: true });
-		} else {
-			this.showSnackbarMessage('Valid birthdate!');
-		}
-	}
-	submitEmailForm(): void {
-		if (this.emailFormGroup.invalid)
-			this.showSnackbarMessage('Please enter a valid email address.');
-	}
-
-	togglePasswordVisibility(): void {
-		const isChecked = this.showPasswordToggler.checked;
-		const passwordInput = document.querySelector(
-			'input[formControlName="password"]'
-		) as HTMLInputElement;
-		const confirmPasswordInput = document.querySelector(
-			'input[formControlName="confirmPassword"]'
-		) as HTMLInputElement;
-
-		if (isChecked) {
-			passwordInput.type = 'text';
-			confirmPasswordInput.type = 'text';
-		} else {
-			passwordInput.type = 'password';
-			confirmPasswordInput.type = 'password';
-		}
-	}
-
-	submitPasswordForm(): void {
-		const passwordValue = this.passwordFormGroup.get('password')?.value;
-		const confirmPasswordValue =
-			this.passwordFormGroup.get('confirmPassword')?.value;
-		const passwordErrors = this.passwordFormGroup.get('password')?.errors;
-
-		if (passwordErrors) {
-			let errorMessage = 'Please enter a valid password.';
-
-			if (passwordErrors['required']) {
-				errorMessage = 'Password is required.';
-			} else if (passwordErrors['minlength']) {
-				errorMessage = `Password must be at least ${passwordErrors['minlength'].requiredLength} characters long.`;
+		if (this.isBrowser) {
+			if (this.birthdayFormGroup.invalid) {
+				this._snackBarService.showSnackBar(
+					'Please enter your birthday.'
+				);
+			} else {
+				this._snackBarService.closeSnackBar();
+				this.birthdayFormGroup.markAsUntouched();
 			}
-
-			this.showSnackbarMessage(errorMessage);
-		} else if (passwordValue !== confirmPasswordValue)
-			this.showSnackbarMessage('Passwords do not match.');
+		}
+	}
+	submitEmailPasswordForm(): void {
+		if (this.isBrowser) {
+			const errorMessage = this._signUpValidatorService.validateEmail(
+				this.emailPasswordFormGroup
+			);
+			const passWordErrorMessage =
+				this._signUpValidatorService.validatePassword(
+					this.emailPasswordFormGroup
+				);
+			if (errorMessage) {
+				this._snackBarService.showSnackBar(errorMessage);
+			} else if (passWordErrorMessage) {
+				this._snackBarService.showSnackBar(passWordErrorMessage);
+			} else {
+				this._snackBarService.closeSnackBar();
+				this.emailPasswordFormGroup.markAsUntouched();
+			}
+		}
 	}
 
 	isInvalidAndTouched(formGroup: FormGroup, controlName: string): boolean {
@@ -185,14 +210,42 @@ export class SignupComponent implements OnInit {
 		);
 	}
 
-	onSignUpFormSubmit(): void {
+	async onSignUpFormSubmit(): Promise<void> {
 		if (
 			this.nameFormGroup.valid &&
-			this.emailFormGroup.valid &&
-			this.passwordFormGroup.valid
+			this.emailPasswordFormGroup.valid &&
+			this.birthdayFormGroup.valid
 		) {
-			// TODO: Implement form submission with server side validation
-			this.showSnackbarMessage('Account created successfully!');
+			const nameFormGroupValue = this.nameFormGroup.value;
+			const emailPasswordFormGroupValue =
+				this.emailPasswordFormGroup.value;
+			const birthdayFormGroupValue = this.birthdayFormGroup.value;
+
+			try {
+				this.openLoadingDialog();
+				const response: ApiAuthResponse =
+					await this._authService.signUp({
+						email: emailPasswordFormGroupValue.email,
+						first_name: nameFormGroupValue.firstName,
+						last_name: nameFormGroupValue.lastName,
+						date_of_birth: birthdayFormGroupValue.birthday,
+						password: emailPasswordFormGroupValue.password,
+						confirmPassword:
+							emailPasswordFormGroupValue.confirmPassword,
+					});
+				this._snackBarService.showSnackBar(response.message);
+			} catch (error: unknown) {
+				let errorMessage = 'An error occurred.';
+				const errorObj = error as ApiAuthErrorResponse;
+				errorMessage = errorObj.error.message;
+				this._snackBarService.showSnackBar(errorMessage);
+			} finally {
+				this.closeLoadingDialog();
+			}
+		} else {
+			this._snackBarService.showSnackBar(
+				'Please check the information you provided.'
+			);
 		}
 	}
 }

@@ -1,5 +1,6 @@
-import { RouterLink } from '@angular/router';
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
+import { AuthService } from '@app/services/api/auth/auth.service';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {
 	FormBuilder,
 	Validators,
@@ -16,7 +17,14 @@ import {
 	MatCheckboxModule,
 	type MatCheckbox,
 } from '@angular/material/checkbox';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
+import {
+	ApiAuthResponse,
+	type ApiAuthErrorResponse,
+} from '@app/types/authResponseType';
+import { LoginValidatorsService } from '@app/services/validators/login/login-validators.service';
+import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-login',
@@ -36,12 +44,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
+	readonly dialog = inject(MatDialog);
 
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
 	constructor(
-		private _snackBar: MatSnackBar,
-		private _formBuilder: FormBuilder
+		private _snackBarService: SnackbarService,
+		private _formBuilder: FormBuilder,
+		private _authService: AuthService,
+		private _logInValidatorService: LoginValidatorsService,
+		private _router: Router
 	) {}
 
 	ngOnInit(): void {
@@ -53,12 +65,14 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	showSnackbarMessage(message: string): void {
-		this._snackBar.open(message, 'Close', {
-			duration: 3000,
-			horizontalPosition: 'center',
-			verticalPosition: 'top',
+	openLoadingDialog(): void {
+		this.dialog.open(SpinnerComponent, {
+			data: { message: 'Logging in...' },
 		});
+	}
+
+	closeLoadingDialog(): void {
+		this.dialog.closeAll();
 	}
 
 	togglePasswordVisibility(): void {
@@ -80,30 +94,58 @@ export class LoginComponent implements OnInit {
 	}
 
 	submitEmailForm(): void {
-		if (this.emailFormGroup.invalid)
-			this.showSnackbarMessage('Please enter a valid email address.');
-		// TODO: Check if the email does have an associated account
-	}
-
-	submitPasswordForm(): void {
-		const passwordErrors = this.passwordFormGroup.get('password')?.errors;
-		if (passwordErrors) {
-			let errorMessage = 'Please enter a valid password.';
-			if (passwordErrors['required']) {
-				errorMessage = 'Password is required.';
-			} else if (passwordErrors['minlength']) {
-				errorMessage = `Password must be at least ${passwordErrors['minlength'].requiredLength} characters long.`;
-			}
-			this.showSnackbarMessage(errorMessage);
+		const emailValidationResult = this._logInValidatorService.validateEmail(
+			this.emailFormGroup
+		);
+		if (emailValidationResult) {
+			this._snackBarService.showSnackBar(emailValidationResult);
 		}
 	}
 
-	submitLogInForm(): void {
+	submitPasswordForm(): void {
+		const passwordValidationResult =
+			this._logInValidatorService.validatePassword(
+				this.passwordFormGroup
+			);
+		if (passwordValidationResult) {
+			this._snackBarService.showSnackBar(passwordValidationResult);
+		}
+	}
+
+	async submitLogInForm(): Promise<void> {
 		this.submitEmailForm();
 		this.submitPasswordForm();
 
 		if (this.emailFormGroup.valid && this.passwordFormGroup.valid) {
-			this.showSnackbarMessage('Logging in...');
+			const emailFormGroupValue = this.emailFormGroup.value;
+			const passwordFormgroupValue = this.passwordFormGroup.value;
+
+			try {
+				this.openLoadingDialog();
+				const response: ApiAuthResponse = await this._authService.login(
+					{
+						email: emailFormGroupValue.email,
+						password: passwordFormgroupValue.password,
+					}
+				);
+				if (response.code === 'success') {
+					this._snackBarService.showSnackBar(response.message);
+					this._router.navigate(['u/home']);
+				} else {
+					this._snackBarService.showSnackBar(response.message);
+				}
+			} catch (error: unknown) {
+				let errorMessage = 'An error occurred.';
+				const errorObj = error as ApiAuthErrorResponse;
+				errorMessage = errorObj.error.message;
+				this._snackBarService.showSnackBar(errorMessage);
+			} finally {
+				this.closeLoadingDialog();
+			}
+		} else {
+			this._snackBarService.showSnackBar(
+				'Please enter valid email and password.'
+			);
 		}
 	}
 }
