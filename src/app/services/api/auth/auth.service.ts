@@ -5,6 +5,7 @@ import {
 	ApiAuthResponse,
 	SignUpInformation,
 } from '@app/types/authResponseType';
+import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({
@@ -16,7 +17,7 @@ export class AuthService {
 	private apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
 	private apiCreateAccountRoute = environment.API_CREATE_ACCOUNT_ROUTE;
 	private apiLogoutRoute = environment.API_LOGOUT_ROUTE;
-	constructor(private httpClient: HttpClient) {}
+	constructor(private httpClient: HttpClient, private router: Router) {}
 
 	login(loginInformation: {
 		email: string;
@@ -29,6 +30,27 @@ export class AuthService {
 				{ withCredentials: true }
 			)
 		);
+	}
+
+	isTokenValid(): boolean {
+		const token = this.getTokenFromCookie();
+		if (!token) {
+			return false;
+		}
+		// TODO: Add serverside endpoint for checking.
+		return true;
+	}
+
+	getTokenFromCookie(): string | null {
+		const name = 'auth-token=';
+		const decodedCookie = decodeURIComponent(document.cookie);
+		const cookiesArray = decodedCookie.split(';');
+
+		const foundCookie = cookiesArray.find(
+			(cookie) => cookie.trim().indexOf(name) === 0
+		);
+
+		return foundCookie ? foundCookie.substring(name.length) : null;
 	}
 
 	signUp({

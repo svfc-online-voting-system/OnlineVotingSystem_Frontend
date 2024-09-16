@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
+import { AuthGuard } from './guard/auth/auth.guard';
 
 export const routes: Routes = [
 	{ path: '', component: HomeComponent, title: 'Home | votevoyage' },
@@ -33,6 +34,15 @@ export const routes: Routes = [
 		loadComponent: () =>
 			import('@app/auth/otp/otp.component').then((m) => m.OtpComponent),
 		title: 'votevoyage | OTP Verification',
+	},
+	{
+		path: 'u/home/',
+		loadComponent: () =>
+			import('@app/authenticated/home/home/home.component').then(
+				(m) => m.HomeComponent
+			),
+		title: 'Home',
+		canActivate: [AuthGuard],
 	},
 ];
 
