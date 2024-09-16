@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from './dialog.component';
 
 describe('DialogComponent', () => {
@@ -8,7 +8,7 @@ describe('DialogComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [DialogComponent],
+			imports: [DialogComponent, MatDialogRef],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(DialogComponent);

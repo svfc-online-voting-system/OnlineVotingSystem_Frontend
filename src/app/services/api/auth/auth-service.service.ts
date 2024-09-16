@@ -10,11 +10,11 @@ import { lastValueFrom } from 'rxjs';
 	providedIn: 'root',
 })
 export class AuthService {
-	private apiBaseURL = 'http://127.0.0.1';
-	private apiPort = '5000';
-	private apiAuthLoginRoute = 'auth/login';
-	private apiCreateAccountRoute = 'auth/create-account';
-	private apiLogoutRoute = 'auth/logout';
+	private apiBaseURL = process.env['API_BASE_URL'];
+	private apiPort = process.env['API_PORT'];
+	private apiAuthLoginRoute = process.env['API_AUTH_LOGIN_ROUTE'];
+	private apiCreateAccountRoute = process.env['API_CREATE_ACCOUNT_ROUTE'];
+	private apiLogoutRoute = process.env['API_LOGOUT_ROUTE'];
 	constructor(private httpClient: HttpClient) {}
 
 	login(loginInformation: {
