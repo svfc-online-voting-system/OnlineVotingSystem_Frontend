@@ -18,9 +18,13 @@ import {
 	type MatCheckbox,
 } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
-import { apiLoginResponse } from '@app/types/authResponseType';
+import {
+	ApiAuthResponse,
+	type ApiAuthErrorResponse,
+} from '@app/types/authResponseType';
+import { LoginValidatorsService } from '@app/services/validators/login/login-validators.service';
+import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-login',
@@ -45,9 +49,10 @@ export class LoginComponent implements OnInit {
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
 	constructor(
-		private _snackBar: MatSnackBar,
+		private _snackBarService: SnackbarService,
 		private _formBuilder: FormBuilder,
-		private _authService: AuthService
+		private _authService: AuthService,
+		private _logInValidatorService: LoginValidatorsService
 	) {}
 
 	ngOnInit(): void {
@@ -69,14 +74,6 @@ export class LoginComponent implements OnInit {
 		this.dialog.closeAll();
 	}
 
-	showSnackbarMessage(message: string): void {
-		this._snackBar.open(message, 'Close', {
-			duration: 3000,
-			horizontalPosition: 'center',
-			verticalPosition: 'top',
-		});
-	}
-
 	togglePasswordVisibility(): void {
 		const isChecked = this.showPasswordToggler.checked;
 		const passwordInput = document.querySelector(
@@ -96,20 +93,21 @@ export class LoginComponent implements OnInit {
 	}
 
 	submitEmailForm(): void {
-		if (this.emailFormGroup.invalid)
-			this.showSnackbarMessage('Please enter a valid email address.');
+		const emailValidationResult = this._logInValidatorService.validateEmail(
+			this.emailFormGroup
+		);
+		if (emailValidationResult) {
+			this._snackBarService.showSnackBar(emailValidationResult);
+		}
 	}
 
 	submitPasswordForm(): void {
-		const passwordErrors = this.passwordFormGroup.get('password')?.errors;
-		if (passwordErrors) {
-			let errorMessage = 'Please enter a valid password.';
-			if (passwordErrors['required']) {
-				errorMessage = 'Password is required.';
-			} else if (passwordErrors['minlength']) {
-				errorMessage = `Password must be at least ${passwordErrors['minlength'].requiredLength} characters long.`;
-			}
-			this.showSnackbarMessage(errorMessage);
+		const passwordValidationResult =
+			this._logInValidatorService.validatePassword(
+				this.passwordFormGroup
+			);
+		if (passwordValidationResult) {
+			this._snackBarService.showSnackBar(passwordValidationResult);
 		}
 	}
 
@@ -122,41 +120,30 @@ export class LoginComponent implements OnInit {
 			const passwordFormgroupValue = this.passwordFormGroup.value;
 
 			try {
-				console.log('Logging in...');
 				this.openLoadingDialog();
-				const response: apiLoginResponse =
-					await this._authService.login({
+				const response: ApiAuthResponse = await this._authService.login(
+					{
 						email: emailFormGroupValue.email,
 						password: passwordFormgroupValue.password,
-					});
-				this.closeLoadingDialog();
-				if (response.code === 'success') {
-					this._snackBar.open(response.message, 'Close', {
-						duration: 3000,
-						horizontalPosition: 'center',
-						verticalPosition: 'top',
-					});
-				} else {
-					this._snackBar.open(response.message, 'Close', {
-						duration: 3000,
-						horizontalPosition: 'center',
-						verticalPosition: 'top',
-					});
-				}
-			} catch (error) {
-				this.closeLoadingDialog();
-				this._snackBar.open(
-					`An error occurred while logging in.: ${error}`,
-					'Close',
-					{
-						duration: 3000,
-						horizontalPosition: 'center',
-						verticalPosition: 'top',
 					}
 				);
+				if (response.code === 'success') {
+					this._snackBarService.showSnackBar(response.message);
+				} else {
+					this._snackBarService.showSnackBar(response.message);
+				}
+			} catch (error: unknown) {
+				let errorMessage = 'An error occurred.';
+				const errorObj = error as ApiAuthErrorResponse;
+				errorMessage = errorObj.error.message;
+				this._snackBarService.showSnackBar(errorMessage);
+			} finally {
+				this.closeLoadingDialog();
 			}
 		} else {
-			this.showSnackbarMessage('Please enter valid email and password.');
+			this._snackBarService.showSnackBar(
+				'Please enter valid email and password.'
+			);
 		}
 	}
 }

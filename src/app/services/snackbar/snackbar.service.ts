@@ -1,25 +1,32 @@
-import { Injectable, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class SnackbarService {
+	isBrowser: boolean;
 	constructor(
 		private _snackBar: MatSnackBar,
-		@Inject(DOCUMENT) private _doc: Document
-	) {}
+		@Inject(PLATFORM_ID) private platformId: object
+	) {
+		this.isBrowser = isPlatformBrowser(this.platformId);
+	}
 
 	showSnackBar(message: string): void {
-		this._snackBar.open(message, 'Close', {
-			duration: 3000,
-			horizontalPosition: 'center',
-			verticalPosition: 'top',
-		});
+		if (this.isBrowser) {
+			this._snackBar.open(message, '', {
+				duration: 3000,
+				horizontalPosition: 'right',
+				verticalPosition: 'top',
+			});
+		}
 	}
 
 	closeSnackBar(): void {
-		this._snackBar.dismiss();
+		if (this.isBrowser) {
+			this._snackBar.dismiss();
+		}
 	}
 }

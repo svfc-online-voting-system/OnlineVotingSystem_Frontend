@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 
 @Injectable({
 	providedIn: 'root',
@@ -26,8 +27,14 @@ export class SignupValidatorsService {
 	}
 
 	validateEmail(formGroup: FormGroup): string | null {
-		if (formGroup.invalid) {
-			return 'Please enter a valid email address.';
+		const emailErrors = formGroup.get('email')?.errors;
+
+		if (emailErrors) {
+			if (emailErrors['required']) {
+				return 'Email is required.';
+			} else if (emailErrors['email']) {
+				return 'Please enter a valid email address.';
+			}
 		}
 		return null;
 	}
@@ -49,25 +56,14 @@ export class SignupValidatorsService {
 		return null;
 	}
 
-	validateAge(formGroup: FormGroup): string | null {
-		const birthDateValue = formGroup.get('birthday')?.value;
-		const birthDate = new Date(birthDateValue);
-		const currentDate = new Date();
-		let age = currentDate.getFullYear() - birthDate.getFullYear();
-		const monthDifference = currentDate.getMonth() - birthDate.getMonth();
-		const dayDifference = currentDate.getDate() - birthDate.getDate();
+	validatePasswordMatch(password: string): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			const confirmPassword = control.get('confirmPassword');
+			if (confirmPassword?.value !== password) {
+				return { passwordMatch: true };
+			}
+			return null;
+		};
 
-		if (
-			monthDifference < 0 ||
-			(monthDifference === 0 && dayDifference < 0)
-		) {
-			age--;
-		}
-
-		if (age < 18) {
-			formGroup.setErrors({ underage: true });
-			return 'You must be at least 18 years old.';
-		}
-		return null;
 	}
 }
