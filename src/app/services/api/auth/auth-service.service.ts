@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '@app/environment/environment';
 import { HttpClient } from '@angular/common/http';
 import {
 	ApiAuthResponse,
@@ -10,11 +11,11 @@ import { lastValueFrom } from 'rxjs';
 	providedIn: 'root',
 })
 export class AuthService {
-	private apiBaseURL = process.env['API_BASE_URL'];
-	private apiPort = process.env['API_PORT'];
-	private apiAuthLoginRoute = process.env['API_AUTH_LOGIN_ROUTE'];
-	private apiCreateAccountRoute = process.env['API_CREATE_ACCOUNT_ROUTE'];
-	private apiLogoutRoute = process.env['API_LOGOUT_ROUTE'];
+	private apiBaseURL = environment.API_BASE_URL;
+	private apiPort = environment.API_PORT;
+	private apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
+	private apiCreateAccountRoute = environment.API_CREATE_ACCOUNT_ROUTE;
+	private apiLogoutRoute = environment.API_LOGOUT_ROUTE;
 	constructor(private httpClient: HttpClient) {}
 
 	login(loginInformation: {

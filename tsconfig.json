@@ -20,7 +20,7 @@
 		"target": "ES2022",
 		"module": "ES2022",
 		"lib": ["ES2022", "dom"],
-    "baseUrl": "./",
+		"baseUrl": "./",
 		"paths": {
 			"@app/*": ["src/app/*"],
 			"@env/*": ["src/environments/*"],
