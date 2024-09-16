@@ -1,4 +1,4 @@
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '@app/services/api/auth/auth.service';
 import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {
@@ -52,7 +52,8 @@ export class LoginComponent implements OnInit {
 		private _snackBarService: SnackbarService,
 		private _formBuilder: FormBuilder,
 		private _authService: AuthService,
-		private _logInValidatorService: LoginValidatorsService
+		private _logInValidatorService: LoginValidatorsService,
+		private _router: Router
 	) {}
 
 	ngOnInit(): void {
@@ -129,6 +130,7 @@ export class LoginComponent implements OnInit {
 				);
 				if (response.code === 'success') {
 					this._snackBarService.showSnackBar(response.message);
+					this._router.navigate(['u/home']);
 				} else {
 					this._snackBarService.showSnackBar(response.message);
 				}

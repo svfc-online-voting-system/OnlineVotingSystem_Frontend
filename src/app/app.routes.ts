@@ -1,10 +1,17 @@
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent as LandingPage } from './home/home.component';
 import { NgModule } from '@angular/core';
 import { AuthGuard } from './guard/auth/auth.guard';
+import { HomeComponent as UserHome } from '@app/authenticated/home/home/home.component';
+import { NotFoundComponent } from '@app/404/404.component';
 
 export const routes: Routes = [
-	{ path: '', component: HomeComponent, title: 'Home | votevoyage' },
+	{ path: '', component: LandingPage, title: 'Home | votevoyage' },
+	{
+		path: '**',
+		component: NotFoundComponent,
+		title: '404 | Oh no!',
+	},
 	{
 		path: 'auth/login',
 		loadComponent: () =>
@@ -36,11 +43,8 @@ export const routes: Routes = [
 		title: 'votevoyage | OTP Verification',
 	},
 	{
-		path: 'u/home/',
-		loadComponent: () =>
-			import('@app/authenticated/home/home/home.component').then(
-				(m) => m.HomeComponent
-			),
+		path: 'u/home',
+		component: UserHome,
 		title: 'Home',
 		canActivate: [AuthGuard],
 	},
