@@ -93,16 +93,11 @@ export class LoginComponent implements OnInit {
 		const passwordInput = document.querySelector(
 			'input[formControlName="password"]'
 		) as HTMLInputElement;
-		const confirmPasswordInput = document.querySelector(
-			'input[formControlName="confirmPassword"]'
-		) as HTMLInputElement;
 
 		if (isChecked) {
 			passwordInput.type = 'text';
-			confirmPasswordInput.type = 'text';
 		} else {
 			passwordInput.type = 'password';
-			confirmPasswordInput.type = 'password';
 		}
 	}
 
