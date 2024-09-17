@@ -7,11 +7,6 @@ import { NotFoundComponent } from '@app/404/404.component';
 export const routes: Routes = [
 	{ path: '', component: LandingPage, title: 'Home | votevoyage' },
 	{
-		path: '**',
-		component: NotFoundComponent,
-		title: '404 | Oh no!',
-	},
-	{
 		path: 'auth/login',
 		loadComponent: () =>
 			import('@app/auth/login/login.component').then(
@@ -49,6 +44,11 @@ export const routes: Routes = [
 			),
 		title: 'Home',
 		canActivate: [AuthGuard],
+	},
+	{
+		path: '**',
+		component: NotFoundComponent,
+		title: '404 | Oh no!',
 	},
 ];
 
