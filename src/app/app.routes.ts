@@ -8,41 +8,50 @@ export const routes: Routes = [
 	{ path: '', component: LandingPage, title: 'Home | votevoyage' },
 	{
 		path: 'auth/login',
+		title: 'Login | votevoyage',
 		loadComponent: () =>
 			import('@app/auth/login/login.component').then(
-				(m) => m.LoginComponent
+				(m) => m.LoginComponent,
 			),
-		title: 'Login | votevoyage',
 	},
 	{
 		path: 'auth/sign-up',
+		title: 'Signup | votevoyage',
 		loadComponent: () =>
 			import('@app/auth/signup/signup.component').then(
-				(m) => m.SignupComponent
+				(m) => m.SignupComponent,
 			),
-		title: 'Signup | votevoyage',
 	},
 	{
+		title: 'votevoyage | Forgot Password',
 		path: 'auth/forgot-password',
 		loadComponent: () =>
 			import('@app/auth/forgot-password/forgot-password.component').then(
-				(m) => m.ForgotPasswordComponent
+				(m) => m.ForgotPasswordComponent,
 			),
-		title: 'votevoyage | Forgot Password',
 	},
 	{
+		title: 'votevoyage | OTP Verification',
 		path: 'auth/otp-verification',
 		loadComponent: () =>
 			import('@app/auth/otp/otp.component').then((m) => m.OtpComponent),
-		title: 'votevoyage | OTP Verification',
 	},
 	{
 		path: 'u/home',
+		title: 'votevoyage Home | User',
 		loadComponent: () =>
-			import('@app/authenticated/home/home/home.component').then(
-				(m) => m.HomeComponent
+			import('@app/authenticated/user/home/home.component').then(
+				(m) => m.UserHomeComponent,
 			),
-		title: 'Home',
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/home',
+		title: 'votevage Home | Admin',
+		loadComponent: () =>
+			import('@app/authenticated/admin/home/home.component').then(
+				(m) => m.AdminHomeComponent,
+			),
 		canActivate: [AuthGuard],
 	},
 	{

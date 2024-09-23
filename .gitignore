@@ -1,4 +1,6 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Certificates
+/certificate# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
 /dist
@@ -43,3 +45,6 @@ Thumbs.db
 
 # Environment Variables
 .env
+
+# Certificates
+certificates

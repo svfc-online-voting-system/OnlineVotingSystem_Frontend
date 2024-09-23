@@ -1,17 +1,16 @@
-<main class="main w-full min-h-screen grid place-content-center">
+<main class="main w-full min-h-screen flex justify-center items-center">
 	<div
-		class="w-full max-w-7xl min-h-screen flex flex-col md:p-8 py-5 md:py-10 gap-5 items-center"
-	>
+		class="w-11/12 max-w-7xl min-h-screen flex flex-col py-5 md:py-10 gap-5 items-center">
 		<div
-			class="w-full flex flex-col md:flex-row items-center justify-center md:justify-between gap-5"
-		>
-			<a class="font-bold" routerLink="/">
+			class="w-full flex flex-col md:flex-row items-center justify-center md:justify-between gap-5">
+			<a
+				class="font-bold"
+				routerLink="/">
 				<span class="text-primary">vote</span>voyage
 			</a>
 			<nav class="w-full md:w-fit">
 				<ul
-					class="flex flex-row w-full items-center justify-center gap-3 md:gap-6"
-				>
+					class="flex flex-row w-full items-center justify-center gap-3 md:gap-6">
 					<li class="font-bold text-primary">Home</li>
 					<li>Contacts</li>
 					<li>Service</li>
@@ -21,50 +20,51 @@
 		</div>
 
 		<div
-			class="flex flex-col md:flex-row items-center justify-center p-3 gap-4 md:gap-10"
-		>
+			class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10">
 			<div class="w-56 h-56 bg-black rounded-xl"></div>
 			<div class="flex flex-col">
-				<h1 class="font-bold text-lg">Stand up and Be Counted</h1>
-				<h3>Your Voice, Your Vote: Shape the Future Today!</h3>
+				<h4 class="font-bold">Stand up and Be Counted</h4>
+				<p>Your Voice, Your Vote: Shape the Future Today!</p>
 				<div
-					class="flex flex-row mt-5 justify-center md:justify-start items-center gap-4"
-				>
+					class="flex flex-row mt-5 justify-center md:justify-start items-center gap-4">
 					<a
 						class="p-3 rounded-xl font-bold text-white bg-primary"
 						routerLink="/auth/sign-up"
 						>Get started</a
 					>
-					<a class="font-normal" routerLink="">Learn More</a>
+					<a
+						class="font-normal"
+						routerLink=""
+						>Learn More</a
+					>
 				</div>
 			</div>
 		</div>
 
-		<div class="flex flex-col items-center justify-center p-3 gap-4 w-full">
-			<h1 class="font-semibold md:text-xl md:self-start lg:text-2xl">
+		<div class="flex flex-col items-center justify-center gap-4 w-full">
+			<h5 class="font-semibold md:text-xl self-start lg:text-2xl">
 				How it works:
-			</h1>
+			</h5>
 			<div
-				class="grid grid-cols-1 md:grid-cols-2 w-full gap-3 md:gap-5 md:p-3"
-			>
+				class="grid grid-cols-1 md:grid-cols-2 w-full gap-3 md:gap-5 md:p-3">
 				<div class="bg-gray-300 rounded-lg w-full p-3">
-					<h1 class="font-semibold">Step 1:</h1>
+					<h6 class="font-semibold">Step 1:</h6>
 					<p>
 						Create an account and build you profile to get started
 					</p>
 				</div>
 				<div class="bg-gray-300 rounded-lg w-full p-3">
-					<h1 class="font-semibold">Step 2</h1>
+					<h6 class="font-semibold">Step 2</h6>
 					<p>
 						Review the ballot and candidate info in your voter guide
 					</p>
 				</div>
 				<div class="bg-gray-300 rounded-lg w-full p-3">
-					<h1 class="font-semibold">Step 3</h1>
+					<h6 class="font-semibold">Step 3</h6>
 					<p>Cast your vote securely from any device</p>
 				</div>
 				<div class="bg-gray-300 rounded-lg w-full p-3">
-					<h1 class="font-semibold">Step 4</h1>
+					<h6 class="font-semibold">Step 4</h6>
 					<p>
 						Results are verified on the blockchain for transparency
 					</p>
@@ -73,11 +73,10 @@
 		</div>
 
 		<div
-			class="flex flex-col gap-4 w-full p-3 justify-center md:items-start items-center"
-		>
-			<h1 class="font-semibold md:text-xl lg:text-2xl md:self-start">
+			class="flex flex-col gap-4 w-full justify-center md:items-start items-center">
+			<h5 class="font-semibold md:text-xl lg:text-2xl self-start">
 				Benefits:
-			</h1>
+			</h5>
 			<ol class="flex flex-col gap-4">
 				<li>
 					1. Increased voter turnout, especially among youth and busy
