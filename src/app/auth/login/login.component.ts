@@ -1,6 +1,12 @@
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '@app/services/api/auth/auth.service';
-import { Component, ViewChild, OnInit, inject } from '@angular/core';
+import {
+	Component,
+	ViewChild,
+	OnInit,
+	inject,
+	afterNextRender,
+} from '@angular/core';
 import {
 	FormBuilder,
 	Validators,
@@ -44,6 +50,7 @@ import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 })
 export class LoginComponent implements OnInit {
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
+	@ViewChild('loginButton') loginButton!: HTMLButtonElement;
 	readonly dialog = inject(MatDialog);
 
 	emailFormGroup!: FormGroup;
@@ -54,7 +61,13 @@ export class LoginComponent implements OnInit {
 		private _authService: AuthService,
 		private _logInValidatorService: LoginValidatorsService,
 		private _router: Router
-	) {}
+	) {
+		afterNextRender(() => {
+			this.togglePasswordVisibility();
+			this.disableLoginButtonOnSubmit();
+			this.enableLoginButton();
+		});
+	}
 
 	ngOnInit(): void {
 		this.emailFormGroup = this._formBuilder.group({
@@ -80,17 +93,22 @@ export class LoginComponent implements OnInit {
 		const passwordInput = document.querySelector(
 			'input[formControlName="password"]'
 		) as HTMLInputElement;
-		const confirmPasswordInput = document.querySelector(
-			'input[formControlName="confirmPassword"]'
-		) as HTMLInputElement;
 
 		if (isChecked) {
 			passwordInput.type = 'text';
-			confirmPasswordInput.type = 'text';
 		} else {
 			passwordInput.type = 'password';
-			confirmPasswordInput.type = 'password';
 		}
+	}
+
+	disableLoginButtonOnSubmit(): void {
+		this.loginButton.textContent = 'Logging in...';
+		this.loginButton.disabled = true;
+	}
+
+	enableLoginButton(): void {
+		this.loginButton.textContent = 'Log in';
+		this.loginButton.disabled = false;
 	}
 
 	submitEmailForm(): void {
@@ -119,9 +137,11 @@ export class LoginComponent implements OnInit {
 		if (this.emailFormGroup.valid && this.passwordFormGroup.valid) {
 			const emailFormGroupValue = this.emailFormGroup.value;
 			const passwordFormgroupValue = this.passwordFormGroup.value;
-
-			try {
+			const dialogTimer = setTimeout(() => {
 				this.openLoadingDialog();
+			}, 2000);
+			this.disableLoginButtonOnSubmit();
+			try {
 				const response: ApiAuthResponse = await this._authService.login(
 					{
 						email: emailFormGroupValue.email,
@@ -140,7 +160,9 @@ export class LoginComponent implements OnInit {
 				errorMessage = errorObj.error.message;
 				this._snackBarService.showSnackBar(errorMessage);
 			} finally {
+				clearTimeout(dialogTimer);
 				this.closeLoadingDialog();
+				this.enableLoginButton();
 			}
 		} else {
 			this._snackBarService.showSnackBar(

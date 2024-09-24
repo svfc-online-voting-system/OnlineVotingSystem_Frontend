@@ -1,14 +1,16 @@
 import {
 	Component,
 	OnInit,
+	Inject,
 	inject,
 	PLATFORM_ID,
-	Inject,
 	ViewChild,
+	AfterViewInit,
+	ChangeDetectorRef,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule, type MatInput } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
 	MAT_DATE_LOCALE,
@@ -26,7 +28,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule, MatCheckbox } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 import { SignupValidatorsService } from '@app/services/validators/signup/signup-validators.service';
 import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
@@ -44,6 +46,7 @@ import {
 		provideNativeDateAdapter(),
 	],
 	imports: [
+		CommonModule,
 		MatDatepickerModule,
 		MatCardModule,
 		RouterLink,
@@ -57,10 +60,12 @@ import {
 	],
 	templateUrl: './signup.component.html',
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, AfterViewInit {
+	showPassword = false;
+	submitting = false;
 	@ViewChild('stepper') stepper!: MatStepper;
-	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
-	@ViewChild('passwordField') passwordField!: MatInput;
+	@ViewChild('showPasswordToggler') showPasswordToggler!: HTMLInputElement;
+	@ViewChild('passwordField') passwordField!: HTMLInputElement;
 	nameFormGroup!: FormGroup;
 	birthdayFormGroup!: FormGroup;
 	emailPasswordFormGroup!: FormGroup;
@@ -78,9 +83,34 @@ export class SignupComponent implements OnInit {
 		private _snackBarService: SnackbarService,
 		private _authService: AuthService,
 		private _signUpValidatorService: SignupValidatorsService,
-		@Inject(PLATFORM_ID) private platformId: object
+		@Inject(PLATFORM_ID) private platformId: object,
+		private cdr: ChangeDetectorRef
 	) {
 		this.isBrowser = isPlatformBrowser(this.platformId);
+	}
+
+	ngOnInit(): void {
+		this._initSignUpFormGroups();
+		if (this.isBrowser) {
+			this._initializeBrowserSpecificModules();
+		}
+	}
+
+	ngAfterViewInit(): void {
+		this.emailPasswordFormGroup
+			.get('showPassword')
+			?.valueChanges.subscribe((value) => {
+				this.showPassword = value;
+				this.cdr.detectChanges();
+			});
+	}
+
+	private _initializeBrowserSpecificModules(): void {
+		import('@angular/material/datepicker').then(() => {
+			this._formBuilder.group({
+				birthday: [Date.now(), [Validators.required]],
+			});
+		});
 	}
 
 	changePasswordValue(event: Event): void {
@@ -98,23 +128,26 @@ export class SignupComponent implements OnInit {
 			birthday: [null, [Validators.required, Validators.min(18)]],
 		});
 
-		this.emailPasswordFormGroup = this._formBuilder.group({
-			email: ['', [Validators.required, Validators.email]],
-			password: ['', [Validators.required, Validators.minLength(6)]],
-			confirmPassword: [
-				'',
-				[
-					Validators.required,
-					// this._signUpValidatorService.validatePasswordMatch(
-					// 	this.passwordValue
-					// ),
-				],
-			],
-		});
+		this.emailPasswordFormGroup = this._formBuilder.group(
+			{
+				email: ['', [Validators.required, Validators.email]],
+				password: ['', [Validators.required, Validators.minLength(8)]],
+				confirmPassword: ['', [Validators.required]],
+				showPassword: [false],
+			},
+			{ validator: this.passwordMatchValidator }
+		);
 	}
 
 	togglePasswordVisibility(): void {
-		// TODO: To be implemented...
+		this.showPassword = !this.showPassword;
+		this.cdr.detectChanges();
+	}
+
+	passwordMatchValidator(formGroup: FormGroup) {
+		const password = formGroup.get('password')?.value;
+		const confirmPassword = formGroup.get('confirmPassword')?.value;
+		return password === confirmPassword ? null : { mismatch: true };
 	}
 
 	checkPasswordMatch(): void {
@@ -130,21 +163,6 @@ export class SignupComponent implements OnInit {
 		}
 	}
 
-	ngOnInit(): void {
-		this._initSignUpFormGroups();
-		if (this.isBrowser) {
-			this._initializeBrowserSpecificModules();
-		}
-	}
-
-	private _initializeBrowserSpecificModules(): void {
-		import('@angular/material/datepicker').then(() => {
-			this._formBuilder.group({
-				birthday: [Date.now(), [Validators.required]],
-			});
-		});
-	}
-
 	openLoadingDialog(): void {
 		if (this.isBrowser) {
 			this.dialog.open(SpinnerComponent, {
@@ -154,7 +172,9 @@ export class SignupComponent implements OnInit {
 	}
 
 	closeLoadingDialog(): void {
-		if (this.isBrowser) this.dialog.closeAll();
+		if (this.isBrowser) {
+			this.dialog.closeAll();
+		}
 	}
 
 	submitNameForm(): void {
@@ -183,6 +203,7 @@ export class SignupComponent implements OnInit {
 			}
 		}
 	}
+
 	submitEmailPasswordForm(): void {
 		if (this.isBrowser) {
 			const errorMessage = this._signUpValidatorService.validateEmail(
@@ -203,13 +224,6 @@ export class SignupComponent implements OnInit {
 		}
 	}
 
-	isInvalidAndTouched(formGroup: FormGroup, controlName: string): boolean {
-		const control = formGroup.get(controlName);
-		return (
-			!!control && control.invalid && (control.dirty || control.touched)
-		);
-	}
-
 	async onSignUpFormSubmit(): Promise<void> {
 		if (
 			this.nameFormGroup.valid &&
@@ -220,9 +234,11 @@ export class SignupComponent implements OnInit {
 			const emailPasswordFormGroupValue =
 				this.emailPasswordFormGroup.value;
 			const birthdayFormGroupValue = this.birthdayFormGroup.value;
-
-			try {
+			const dialogTimer = setTimeout(() => {
 				this.openLoadingDialog();
+			}, 2000);
+			this.submitting = true;
+			try {
 				const response: ApiAuthResponse =
 					await this._authService.signUp({
 						email: emailPasswordFormGroupValue.email,
@@ -235,11 +251,14 @@ export class SignupComponent implements OnInit {
 					});
 				this._snackBarService.showSnackBar(response.message);
 			} catch (error: unknown) {
+				console.log(error);
 				let errorMessage = 'An error occurred.';
 				const errorObj = error as ApiAuthErrorResponse;
 				errorMessage = errorObj.error.message;
 				this._snackBarService.showSnackBar(errorMessage);
 			} finally {
+				this.submitting = false;
+				clearTimeout(dialogTimer);
 				this.closeLoadingDialog();
 			}
 		} else {

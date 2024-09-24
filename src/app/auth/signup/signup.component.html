@@ -133,10 +133,9 @@
 							(ngSubmit)="submitEmailPasswordForm()"
 							[formGroup]="emailPasswordFormGroup"
 						>
-							<ng-template matStepLabel
-								>Fill out with your email address and
-								password</ng-template
-							>
+							<ng-template matStepLabel>
+								Fill out with your email address and password
+							</ng-template>
 							<mat-form-field class="w-full mt-2">
 								<mat-label>Email</mat-label>
 								<input
@@ -153,7 +152,7 @@
 								<input
 									required
 									autocomplete="new-password"
-									type="password"
+									[type]="showPassword ? 'text' : 'password'"
 									formControlName="password"
 									matInput
 									#passwordField
@@ -175,7 +174,9 @@
 									placeholder="********"
 								/>
 							</mat-form-field>
-							<mat-checkbox> Show Password </mat-checkbox>
+							<mat-checkbox formControlName="showPassword">
+								Show Password
+							</mat-checkbox>
 							<div
 								class="flex flex-row gap-3 justify-start items-center"
 							>
@@ -190,6 +191,10 @@
 									type="submit"
 									mat-flat-button
 									matStepperNext
+									[disabled]="
+										submitting ||
+										emailPasswordFormGroup.invalid
+									"
 								>
 									Next
 								</button>
@@ -205,6 +210,12 @@
 							<button
 								mat-flat-button
 								type="submit"
+								[disabled]="
+									submitting ||
+									!nameFormGroup.valid ||
+									!emailPasswordFormGroup.valid ||
+									!birthdayFormGroup.valid
+								"
 								(click)="onSignUpFormSubmit()"
 							>
 								Sign Up

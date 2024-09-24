@@ -17,6 +17,8 @@ export class AuthService {
 	private apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
 	private apiCreateAccountRoute = environment.API_CREATE_ACCOUNT_ROUTE;
 	private apiLogoutRoute = environment.API_LOGOUT_ROUTE;
+	private apiVerifyJWT = environment.API_VERIFY_JWT;
+
 	constructor(private httpClient: HttpClient, private router: Router) {}
 
 	login(loginInformation: {
@@ -27,30 +29,20 @@ export class AuthService {
 			this.httpClient.post<ApiAuthResponse>(
 				`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
 				loginInformation,
-				{ withCredentials: true }
-			)
+				{ withCredentials: true },
+			),
 		);
 	}
 
-	isTokenValid(): boolean {
-		const token = this.getTokenFromCookie();
-		if (!token) {
-			return false;
-		}
-		// TODO: Add serverside endpoint for checking.
-		return true;
-	}
-
-	getTokenFromCookie(): string | null {
-		const name = 'auth-token=';
-		const decodedCookie = decodeURIComponent(document.cookie);
-		const cookiesArray = decodedCookie.split(';');
-
-		const foundCookie = cookiesArray.find(
-			(cookie) => cookie.trim().indexOf(name) === 0
+	isTokenValid(): Promise<ApiAuthResponse> {
+		return lastValueFrom(
+			this.httpClient.get<ApiAuthResponse>(
+				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyJWT}`,
+				{
+					withCredentials: true,
+				},
+			),
 		);
-
-		return foundCookie ? foundCookie.substring(name.length) : null;
 	}
 
 	signUp({
@@ -84,8 +76,8 @@ export class AuthService {
 					last_name,
 					date_of_birth: formattedDate,
 					password,
-				}
-			)
+				},
+			),
 		);
 	}
 
@@ -93,8 +85,8 @@ export class AuthService {
 		return lastValueFrom(
 			this.httpClient.get<ApiAuthResponse>(
 				`${this.apiBaseURL}:${this.apiPort}/${this.apiLogoutRoute}`,
-				{ withCredentials: true }
-			)
+				{ withCredentials: true },
+			),
 		);
 	}
 }

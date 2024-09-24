@@ -19,7 +19,8 @@ export const appConfig: ApplicationConfig = {
 		provideHttpClient(
 			withFetch(),
 			withJsonpSupport(),
-			withInterceptorsFromDi()
+			withInterceptorsFromDi(),
 		),
+		// { provide: HTTP_INTERCEPTORS, useClass: AuthenticatedInterceptor, multi: true }
 	],
 };
