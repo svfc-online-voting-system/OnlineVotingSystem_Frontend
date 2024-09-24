@@ -12,11 +12,26 @@ import { AuthService } from '@app/services/api/auth/auth.service';
 @Injectable()
 export class AuthenticatedInterceptor implements HttpInterceptor {
 	constructor(private router: Router, private authService: AuthService) {}
-	// TODO: Implement the intercept method
+
 	intercept(
 		req: HttpRequest<unknown>,
 		next: HttpHandler,
 	): Observable<HttpEvent<unknown>> {
-		throw new Error('Method not implemented.');
+		const adminPath = '/a/';
+		const userPath = '/u/';
+
+		const originUrl = req.url;
+		console.log('Request Origin URL:', originUrl);
+
+		if (originUrl.startsWith(adminPath) || originUrl.startsWith(userPath)) {
+			if (!this.authService.isTokenValid()) {
+				this.router.navigate(['/auth/login']);
+				return new Observable<HttpEvent<unknown>>();
+			}
+
+			// TODO: Implement RBAC here
+		}
+
+		return next.handle(req);
 	}
 }

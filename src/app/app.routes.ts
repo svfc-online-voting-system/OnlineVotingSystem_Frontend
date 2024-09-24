@@ -46,7 +46,7 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
-		path: 'u/home',
+		path: 'a/home',
 		title: 'votevage Home | Admin',
 		loadComponent: () =>
 			import('@app/authenticated/admin/home/home.component').then(
