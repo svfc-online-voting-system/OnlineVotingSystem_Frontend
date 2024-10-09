@@ -18,6 +18,7 @@ export class AuthService {
 	private apiCreateAccountRoute = environment.API_CREATE_ACCOUNT_ROUTE;
 	private apiLogoutRoute = environment.API_LOGOUT_ROUTE;
 	private apiVerifyJWT = environment.API_VERIFY_JWT;
+	private apiVerifyEmail = environment.API_VERIFY_EMAIL;
 
 	constructor(private httpClient: HttpClient, private router: Router) {}
 
@@ -77,6 +78,19 @@ export class AuthService {
 					date_of_birth: formattedDate,
 					password,
 				},
+			),
+		);
+	}
+
+	verifyEmail(token: string): Promise<ApiAuthResponse> {
+		if (token.length !== 171 || !token) {
+			return Promise.reject('Invalid token.');
+		}
+
+		return lastValueFrom(
+			this.httpClient.get<ApiAuthResponse>(
+				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyEmail}/${token}`,
+				{ withCredentials: true },
 			),
 		);
 	}
