@@ -3,6 +3,7 @@ import { HomeComponent as LandingPage } from './home/home.component';
 import { NgModule } from '@angular/core';
 import { AuthGuard } from './guard/auth/auth.guard';
 import { NotFoundComponent } from '@app/404/404.component';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 
 export const routes: Routes = [
 	{ path: '', component: LandingPage, title: 'Home | votevoyage' },
@@ -37,6 +38,11 @@ export const routes: Routes = [
 			import('@app/auth/otp/otp.component').then((m) => m.OtpComponent),
 	},
 	{
+		title: 'votevoyage | Verify your email',
+		path: 'auth/verify-email/:token',
+		component: VerifyEmailComponent,
+	},
+	{
 		path: 'u/home',
 		title: 'votevoyage Home | User',
 		loadComponent: () =>
@@ -52,7 +58,7 @@ export const routes: Routes = [
 			import('@app/authenticated/admin/home/home.component').then(
 				(m) => m.AdminHomeComponent,
 			),
-		canActivate: [AuthGuard],
+		// canActivate: [AuthGuard],
 	},
 	{
 		path: '**',
