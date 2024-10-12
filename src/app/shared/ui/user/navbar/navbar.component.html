@@ -140,6 +140,7 @@
 			</div>
 		</a>
 		<button
+			(click)="logoutCurrentSession()"
 			mat-menu-item
 			class="flex flex-row gap-3">
 			<div class="flex flex-row gap-2 items-center">
@@ -256,6 +257,7 @@
 			</svg>
 		</a>
 		<button
+			(click)="logoutCurrentSession()"
 			mat-button
 			matTooltip="Logout">
 			<svg

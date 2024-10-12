@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent as LandingPage } from './home/home.component';
 import { NgModule } from '@angular/core';
-import { AuthGuard } from './guard/auth/auth.guard';
+// import { AuthGuard } from './guard/auth/auth.guard'; // TODO: Uncomment this line to enable auth guard after testing
 import { NotFoundComponent } from '@app/404/404.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 

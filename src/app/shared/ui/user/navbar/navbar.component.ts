@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-user-navbar',
@@ -11,4 +12,9 @@ import { RouterLink } from '@angular/router';
 
 	templateUrl: './navbar.component.html',
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+	constructor(private snackBarService: SnackbarService) {}
+	logoutCurrentSession() {
+		this.snackBarService.showSnackBar('Logging out...');
+	}
+}
