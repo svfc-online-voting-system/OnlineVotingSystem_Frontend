@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent as LandingPage } from './home/home.component';
 import { NgModule } from '@angular/core';
-// import { AuthGuard } from './guard/auth/auth.guard'; // TODO: Uncomment this line to enable auth guard after testing
+import { AuthGuard } from './guard/auth/auth.guard';
 import { NotFoundComponent } from '@app/404/404.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 
@@ -49,7 +49,7 @@ export const routes: Routes = [
 			import('@app/authenticated/admin/home/home.component').then(
 				(m) => m.AdminHomeComponent,
 			),
-		// canActivate: [AuthGuard], // TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'u/home',
@@ -58,7 +58,7 @@ export const routes: Routes = [
 			import('@app/authenticated/user/home/home.component').then(
 				(m) => m.UserHomeComponent,
 			),
-		// canActivate: [AuthGuard], TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'u/contact-us',
@@ -67,7 +67,7 @@ export const routes: Routes = [
 			import(
 				'@app/authenticated/user/contact-us/contact-us.component'
 			).then((m) => m.ContactUsComponent),
-		// canActivate: [AuthGuard], // TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'u/voting-instructions',
@@ -76,7 +76,7 @@ export const routes: Routes = [
 			import(
 				'@app/authenticated/user/voting-instructions/voting-instructions.component'
 			).then((m) => m.VotingInstructionsComponent),
-		// canActivate: [AuthGuard], // TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'u/voting-status',
@@ -85,7 +85,7 @@ export const routes: Routes = [
 			import(
 				'@app/authenticated/user/voting-status/voting-status.component'
 			).then((m) => m.VotingStatusComponent),
-		// canActivate: [AuthGuard], // TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'u/view-ballot',
@@ -94,7 +94,7 @@ export const routes: Routes = [
 			import(
 				'@app/authenticated/user/view-ballot/view-ballot.component'
 			).then((m) => m.ViewBallotComponent),
-		// canActivate: [AuthGuard], // TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'u/vote',
@@ -103,7 +103,7 @@ export const routes: Routes = [
 			import('@app/authenticated/user/vote/vote.component').then(
 				(m) => m.VoteComponent,
 			),
-		// canActivate: [AuthGuard], // TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'u/settings',
@@ -112,7 +112,7 @@ export const routes: Routes = [
 			import('@app/authenticated/user/settings/settings.component').then(
 				(m) => m.SettingsComponent,
 			),
-		// canActivate: [AuthGuard], // TODO: Uncomment this line to enable auth guard after testing
+		canActivate: [AuthGuard],
 	},
 	{
 		path: '**',
