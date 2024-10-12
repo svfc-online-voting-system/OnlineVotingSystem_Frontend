@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
 
 @Component({
-	selector: 'app-user-home',
+	selector: 'app-vote',
 	standalone: true,
 	imports: [NavbarComponent],
-	templateUrl: './home.component.html',
-	styleUrl: './home.component.css',
+	templateUrl: './vote.component.html',
+	styleUrl: './vote.component.css',
 })
-export class UserHomeComponent {}
+export class VoteComponent {}

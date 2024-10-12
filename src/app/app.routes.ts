@@ -43,6 +43,15 @@ export const routes: Routes = [
 		component: VerifyEmailComponent,
 	},
 	{
+		path: 'a/home',
+		title: 'votevoyage Home | Admin',
+		loadComponent: () =>
+			import('@app/authenticated/admin/home/home.component').then(
+				(m) => m.AdminHomeComponent,
+			),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: 'u/home',
 		title: 'votevoyage Home | User',
 		loadComponent: () =>
@@ -52,13 +61,58 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
-		path: 'a/home',
-		title: 'votevage Home | Admin',
+		path: 'u/contact-us',
+		title: 'votevoyage Contact Us | User',
 		loadComponent: () =>
-			import('@app/authenticated/admin/home/home.component').then(
-				(m) => m.AdminHomeComponent,
+			import(
+				'@app/authenticated/user/contact-us/contact-us.component'
+			).then((m) => m.ContactUsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/voting-instructions',
+		title: 'votevoyage Voting Instructions | User',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/user/voting-instructions/voting-instructions.component'
+			).then((m) => m.VotingInstructionsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/voting-status',
+		title: 'votevoyage Voting Status | User',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/user/voting-status/voting-status.component'
+			).then((m) => m.VotingStatusComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/view-ballot',
+		title: 'votevoyage View Ballot | User',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/user/view-ballot/view-ballot.component'
+			).then((m) => m.ViewBallotComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/vote',
+		title: 'votevoyage Vote | User',
+		loadComponent: () =>
+			import('@app/authenticated/user/vote/vote.component').then(
+				(m) => m.VoteComponent,
 			),
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/settings',
+		title: 'votevoyage Settings | User',
+		loadComponent: () =>
+			import('@app/authenticated/user/settings/settings.component').then(
+				(m) => m.SettingsComponent,
+			),
+		canActivate: [AuthGuard],
 	},
 	{
 		path: '**',

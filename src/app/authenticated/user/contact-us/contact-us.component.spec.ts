@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { UserHomeComponent } from '@app/authenticated/user/home/home.component';
+import { ContactUsComponent } from './contact-us.component';
 
-describe('UserHomeComponent', () => {
-	let component: UserHomeComponent;
-	let fixture: ComponentFixture<UserHomeComponent>;
+describe('ContactUsComponent', () => {
+	let component: ContactUsComponent;
+	let fixture: ComponentFixture<ContactUsComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [UserHomeComponent],
+			imports: [ContactUsComponent],
 			providers: [
 				{
 					provide: ActivatedRoute,
@@ -21,7 +21,7 @@ describe('UserHomeComponent', () => {
 			],
 		}).compileComponents();
 
-		fixture = TestBed.createComponent(UserHomeComponent);
+		fixture = TestBed.createComponent(ContactUsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

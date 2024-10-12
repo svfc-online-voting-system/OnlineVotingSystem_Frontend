@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { UserHomeComponent } from '@app/authenticated/user/home/home.component';
+import { ActivatedRoute } from '@angular/router';
+import { ViewBallotComponent } from './view-ballot.component';
 
-describe('UserHomeComponent', () => {
-	let component: UserHomeComponent;
-	let fixture: ComponentFixture<UserHomeComponent>;
+describe('ViewBallotComponent', () => {
+	let component: ViewBallotComponent;
+	let fixture: ComponentFixture<ViewBallotComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [UserHomeComponent],
+			imports: [ViewBallotComponent],
 			providers: [
 				{
 					provide: ActivatedRoute,
@@ -21,7 +21,7 @@ describe('UserHomeComponent', () => {
 			],
 		}).compileComponents();
 
-		fixture = TestBed.createComponent(UserHomeComponent);
+		fixture = TestBed.createComponent(ViewBallotComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

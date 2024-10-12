@@ -7,7 +7,6 @@ import bootstrap from './src/main.server';
 import https from 'https';
 import fs from 'fs';
 
-// The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
 	const server = express();
 	const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -19,7 +18,6 @@ export function app(): express.Express {
 	server.set('view engine', 'html');
 	server.set('views', browserDistFolder);
 
-	// Serve static files from /browser
 	server.get(
 		'**',
 		express.static(browserDistFolder, {
@@ -28,7 +26,6 @@ export function app(): express.Express {
 		}),
 	);
 
-	// All regular routes use the Angular engine
 	server.get('**', (req, res, next) => {
 		const { protocol, originalUrl, baseUrl, headers } = req;
 
