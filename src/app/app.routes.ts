@@ -53,12 +53,12 @@ export const routes: Routes = [
 	},
 	{
 		path: 'a/home',
-		title: 'votevage Home | Admin',
+		title: 'votevoyage Home | Admin',
 		loadComponent: () =>
 			import('@app/authenticated/admin/home/home.component').then(
 				(m) => m.AdminHomeComponent,
 			),
-		// canActivate: [AuthGuard],
+		// canActivate: [AuthGuard], // Uncomment this line to enable auth guard after testing
 	},
 	{
 		path: '**',
