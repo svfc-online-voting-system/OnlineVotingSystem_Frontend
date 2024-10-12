@@ -6,13 +6,14 @@ import { RouterLink } from '@angular/router';
 import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 
 @Component({
-	selector: 'app-user-navbar',
+	selector: 'app-admin-navbar',
 	standalone: true,
 	imports: [MatButtonModule, MatMenuModule, MatTooltipModule, RouterLink],
 	templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
 	constructor(private snackBarService: SnackbarService) {}
+
 	logoutCurrentSession() {
 		this.snackBarService.showSnackBar('Logging out...');
 	}

@@ -52,6 +52,60 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
+		path: 'a/manage-users',
+		title: 'votevoyage Manage Users | Admin',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/admin/manage-users/manage-users.component'
+			).then((m) => m.ManageUsersComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'a/manage-admins',
+		title: 'votevoyage Manage Adnins | Admin',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/admin/manage-admins/manage-admins.component'
+			).then((m) => m.ManageAdminsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'a/manage-elections',
+		title: 'votevoyage Manage Elections | Admin',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/admin/manage-elections/manage-elections.component'
+			).then((m) => m.ManageElectionsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'a/monitor-elections',
+		title: 'votevoyage Monitor Elections | Admin',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/admin/monitor-elections/monitor-elections.component'
+			).then((m) => m.MonitorElectionsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'a/generate-reports',
+		title: 'votevoyage Generate Reports | Admin',
+		loadComponent: () =>
+			import(
+				'@app/authenticated/admin/generate-reports/generate-reports.component'
+			).then((m) => m.GenerateReportsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'a/settings',
+		title: 'votevoyage Settings | Admin',
+		loadComponent: () =>
+			import('@app/authenticated/admin/settings/settings.component').then(
+				(m) => m.SettingsComponent,
+			),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: 'u/home',
 		title: 'votevoyage Home | User',
 		loadComponent: () =>

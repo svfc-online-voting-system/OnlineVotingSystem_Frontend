@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '@app/shared/ui/admin/navbar/navbar.component';
 
 @Component({
-	selector: 'app-admin-home',
+	selector: 'app-manage-users',
 	standalone: true,
 	imports: [NavbarComponent],
-	templateUrl: './home.component.html',
-	styleUrl: './home.component.css',
+	templateUrl: './manage-users.component.html',
+	styleUrl: './manage-users.component.css',
 })
-export class AdminHomeComponent {}
+export class ManageUsersComponent {}
