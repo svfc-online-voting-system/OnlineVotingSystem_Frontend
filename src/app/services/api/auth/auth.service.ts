@@ -151,12 +151,10 @@ export class AuthService {
 		);
 	}
 
-	logoutSession(): Promise<ApiAuthResponse> {
-		return lastValueFrom(
-			this.httpClient.get<ApiAuthResponse>(
-				`${this.apiBaseURL}:${this.apiPort}/${this.apiLogoutRoute}`,
-				{ withCredentials: true },
-			),
+	logoutSession(): Observable<ApiAuthResponse> {
+		return this.httpClient.post<ApiAuthResponse>(
+			`${this.apiBaseURL}:${this.apiPort}/${this.apiLogoutRoute}`,
+			{ withCredentials: true },
 		);
 	}
 }

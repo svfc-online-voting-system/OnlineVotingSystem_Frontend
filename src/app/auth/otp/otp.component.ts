@@ -13,7 +13,7 @@ import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 import { Subject } from 'rxjs';
 import { AuthService } from '@app/services/api/auth/auth.service';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, timeout } from 'rxjs/operators';
 import {
 	ApiAuthErrorResponse,
 	ApiAuthResponse,
@@ -34,7 +34,6 @@ import {
 export class OtpComponent implements OnInit, OnDestroy {
 	private unsubscribe$ = new Subject<void>();
 	otpFormGroup!: FormGroup;
-	private currentUserEmail: string | null = null;
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -62,7 +61,6 @@ export class OtpComponent implements OnInit, OnDestroy {
 			.subscribe({
 				next: (user) => {
 					if (user) {
-						this.currentUserEmail = user.email;
 						this.snackBar.showSnackBar('OTP sent to your email');
 					} else {
 						this.router.navigate(['/auth/login']);
@@ -90,21 +88,26 @@ export class OtpComponent implements OnInit, OnDestroy {
 				console.log('first clause');
 				this.snackBar.showSnackBar('OTP must be 7 digits');
 			} else {
-				this._authService.verifyOTP(otp).subscribe({
-					next: (response: ApiAuthResponse) => {
-						if (response.code === 'success') {
-							this.snackBar.showSnackBar('OTP verified');
-							this.router.navigate(['/u/home']);
-						} else {
-							this.snackBar.showSnackBar('Invalid OTP');
-						}
-					},
-					error: (error: ApiAuthErrorResponse) => {
-						// TODO: remove console.error after testing
-						console.error('Error verifying OTP:', error);
-						this.snackBar.showSnackBar(`${error.error.message}`);
-					},
-				});
+				this._authService
+					.verifyOTP(otp)
+					.pipe(timeout(15000))
+					.subscribe({
+						next: (response: ApiAuthResponse) => {
+							if (response.code === 'success') {
+								this.snackBar.showSnackBar('OTP verified');
+								this.router.navigate(['/u/home']);
+							} else {
+								this.snackBar.showSnackBar('Invalid OTP');
+							}
+						},
+						error: (error: ApiAuthErrorResponse) => {
+							// TODO: remove console.error after testing
+							console.error('Error verifying OTP:', error);
+							this.snackBar.showSnackBar(
+								`${error.error.message}`,
+							);
+						},
+					});
 			}
 		} else if (this.otpFormGroup.invalid) {
 			this.snackBar.showSnackBar('Invalid OTP');
