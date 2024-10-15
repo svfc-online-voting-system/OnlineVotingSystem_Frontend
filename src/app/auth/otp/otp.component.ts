@@ -1,10 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {
+	FormGroup,
+	Validators,
+	FormBuilder,
+	ReactiveFormsModule,
+} from '@angular/forms';
 import { SnackbarService } from '@app/services/snackbar/snackbar.service';
+import { Subject } from 'rxjs';
+import { AuthService } from '@app/services/api/auth/auth.service';
+import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import {
+	ApiAuthErrorResponse,
+	ApiAuthResponse,
+} from '@app/types/authResponseType';
 
 @Component({
 	selector: 'app-otp',
@@ -12,17 +25,22 @@ import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 	imports: [
 		MatCardModule,
 		MatButtonModule,
+		ReactiveFormsModule,
 		MatInputModule,
 		MatFormFieldModule,
 	],
 	templateUrl: './otp.component.html',
 })
-export class OtpComponent implements OnInit {
+export class OtpComponent implements OnInit, OnDestroy {
+	private unsubscribe$ = new Subject<void>();
 	otpFormGroup!: FormGroup;
+	private currentUserEmail: string | null = null;
 
 	constructor(
 		private _formBuilder: FormBuilder,
-		private snackBar: SnackbarService
+		private snackBar: SnackbarService,
+		private _authService: AuthService,
+		private router: Router,
 	) {}
 
 	ngOnInit(): void {
@@ -31,18 +49,64 @@ export class OtpComponent implements OnInit {
 				'',
 				[
 					Validators.required,
-					Validators.pattern('^[0-9]{6}$'),
-					Validators.minLength(6),
-					Validators.maxLength(6),
+					Validators.pattern('^[0-9]{7}$'),
+					Validators.minLength(7),
+					Validators.maxLength(7),
 				],
 			],
 		});
+
+		this._authService
+			.getCurrentUser()
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe({
+				next: (user) => {
+					if (user) {
+						this.currentUserEmail = user.email;
+						this.snackBar.showSnackBar('OTP sent to your email');
+					} else {
+						this.router.navigate(['/auth/login']);
+						this.snackBar.showSnackBar('Please login first');
+					}
+				},
+				error: () => {
+					this.router.navigate(['/auth/login']);
+					this.snackBar.showSnackBar('Please login first');
+				},
+			});
 	}
 
-	submitOtpForm(): void {
+	ngOnDestroy(): void {
+		this.unsubscribe$.next();
+		this.unsubscribe$.complete();
+		this._authService.clearCurrentUser();
+	}
+
+	async submitOtpForm(): Promise<void> {
 		if (this.otpFormGroup.valid) {
-			this.snackBar.showSnackBar('OTP verified');
-		} else {
+			const otp = String(this.otpFormGroup.value.otp);
+			console.log('otp:', otp);
+			if (otp.length != 7) {
+				console.log('first clause');
+				this.snackBar.showSnackBar('OTP must be 7 digits');
+			} else {
+				this._authService.verifyOTP(otp).subscribe({
+					next: (response: ApiAuthResponse) => {
+						if (response.code === 'success') {
+							this.snackBar.showSnackBar('OTP verified');
+							this.router.navigate(['/u/home']);
+						} else {
+							this.snackBar.showSnackBar('Invalid OTP');
+						}
+					},
+					error: (error: ApiAuthErrorResponse) => {
+						// TODO: remove console.error after testing
+						console.error('Error verifying OTP:', error);
+						this.snackBar.showSnackBar(`${error.error.message}`);
+					},
+				});
+			}
+		} else if (this.otpFormGroup.invalid) {
 			this.snackBar.showSnackBar('Invalid OTP');
 		}
 	}

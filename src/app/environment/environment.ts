@@ -6,4 +6,5 @@ export const environment = {
 	API_LOGOUT_ROUTE: 'auth/logout',
 	API_VERIFY_JWT: 'auth/verify-jwt-identity',
 	API_VERIFY_EMAIL: 'auth/verify-email',
+	API_VERIFY_OTP: 'auth/otp-verification',
 };

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@app/environment/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
 	ApiAuthResponse,
 	SignUpInformation,
+	ApiAuthErrorResponse,
 } from '@app/types/authResponseType';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, Observable, of } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -19,31 +21,85 @@ export class AuthService {
 	private apiLogoutRoute = environment.API_LOGOUT_ROUTE;
 	private apiVerifyJWT = environment.API_VERIFY_JWT;
 	private apiVerifyEmail = environment.API_VERIFY_EMAIL;
+	private apiVerifyOTP = environment.API_VERIFY_OTP;
+	private currentUserSubject = new BehaviorSubject<{ email: string } | null>(
+		null,
+	);
+	private currentUser = this.currentUserSubject.asObservable();
 
 	constructor(private httpClient: HttpClient, private router: Router) {}
 
 	login(loginInformation: {
 		email: string;
 		password: string;
-	}): Promise<ApiAuthResponse> {
-		return lastValueFrom(
-			this.httpClient.post<ApiAuthResponse>(
+	}): Observable<ApiAuthResponse> {
+		return this.httpClient
+			.post<ApiAuthResponse>(
 				`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
 				loginInformation,
 				{ withCredentials: true },
-			),
-		);
+			)
+			.pipe(
+				tap((response) => {
+					if (response.code === 'otp_sent') {
+						this.currentUserSubject.next({
+							email: loginInformation.email,
+						});
+						console.log(loginInformation.email);
+						console.log(this.currentUserSubject.value?.email);
+					}
+				}),
+			);
 	}
 
-	isTokenValid(): Promise<ApiAuthResponse> {
-		return lastValueFrom(
-			this.httpClient.get<ApiAuthResponse>(
+	isTokenValid(): Observable<ApiAuthResponse | ApiAuthErrorResponse> {
+		return this.httpClient
+			.get<ApiAuthResponse>(
 				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyJWT}`,
 				{
 					withCredentials: true,
 				},
-			),
-		);
+			)
+			.pipe(
+				catchError((error: HttpErrorResponse) => {
+					if (error.status === 401) {
+						return of({
+							error: error.error,
+						} as ApiAuthErrorResponse);
+					}
+					throw error;
+				}),
+			);
+	}
+
+	verifyOTP(otp: string): Observable<ApiAuthResponse> {
+		console.log(this.currentUserSubject.value?.email);
+		const data = {
+			email: this.currentUserSubject.value?.email,
+			otp_code: otp,
+		};
+		console.log(`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyOTP}`);
+		return this.httpClient
+			.patch<ApiAuthResponse>(
+				`https://localhost:5000/auth/otp-verification`,
+				data,
+				{ withCredentials: true },
+			)
+			.pipe(
+				tap((response) => {
+					if (response.code === 'success') {
+						this.currentUserSubject.next(null);
+					}
+				}),
+			);
+	}
+
+	getCurrentUser(): Observable<{ email: string } | null> {
+		return this.currentUserSubject.asObservable();
+	}
+
+	clearCurrentUser(): void {
+		this.currentUserSubject.next(null);
 	}
 
 	signUp({

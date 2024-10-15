@@ -5,7 +5,6 @@
 export interface ApiAuthResponse {
 	code?: string;
 	message: string;
-	role?: 'admin' | 'user';
 }
 
 export interface ApiAuthErrorResponse {

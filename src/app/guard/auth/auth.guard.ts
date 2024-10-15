@@ -1,7 +1,17 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import {
+	CanActivate,
+	Router,
+	ActivatedRouteSnapshot,
+	RouterStateSnapshot,
+} from '@angular/router';
 import { AuthService } from '@app/services/api/auth/auth.service';
-import type { ApiAuthResponse } from '@app/types/authResponseType';
+import { Observable, of } from 'rxjs';
+import { map, tap, catchError } from 'rxjs/operators';
+import {
+	ApiAuthResponse,
+	type ApiAuthErrorResponse,
+} from '@app/types/authResponseType';
 
 @Injectable({
 	providedIn: 'root',
@@ -9,13 +19,58 @@ import type { ApiAuthResponse } from '@app/types/authResponseType';
 export class AuthGuard implements CanActivate {
 	constructor(private authService: AuthService, private router: Router) {}
 
-	async canActivate(): Promise<boolean> {
-		const res: ApiAuthResponse = await this.authService.isTokenValid();
-		if (res.code === 'success' && res) {
-			// TODO: Implement the RBAC logic here
-			return true;
-		}
-		this.router.navigate(['/auth/login']);
-		return false;
+	canActivate(
+		route: ActivatedRouteSnapshot,
+		state: RouterStateSnapshot,
+	): Observable<boolean> {
+		const currentUrl = state.url;
+		// if (currentUrl.startsWith('/u')) {
+		// 	return this.authService.isTokenValid().pipe(
+		// 		map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
+		// 			if ('error' in res) {
+		// 				console.log(
+		// 					`Authentication failed: ${res.error.message}`,
+		// 				);
+		// 				return false;
+		// 			}
+		// 			return res.code === 'success';
+		// 		}),
+		// 		tap((isValid: boolean) => {
+		// 			if (!isValid) {
+		// 				this.router.navigate(['/auth/login']);
+		// 			}
+		// 		}),
+		// 		catchError((error) => {
+		// 			console.error('An unexpected error occurred:', error);
+		// 			this.router.navigate(['/auth/login']);
+		// 			return of(false);
+		// 		}),
+		// 	);
+		// } else if (currentUrl.startsWith('/a')) {
+		// 	return this.authService.isTokenValid().pipe(
+		// 		map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
+		// 			if ('error' in res) {
+		// 				console.log(
+		// 					`Authentication failed: ${res.error.message}`,
+		// 				);
+		// 				return false;
+		// 			}
+		// 			return res.code === 'success';
+		// 		}),
+		// 		tap((isValid: boolean) => {
+		// 			if (!isValid) {
+		// 				this.router.navigate(['/auth/login']);
+		// 			}
+		// 		}),
+		// 		catchError((error) => {
+		// 			console.error('An unexpected error occurred:', error);
+		// 			this.router.navigate(['/auth/login']);
+		// 			return of(false);
+		// 		}),
+		// 	);
+		// } else {
+		// 	return of(true);
+		// }
+		return of(true);
 	}
 }

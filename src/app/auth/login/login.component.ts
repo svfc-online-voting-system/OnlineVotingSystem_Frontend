@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
 		private _formBuilder: FormBuilder,
 		private _authService: AuthService,
 		private _logInValidatorService: LoginValidatorsService,
-		private _router: Router
+		private _router: Router,
 	) {
 		afterNextRender(() => {
 			this.togglePasswordVisibility();
@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit {
 	togglePasswordVisibility(): void {
 		const isChecked = this.showPasswordToggler.checked;
 		const passwordInput = document.querySelector(
-			'input[formControlName="password"]'
+			'input[formControlName="password"]',
 		) as HTMLInputElement;
 
 		if (isChecked) {
@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
 
 	submitEmailForm(): void {
 		const emailValidationResult = this._logInValidatorService.validateEmail(
-			this.emailFormGroup
+			this.emailFormGroup,
 		);
 		if (emailValidationResult) {
 			this._snackBarService.showSnackBar(emailValidationResult);
@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
 	submitPasswordForm(): void {
 		const passwordValidationResult =
 			this._logInValidatorService.validatePassword(
-				this.passwordFormGroup
+				this.passwordFormGroup,
 			);
 		if (passwordValidationResult) {
 			this._snackBarService.showSnackBar(passwordValidationResult);
@@ -135,38 +135,42 @@ export class LoginComponent implements OnInit {
 		this.submitPasswordForm();
 
 		if (this.emailFormGroup.valid && this.passwordFormGroup.valid) {
-			const emailFormGroupValue = this.emailFormGroup.value;
-			const passwordFormgroupValue = this.passwordFormGroup.value;
+			const loginInformation = {
+				email: this.emailFormGroup.value.email,
+				password: this.passwordFormGroup.value.password,
+			};
 			const dialogTimer = setTimeout(() => {
 				this.openLoadingDialog();
 			}, 2000);
 			this.disableLoginButtonOnSubmit();
-			try {
-				const response: ApiAuthResponse = await this._authService.login(
-					{
-						email: emailFormGroupValue.email,
-						password: passwordFormgroupValue.password,
+
+			this._authService.login(loginInformation).subscribe({
+				next: (response: ApiAuthResponse) => {
+					if (response.code === 'otp_sent') {
+						this._snackBarService.showSnackBar(response.message);
+						this._router.navigate(['/auth/otp-verification']);
+					} else {
+						this._snackBarService.showSnackBar(response.message);
 					}
-				);
-				if (response.code === 'success') {
-					this._snackBarService.showSnackBar(response.message);
-					this._router.navigate(['u/home']);
-				} else {
-					this._snackBarService.showSnackBar(response.message);
-				}
-			} catch (error: unknown) {
-				let errorMessage = 'An error occurred.';
-				const errorObj = error as ApiAuthErrorResponse;
-				errorMessage = errorObj.error.message;
-				this._snackBarService.showSnackBar(errorMessage);
-			} finally {
-				clearTimeout(dialogTimer);
-				this.closeLoadingDialog();
-				this.enableLoginButton();
-			}
+				},
+				error: (error: ApiAuthErrorResponse) => {
+					// TODO: Remove the console.error() statement
+					console.error('An error occurred:', error);
+					this._snackBarService.showSnackBar(
+						`${error.error.message}`,
+					);
+					this.loginButton.disabled = false;
+					this.closeLoadingDialog();
+				},
+				complete: () => {
+					clearTimeout(dialogTimer);
+					this.closeLoadingDialog();
+					this.enableLoginButton();
+				},
+			});
 		} else {
 			this._snackBarService.showSnackBar(
-				'Please enter valid email and password.'
+				'Please enter valid email and password.',
 			);
 		}
 	}
