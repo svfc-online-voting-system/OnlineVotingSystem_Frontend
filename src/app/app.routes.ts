@@ -169,6 +169,24 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
+		path: 'u/new/poll',
+		title: 'votevoyage New Poll | User',
+		loadComponent: () =>
+			import('@app/shared/ui/new-poll/new-poll.component').then(
+				(m) => m.NewPollComponent,
+			),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/new/election',
+		title: 'votevoyage New Election | User',
+		loadComponent: () =>
+			import('@app/shared/ui/new-election/new-election.component').then(
+				(m) => m.NewElectionComponent,
+			),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: '**',
 		component: NotFoundComponent,
 		title: '404 | Oh no!',

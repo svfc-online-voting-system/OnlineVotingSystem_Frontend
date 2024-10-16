@@ -24,52 +24,53 @@ export class AuthGuard implements CanActivate {
 		state: RouterStateSnapshot,
 	): Observable<boolean> {
 		const currentUrl = state.url;
-		if (currentUrl.startsWith('/u')) {
-			return this.authService.isTokenValid().pipe(
-				map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
-					if ('error' in res) {
-						console.log(
-							`Authentication failed: ${res.error.message}`,
-						);
-						return false;
-					}
-					return res.code === 'success';
-				}),
-				tap((isValid: boolean) => {
-					if (!isValid) {
-						this.router.navigate(['/auth/login']);
-					}
-				}),
-				catchError((error) => {
-					console.error('An unexpected error occurred:', error);
-					this.router.navigate(['/auth/login']);
-					return of(false);
-				}),
-			);
-		} else if (currentUrl.startsWith('/a')) {
-			return this.authService.isTokenValid().pipe(
-				map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
-					if ('error' in res) {
-						console.log(
-							`Authentication failed: ${res.error.message}`,
-						);
-						return false;
-					}
-					return res.code === 'success';
-				}),
-				tap((isValid: boolean) => {
-					if (!isValid) {
-						this.router.navigate(['/auth/login']);
-					}
-				}),
-				catchError((error) => {
-					console.error('An unexpected error occurred:', error);
-					this.router.navigate(['/auth/login']);
-					return of(false);
-				}),
-			);
-		} else {
-			return of(true);
-		}
+		// if (currentUrl.startsWith('/u')) {
+		// 	return this.authService.isTokenValid().pipe(
+		// 		map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
+		// 			if ('error' in res) {
+		// 				console.log(
+		// 					`Authentication failed: ${res.error.message}`,
+		// 				);
+		// 				return false;
+		// 			}
+		// 			return res.code === 'success';
+		// 		}),
+		// 		tap((isValid: boolean) => {
+		// 			if (!isValid) {
+		// 				this.router.navigate(['/auth/login']);
+		// 			}
+		// 		}),
+		// 		catchError((error) => {
+		// 			console.error('An unexpected error occurred:', error);
+		// 			this.router.navigate(['/auth/login']);
+		// 			return of(false);
+		// 		}),
+		// 	);
+		// } else if (currentUrl.startsWith('/a')) {
+		// 	return this.authService.isTokenValid().pipe(
+		// 		map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
+		// 			if ('error' in res) {
+		// 				console.log(
+		// 					`Authentication failed: ${res.error.message}`,
+		// 				);
+		// 				return false;
+		// 			}
+		// 			return res.code === 'success';
+		// 		}),
+		// 		tap((isValid: boolean) => {
+		// 			if (!isValid) {
+		// 				this.router.navigate(['/auth/login']);
+		// 			}
+		// 		}),
+		// 		catchError((error) => {
+		// 			console.error('An unexpected error occurred:', error);
+		// 			this.router.navigate(['/auth/login']);
+		// 			return of(false);
+		// 		}),
+		// 	);
+		// } else {
+		// 	return of(true);
+		// }
+		return of(true);
 	}
 }
