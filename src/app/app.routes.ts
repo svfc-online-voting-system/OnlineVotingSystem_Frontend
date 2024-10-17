@@ -62,7 +62,7 @@ export const routes: Routes = [
 	},
 	{
 		path: 'a/manage-admins',
-		title: 'votevoyage Manage Adnins | Admin',
+		title: 'votevoyage Manage Admins | Admin',
 		loadComponent: () =>
 			import(
 				'@app/authenticated/admin/manage-admins/manage-admins.component'
@@ -176,6 +176,14 @@ export const routes: Routes = [
 				(m) => m.NewPollComponent,
 			),
 		canActivate: [AuthGuard],
+	},
+	{
+		path: 'u/edit/poll/:id',
+		title: 'votevoyage Edit Poll | User',
+		loadComponent: () =>
+			import('@app/shared/ui/edit-poll/edit-poll.component').then(
+				(m) => m.EditPollComponent,
+			),
 	},
 	{
 		path: 'u/new/election',

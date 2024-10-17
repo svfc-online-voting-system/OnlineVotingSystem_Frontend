@@ -1,10 +1,20 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import {
+	FormControl,
+	ReactiveFormsModule,
+	Validators,
+	FormGroup,
+} from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { PollService } from '@app/services/api/poll/poll.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SnackbarService } from '@app/services/snackbar/snackbar.service';
+
 @Component({
 	selector: 'app-new-poll',
 	standalone: true,
@@ -14,17 +24,37 @@ import { MatButtonModule } from '@angular/material/button';
 		MatInputModule,
 		MatFormFieldModule,
 		MatIcon,
+		MatTooltipModule,
 		MatButtonModule,
 	],
 	templateUrl: './new-poll.component.html',
 })
 export class NewPollComponent {
-	pollOptions: string[] = [];
-	addOption() {
-		this.pollOptions.push('');
+	pollTitleGroup!: FormGroup;
+
+	constructor(
+		private pollService: PollService,
+		private router: Router,
+		private snackbarService: SnackbarService,
+	) {
+		this.pollTitleGroup = new FormGroup({
+			title: new FormControl('', [
+				Validators.required,
+				Validators.minLength(3),
+				Validators.maxLength(255),
+			]),
+		});
 	}
 
-	saveUpdatedPoll() {
-		this.pollOptions = this.pollOptions.filter((option) => option !== '');
+	saveNewPoll() {
+		if (this.pollTitleGroup.invalid) {
+			return;
+		} else {
+			this.snackbarService.showSnackBar('Poll created successfully');
+			const id = this.pollService.createPoll(
+				this.pollTitleGroup.value.title,
+			);
+			this.router.navigate([`/u/edit/poll/${id}`]);
+		}
 	}
 }
