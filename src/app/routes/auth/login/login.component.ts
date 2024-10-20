@@ -1,5 +1,5 @@
 import { RouterLink, Router } from '@angular/router';
-import { AuthService } from '@app/services/api/auth/auth.service';
+import { AuthService } from '@app/core/core.module';
 import {
 	Component,
 	ViewChild,
@@ -28,9 +28,8 @@ import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
 import {
 	ApiAuthResponse,
 	type ApiAuthErrorResponse,
-} from '@app/types/authResponseType';
-import { LoginValidatorsService } from '@app/services/validators/login/login-validators.service';
-import { SnackbarService } from '@app/services/snackbar/snackbar.service';
+} from '@app/core/models/authResponseType';
+import { LoginValidatorsService, SnackbarService } from '@app/core/core.module';
 
 @Component({
 	selector: 'app-login',

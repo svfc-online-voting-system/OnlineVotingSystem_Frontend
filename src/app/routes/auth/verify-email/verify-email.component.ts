@@ -1,8 +1,7 @@
 import { Component, type OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@app/services/api/auth/auth.service';
+import { AuthService, SnackbarService } from '@app/core/core.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SnackbarService } from '@app/services/snackbar/snackbar.service';
 
 @Component({
 	selector: 'app-verify-email',

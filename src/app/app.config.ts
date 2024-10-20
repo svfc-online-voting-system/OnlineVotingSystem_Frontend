@@ -21,6 +21,5 @@ export const appConfig: ApplicationConfig = {
 			withJsonpSupport(),
 			withInterceptorsFromDi(),
 		),
-		// { provide: HTTP_INTERCEPTORS, useClass: AuthenticatedInterceptor, multi: true }
 	],
 };

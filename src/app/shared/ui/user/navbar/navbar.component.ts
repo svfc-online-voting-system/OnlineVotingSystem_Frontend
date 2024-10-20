@@ -3,8 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '@app/services/api/auth/auth.service';
-import { SnackbarService } from '@app/services/snackbar/snackbar.service';
+import { AuthService, SnackbarService } from '@app/core/core.module';
 
 @Component({
 	selector: 'app-user-navbar',

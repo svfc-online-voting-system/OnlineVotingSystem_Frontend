@@ -29,14 +29,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SnackbarService } from '@app/services/snackbar/snackbar.service';
-import { SignupValidatorsService } from '@app/services/validators/signup/signup-validators.service';
+import {
+	SnackbarService,
+	SignupValidatorsService,
+	AuthService,
+} from '@app/core/core.module';
 import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
-import { AuthService } from '@app/services/api/auth/auth.service';
 import {
 	ApiAuthResponse,
 	ApiAuthErrorResponse,
-} from '@app/types/authResponseType';
+} from '@app/core/models/authResponseType';
 
 @Component({
 	selector: 'app-signup',
@@ -75,7 +77,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 	isBrowser: boolean;
 	readonly minInimumDate = new Date(1900, 0, 1);
 	readonly maximumDate = new Date(
-		new Date().setFullYear(new Date().getFullYear() - 18)
+		new Date().setFullYear(new Date().getFullYear() - 18),
 	);
 
 	constructor(
@@ -84,7 +86,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 		private _authService: AuthService,
 		private _signUpValidatorService: SignupValidatorsService,
 		@Inject(PLATFORM_ID) private platformId: object,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
 	) {
 		this.isBrowser = isPlatformBrowser(this.platformId);
 	}
@@ -135,7 +137,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 				confirmPassword: ['', [Validators.required]],
 				showPassword: [false],
 			},
-			{ validator: this.passwordMatchValidator }
+			{ validator: this.passwordMatchValidator },
 		);
 	}
 
@@ -180,7 +182,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 	submitNameForm(): void {
 		if (this.isBrowser) {
 			const errorMessage = this._signUpValidatorService.validateName(
-				this.nameFormGroup
+				this.nameFormGroup,
 			);
 			if (errorMessage) {
 				this._snackBarService.showSnackBar(errorMessage);
@@ -195,7 +197,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 		if (this.isBrowser) {
 			if (this.birthdayFormGroup.invalid) {
 				this._snackBarService.showSnackBar(
-					'Please enter your birthday.'
+					'Please enter your birthday.',
 				);
 			} else {
 				this._snackBarService.closeSnackBar();
@@ -207,11 +209,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
 	submitEmailPasswordForm(): void {
 		if (this.isBrowser) {
 			const errorMessage = this._signUpValidatorService.validateEmail(
-				this.emailPasswordFormGroup
+				this.emailPasswordFormGroup,
 			);
 			const passWordErrorMessage =
 				this._signUpValidatorService.validatePassword(
-					this.emailPasswordFormGroup
+					this.emailPasswordFormGroup,
 				);
 			if (errorMessage) {
 				this._snackBarService.showSnackBar(errorMessage);
@@ -263,7 +265,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 			}
 		} else {
 			this._snackBarService.showSnackBar(
-				'Please check the information you provided.'
+				'Please check the information you provided.',
 			);
 		}
 	}

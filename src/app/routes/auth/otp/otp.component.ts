@@ -9,15 +9,14 @@ import {
 	FormBuilder,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { SnackbarService } from '@app/services/snackbar/snackbar.service';
+import { SnackbarService, AuthService } from '@app/core/core.module';
 import { Subject } from 'rxjs';
-import { AuthService } from '@app/services/api/auth/auth.service';
 import { Router } from '@angular/router';
 import { takeUntil, timeout } from 'rxjs/operators';
 import {
 	ApiAuthErrorResponse,
 	ApiAuthResponse,
-} from '@app/types/authResponseType';
+} from '@app/core/models/authResponseType';
 
 @Component({
 	selector: 'app-otp',

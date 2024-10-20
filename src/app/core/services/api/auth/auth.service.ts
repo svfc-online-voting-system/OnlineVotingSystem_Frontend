@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@app/environment/environment';
+import { environment } from '@app/../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
 	ApiAuthResponse,
 	SignUpInformation,
 	ApiAuthErrorResponse,
-} from '@app/types/authResponseType';
+} from '@app/core/models/authResponseType';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { BehaviorSubject, lastValueFrom, Observable, of } from 'rxjs';

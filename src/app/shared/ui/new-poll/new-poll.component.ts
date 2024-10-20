@@ -11,9 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { PollService } from '@app/services/api/poll/poll.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SnackbarService } from '@app/services/snackbar/snackbar.service';
+import { SnackbarService, PollService } from '@app/core/core.module';
 
 @Component({
 	selector: 'app-new-poll',
