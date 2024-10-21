@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthGuard } from './auth.guard';
-import { AuthService } from '@app/services/api/auth/auth.service';
+import { AuthService } from '@app/core/services/api/auth/auth.service';
 import type { ApiAuthResponse } from '@app/core/models/authResponseType';
 
 describe('AuthGuard', () => {
