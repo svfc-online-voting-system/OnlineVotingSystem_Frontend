@@ -1,0 +1,63 @@
+<main class="w-full min-h-screen flex flex-col items-center gap-20">
+	<app-user-navbar class="w-11/12 max-w-screen-2xl"></app-user-navbar>
+	<section class="w-full flex flex-col gap-4 justify-center items-center">
+		<div>
+			<button
+				class="flex flex-row items-center justify-center"
+				mat-button>
+				<mat-icon *ngIf="saving">cloud_sync</mat-icon>
+				<mat-icon *ngIf="!saving">cloud_done</mat-icon>
+				<p
+					class="text-sm"
+					*ngIf="saving">
+					Saving...
+				</p>
+				<p
+					class="text-sm"
+					*ngIf="!saving">
+					Saved
+				</p>
+			</button>
+		</div>
+
+		<div [formGroup]="titleFormGroup">
+			<mat-form-field class="w-3/4">
+				<mat-label>Poll Title</mat-label>
+				<input
+					placeholder="Poll Title"
+					matInput
+					value="{{ pollTitle }}" />
+			</mat-form-field>
+		</div>
+
+		<div class="flex flex-col justify-center w-1/2">
+			<div
+				*ngFor="let option of pollOptions; let i = index"
+				class="flex flex-row justify-center gap-5">
+				<mat-form-field class="w-3/4">
+					<mat-label> {{ option }} </mat-label>
+					<input
+						placeholder="Option No:{{ option }}"
+						matInput
+						value="{{ option }}" />
+				</mat-form-field>
+				<button
+					mat-fab
+					(click)="deleteOption(i)"
+					matTooltip="Delete this option"
+					aria-label="Delete option">
+					<mat-icon>delete</mat-icon>
+				</button>
+			</div>
+		</div>
+
+		<button
+			mat-fab
+			(click)="addOption()"
+			extended
+			class="w-fit">
+			<mat-icon>add_circle</mat-icon>
+			New Option
+		</button>
+	</section>
+</main>

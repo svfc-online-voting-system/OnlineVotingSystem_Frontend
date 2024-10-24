@@ -1,0 +1,69 @@
+$font-xs: 0.75rem;
+$font-sm: 0.875rem;
+$font-base: 1rem;
+$font-lg: 1.125rem;
+$font-xl: 1.25rem;
+$font-2xl: 1.5rem;
+$font-3xl: 1.875rem;
+$font-4xl: 2.25rem;
+$font-5xl: 3rem;
+$font-6xl: 4rem;
+$font-7xl: 5rem;
+$font-8xl: 6rem;
+
+// Breakpoints
+$breakpoint-xs: 0;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+// Width percentage base:
+$width-full: 100%;
+$width-half: 50%;
+$width-third: 33.333333%;
+$width-two-thirds: 66.666667%;
+$width-quarter: 25%;
+$width-three-quarters: 75%;
+$width-fifth: 20%;
+$width-two-fifths: 40%;
+$width-three-fifths: 60%;
+$width-four-fifths: 80%;
+$width-responsive: 91%;
+
+// Height percentage base:
+$height-full: 100%;
+$height-half: 50%;
+$height-third: 33.333333%;
+$height-two-thirds: 66.666667%;
+$height-quarter: 25%;
+$height-three-quarters: 75%;
+$height-fifth: 20%;
+$height-two-fifths: 40%;
+
+// Height base on viewport:
+$height-vh-25: 25vh;
+$height-vh-50: 50vh;
+$height-vh-75: 75vh;
+$height-vh-100: 100vh;
+
+// Max Width Screen Base:
+$max-width-screen-sm: 540px;
+$max-width-screen-md: 720px;
+$max-width-screen-lg: 960px;
+$max-width-screen-xl: 1140px;
+$max-width-screen-xxl: 1320px;
+
+$max-w-none: none;
+$max-w-xs: 20rem; /* 320px */
+$max-w-sm: 24rem; /* 384px */
+$max-w-md: 28rem; /* 448px */
+$max-w-lg: 32rem; /* 512px */
+$max-w-xl: 36rem; /* 576px */
+$max-w-2xl: 42rem; /* 672px */
+$max-w-3xl: 48rem; /* 768px */
+$max-w-4xl: 56rem; /* 896px */
+$max-w-5xl: 64rem; /* 1024px */
+$max-w-6xl: 72rem; /* 1152px */
+$max-w-7xl: 80rem; /* 1280px */

@@ -9,11 +9,13 @@ import {
 	withInterceptorsFromDi,
 	withJsonpSupport,
 } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
+		provideAnimations(),
 		provideClientHydration(),
 		provideAnimationsAsync(),
 		provideHttpClient(
@@ -21,6 +23,5 @@ export const appConfig: ApplicationConfig = {
 			withJsonpSupport(),
 			withInterceptorsFromDi(),
 		),
-		// { provide: HTTP_INTERCEPTORS, useClass: AuthenticatedInterceptor, multi: true }
 	],
 };

@@ -1,0 +1,176 @@
+import { RouterLink, Router } from '@angular/router';
+import { AuthService } from '@app/core/core.module';
+import {
+	Component,
+	ViewChild,
+	OnInit,
+	inject,
+	afterNextRender,
+} from '@angular/core';
+import {
+	FormBuilder,
+	Validators,
+	FormsModule,
+	FormGroup,
+	ReactiveFormsModule,
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatStepperModule } from '@angular/material/stepper';
+import {
+	MatCheckboxModule,
+	type MatCheckbox,
+} from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
+import {
+	ApiAuthResponse,
+	type ApiAuthErrorResponse,
+} from '@app/core/models/authResponseType';
+import { LoginValidatorsService, SnackbarService } from '@app/core/core.module';
+
+@Component({
+	selector: 'app-login',
+	standalone: true,
+	imports: [
+		RouterLink,
+		MatCardModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+		MatInputModule,
+		MatFormFieldModule,
+		FormsModule,
+		MatStepperModule,
+		MatCheckboxModule,
+	],
+	templateUrl: './login.component.html',
+})
+export class LoginComponent implements OnInit {
+	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
+	@ViewChild('loginButton') loginButton!: HTMLButtonElement;
+	readonly dialog = inject(MatDialog);
+
+	emailFormGroup!: FormGroup;
+	passwordFormGroup!: FormGroup;
+	constructor(
+		private _snackBarService: SnackbarService,
+		private _formBuilder: FormBuilder,
+		private _authService: AuthService,
+		private _logInValidatorService: LoginValidatorsService,
+		private _router: Router,
+	) {
+		afterNextRender(() => {
+			this.togglePasswordVisibility();
+			this.disableLoginButtonOnSubmit();
+			this.enableLoginButton();
+		});
+	}
+
+	ngOnInit(): void {
+		this.emailFormGroup = this._formBuilder.group({
+			email: ['', [Validators.required, Validators.email]],
+		});
+		this.passwordFormGroup = this._formBuilder.group({
+			password: ['', Validators.required],
+		});
+	}
+
+	openLoadingDialog(): void {
+		this.dialog.open(SpinnerComponent, {
+			data: { message: 'Logging in...' },
+		});
+	}
+
+	closeLoadingDialog(): void {
+		this.dialog.closeAll();
+	}
+
+	togglePasswordVisibility(): void {
+		const isChecked = this.showPasswordToggler.checked;
+		const passwordInput = document.querySelector(
+			'input[formControlName="password"]',
+		) as HTMLInputElement;
+
+		if (isChecked) {
+			passwordInput.type = 'text';
+		} else {
+			passwordInput.type = 'password';
+		}
+	}
+
+	disableLoginButtonOnSubmit(): void {
+		this.loginButton.textContent = 'Logging in...';
+		this.loginButton.disabled = true;
+	}
+
+	enableLoginButton(): void {
+		this.loginButton.textContent = 'Log in';
+		this.loginButton.disabled = false;
+	}
+
+	submitEmailForm(): void {
+		const emailValidationResult = this._logInValidatorService.validateEmail(
+			this.emailFormGroup,
+		);
+		if (emailValidationResult) {
+			this._snackBarService.showSnackBar(emailValidationResult);
+		}
+	}
+
+	submitPasswordForm(): void {
+		const passwordValidationResult =
+			this._logInValidatorService.validatePassword(
+				this.passwordFormGroup,
+			);
+		if (passwordValidationResult) {
+			this._snackBarService.showSnackBar(passwordValidationResult);
+		}
+	}
+
+	async submitLogInForm(): Promise<void> {
+		this.submitEmailForm();
+		this.submitPasswordForm();
+
+		if (this.emailFormGroup.valid && this.passwordFormGroup.valid) {
+			const loginInformation = {
+				email: this.emailFormGroup.value.email,
+				password: this.passwordFormGroup.value.password,
+			};
+			const dialogTimer = setTimeout(() => {
+				this.openLoadingDialog();
+			}, 2000);
+			this.disableLoginButtonOnSubmit();
+
+			this._authService.login(loginInformation).subscribe({
+				next: (response: ApiAuthResponse) => {
+					if (response.code === 'otp_sent') {
+						this._snackBarService.showSnackBar(response.message);
+						this._router.navigate(['/auth/otp-verification']);
+					} else {
+						this._snackBarService.showSnackBar(response.message);
+					}
+				},
+				error: (error: ApiAuthErrorResponse) => {
+					// TODO: Remove the console.error() statement
+					console.error('An error occurred:', error);
+					this._snackBarService.showSnackBar(
+						`${error.error.message}`,
+					);
+					this.loginButton.disabled = false;
+					this.closeLoadingDialog();
+				},
+				complete: () => {
+					clearTimeout(dialogTimer);
+					this.closeLoadingDialog();
+					this.enableLoginButton();
+				},
+			});
+		} else {
+			this._snackBarService.showSnackBar(
+				'Please enter valid email and password.',
+			);
+		}
+	}
+}
