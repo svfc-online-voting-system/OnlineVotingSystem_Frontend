@@ -1,4 +1,3 @@
-// Margins:
 @mixin m($value: 0) {
 	margin: $value;
 }
@@ -29,7 +28,6 @@
 	margin-bottom: $y;
 }
 
-// Padding:
 @mixin p($value: 0) {
 	padding: $value;
 }
@@ -60,12 +58,10 @@
 	padding-bottom: $y;
 }
 
-// Borders:
 @mixin border($width: 1px, $style: solid, $color: $border-color) {
 	border: $width $style $color;
 }
 
-// Gap:
 @mixin gap($gap: 0) {
 	gap: $gap;
 }
@@ -86,19 +82,16 @@
 	column-gap: $column;
 }
 
-// Responsive:
 @mixin responsive($breakpoint) {
 	@media (min-width: $breakpoint) {
 		@content;
 	}
 }
 
-// Text Sizes:
 @mixin text-size($size: 1rem) {
 	font-size: $size;
 }
 
-// Flexbox helper
 @mixin flex(
 	$direction: row,
 	$justify: flex-start,
@@ -112,7 +105,6 @@
 	flex-wrap: $wrap;
 }
 
-// Grid helper
 @mixin grid($columns: 1, $rows: auto, $gap: 0) {
 	display: grid;
 	grid-template-columns: repeat($columns, 1fr);
@@ -120,7 +112,6 @@
 	gap: $gap;
 }
 
-// Position helper
 @mixin position(
 	$position: relative,
 	$top: null,
@@ -135,7 +126,6 @@
 	left: $left;
 }
 
-// Sizing helper
 @mixin size($width, $height: $width) {
 	width: $width;
 	height: $height;
@@ -145,12 +135,10 @@
 	@include size($size);
 }
 
-// Height helper
 @mixin height($height) {
 	height: $height;
 }
 
-// Width helper
 @mixin width($width) {
 	width: $width;
 }

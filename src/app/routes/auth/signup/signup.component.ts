@@ -1,17 +1,16 @@
 import {
 	Component,
-	OnInit,
-	Inject,
 	inject,
 	PLATFORM_ID,
-	ViewChild,
 	ChangeDetectorRef,
-	type InjectionToken,
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+	MAT_FORM_FIELD_DEFAULT_OPTIONS,
+	MatFormFieldModule,
+} from '@angular/material/form-field';
 import {
 	ErrorStateMatcher,
 	MAT_DATE_LOCALE,
@@ -48,6 +47,10 @@ import {
 		{ provide: MAT_DATE_LOCALE, useValue: 'en-CA' },
 		provideNativeDateAdapter(),
 		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+		{
+			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+			useValue: { appearance: 'outline' },
+		},
 	],
 	imports: [
 		CommonModule,
@@ -62,82 +65,48 @@ import {
 		MatCheckboxModule,
 	],
 	templateUrl: './signup.component.html',
-	styleUrls: ['./signup.component.scss'],
+	styleUrl: './signup.component.scss',
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
+	private readonly _formBuilder = inject(FormBuilder);
+	private readonly _snackBarService = inject(SnackbarService);
+	private readonly _authService = inject(AuthService);
+	private readonly _signUpValidatorService = inject(SignupValidatorsService);
+	private readonly _cdr = inject(ChangeDetectorRef);
+	private readonly _dialog = inject(MatDialog);
+	private readonly _platformId = inject(PLATFORM_ID);
 	isBrowser: boolean;
 	readonly maximumDate: Date | null;
-
 	showPassword = false;
 	submitting = false;
-	@ViewChild('showPasswordToggler') showPasswordToggler!: HTMLInputElement;
-	@ViewChild('passwordField') passwordField!: HTMLInputElement;
-	signUpFormGroup!: FormGroup;
-	passwordValue = '';
-	readonly dialog = inject(MatDialog);
 
-	constructor(
-		private _formBuilder: FormBuilder,
-		private _snackBarService: SnackbarService,
-		private _authService: AuthService,
-		private _signUpValidatorService: SignupValidatorsService,
-		@Inject(PLATFORM_ID) private _platformId: InjectionToken<object>,
-		private _cdr: ChangeDetectorRef,
-	) {
+	constructor() {
 		this.isBrowser = isPlatformBrowser(this._platformId);
 		this.maximumDate = this.isBrowser
 			? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
 			: null;
 	}
 
-	ngOnInit(): void {
-		if (this.isBrowser) {
-			this.signUpFormGroup = this._formBuilder.group(
-				{
-					firstName: [
-						'',
-						[Validators.required, Validators.minLength(2)],
-					],
-					lastName: [
-						'',
-						[Validators.required, Validators.minLength(2)],
-					],
-					email: ['', [Validators.required, Validators.email]],
-					password: [
-						'',
-						[Validators.required, Validators.minLength(8)],
-					],
-					confirmPassword: [
-						'',
-						[Validators.required, Validators.minLength(8)],
-					],
-					birthday: [null, Validators.required],
-				},
-				{ validators: this.passwordMatchValidator },
-			);
-			this._initializeBrowserSpecificModules();
-		}
-	}
-
-	private _initializeBrowserSpecificModules(): void {
-		import('@angular/material/datepicker').then(() => {
-			this._formBuilder.group({
-				birthday: [Date.now(), [Validators.required]],
-			});
-		});
-	}
+	signUpFormGroup = this._formBuilder.group(
+		{
+			firstName: ['', [Validators.required, Validators.minLength(2)]],
+			lastName: ['', [Validators.required, Validators.minLength(2)]],
+			birthday: [Date.now(), [Validators.required]],
+			email: ['', [Validators.required, Validators.email]],
+			password: ['', [Validators.required, Validators.minLength(8)]],
+			confirmPassword: [
+				'',
+				[Validators.required, Validators.minLength(8)],
+			],
+			showPassword: [false],
+		},
+		{
+			validators: this.passwordMatchValidator,
+		},
+	);
 
 	changePasswordVisibility(): void {
 		if (this.isBrowser) {
-			this.showPassword = !this.showPassword;
-			this._cdr.detectChanges();
-		}
-	}
-
-	togglePasswordVisibility(): void {
-		if (this.isBrowser) {
-			this.showPasswordToggler.checked =
-				!this.showPasswordToggler.checked;
 			this.showPassword = !this.showPassword;
 			this._cdr.detectChanges();
 		}
@@ -166,7 +135,7 @@ export class SignupComponent implements OnInit {
 
 	openLoadingDialog(): void {
 		if (this.isBrowser) {
-			this.dialog.open(SpinnerComponent, {
+			this._dialog.open(SpinnerComponent, {
 				data: { message: 'Logging in...' },
 			});
 		}
@@ -174,7 +143,7 @@ export class SignupComponent implements OnInit {
 
 	closeLoadingDialog(): void {
 		if (this.isBrowser) {
-			this.dialog.closeAll();
+			this._dialog.closeAll();
 		}
 	}
 

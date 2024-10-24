@@ -34,7 +34,6 @@
 							matInput
 							placeholder="ex.: Juan" />
 					</mat-form-field>
-
 					<mat-form-field class="w-full">
 						<mat-label>Last Name</mat-label>
 						<input
@@ -46,7 +45,6 @@
 							matInput
 							placeholder="ex.: Dela Cruz" />
 					</mat-form-field>
-
 					<mat-form-field class="w-full mt-2">
 						<mat-label>Birth Date</mat-label>
 						<input
@@ -63,7 +61,6 @@
 							[for]="picker"></mat-datepicker-toggle>
 						<mat-datepicker #picker></mat-datepicker>
 					</mat-form-field>
-
 					<mat-form-field class="w-full mt-2">
 						<mat-label>Email</mat-label>
 						<input
@@ -79,7 +76,6 @@
 						<input
 							required
 							autocomplete="new-password"
-							[type]="showPassword ? 'text' : 'password'"
 							formControlName="password"
 							matInput
 							#passwordField
@@ -99,12 +95,15 @@
 							minlength="8"
 							placeholder="********" />
 					</mat-form-field>
+					<mat-error
+						*ngIf="signUpFormGroup.hasError('passwordMismatch')">
+						Passwords do not match
+					</mat-error>
 					<mat-checkbox
-						#showPasswordToggler
-						(click)="togglePasswordVisibility()"
-						formControlName="showPassword">
-						Show Password
-					</mat-checkbox>
+						formControlName="showPassword"
+						class="mt-2"
+						aria-label="Show password"
+						>Show Password</mat-checkbox>
 					<button
 						mat-flat-button
 						type="submit">
