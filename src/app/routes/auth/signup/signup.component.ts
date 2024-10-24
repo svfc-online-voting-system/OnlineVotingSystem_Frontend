@@ -5,16 +5,18 @@ import {
 	inject,
 	PLATFORM_ID,
 	ViewChild,
-	AfterViewInit,
 	ChangeDetectorRef,
+	type InjectionToken,
 } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
+	ErrorStateMatcher,
 	MAT_DATE_LOCALE,
 	provideNativeDateAdapter,
+	ShowOnDirtyErrorStateMatcher,
 } from '@angular/material/core';
 import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,7 +28,6 @@ import {
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
@@ -46,6 +47,7 @@ import {
 	providers: [
 		{ provide: MAT_DATE_LOCALE, useValue: 'en-CA' },
 		provideNativeDateAdapter(),
+		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
 	],
 	imports: [
 		CommonModule,
@@ -57,54 +59,64 @@ import {
 		MatInputModule,
 		MatFormFieldModule,
 		FormsModule,
-		MatStepperModule,
 		MatCheckboxModule,
 	],
 	templateUrl: './signup.component.html',
+	styleUrls: ['./signup.component.scss'],
 })
-export class SignupComponent implements OnInit, AfterViewInit {
+export class SignupComponent implements OnInit {
+	isBrowser: boolean;
+	readonly maximumDate: Date | null;
+
 	showPassword = false;
 	submitting = false;
-	@ViewChild('stepper') stepper!: MatStepper;
 	@ViewChild('showPasswordToggler') showPasswordToggler!: HTMLInputElement;
 	@ViewChild('passwordField') passwordField!: HTMLInputElement;
-	nameFormGroup!: FormGroup;
-	birthdayFormGroup!: FormGroup;
-	emailPasswordFormGroup!: FormGroup;
-	passwordFormGroup!: FormGroup;
+	signUpFormGroup!: FormGroup;
 	passwordValue = '';
 	readonly dialog = inject(MatDialog);
-	isBrowser: boolean;
-	readonly minInimumDate = new Date(1900, 0, 1);
-	readonly maximumDate = new Date(
-		new Date().setFullYear(new Date().getFullYear() - 18),
-	);
 
 	constructor(
 		private _formBuilder: FormBuilder,
 		private _snackBarService: SnackbarService,
 		private _authService: AuthService,
 		private _signUpValidatorService: SignupValidatorsService,
-		@Inject(PLATFORM_ID) private platformId: object,
-		private cdr: ChangeDetectorRef,
+		@Inject(PLATFORM_ID) private _platformId: InjectionToken<object>,
+		private _cdr: ChangeDetectorRef,
 	) {
-		this.isBrowser = isPlatformBrowser(this.platformId);
+		this.isBrowser = isPlatformBrowser(this._platformId);
+		this.maximumDate = this.isBrowser
+			? new Date(new Date().setFullYear(new Date().getFullYear() - 18))
+			: null;
 	}
 
 	ngOnInit(): void {
-		this._initSignUpFormGroups();
 		if (this.isBrowser) {
+			this.signUpFormGroup = this._formBuilder.group(
+				{
+					firstName: [
+						'',
+						[Validators.required, Validators.minLength(2)],
+					],
+					lastName: [
+						'',
+						[Validators.required, Validators.minLength(2)],
+					],
+					email: ['', [Validators.required, Validators.email]],
+					password: [
+						'',
+						[Validators.required, Validators.minLength(8)],
+					],
+					confirmPassword: [
+						'',
+						[Validators.required, Validators.minLength(8)],
+					],
+					birthday: [null, Validators.required],
+				},
+				{ validators: this.passwordMatchValidator },
+			);
 			this._initializeBrowserSpecificModules();
 		}
-	}
-
-	ngAfterViewInit(): void {
-		this.emailPasswordFormGroup
-			.get('showPassword')
-			?.valueChanges.subscribe((value) => {
-				this.showPassword = value;
-				this.cdr.detectChanges();
-			});
 	}
 
 	private _initializeBrowserSpecificModules(): void {
@@ -115,48 +127,35 @@ export class SignupComponent implements OnInit, AfterViewInit {
 		});
 	}
 
-	changePasswordValue(event: Event): void {
-		const inputElement = event.target as HTMLInputElement;
-		this.passwordValue = inputElement.value;
-	}
-
-	private _initSignUpFormGroups(): void {
-		this.nameFormGroup = this._formBuilder.group({
-			firstName: ['', [Validators.required, Validators.minLength(2)]],
-			lastName: ['', [Validators.required, Validators.minLength(2)]],
-		});
-
-		this.birthdayFormGroup = this._formBuilder.group({
-			birthday: [null, [Validators.required, Validators.min(18)]],
-		});
-
-		this.emailPasswordFormGroup = this._formBuilder.group(
-			{
-				email: ['', [Validators.required, Validators.email]],
-				password: ['', [Validators.required, Validators.minLength(8)]],
-				confirmPassword: ['', [Validators.required]],
-				showPassword: [false],
-			},
-			{ validator: this.passwordMatchValidator },
-		);
+	changePasswordVisibility(): void {
+		if (this.isBrowser) {
+			this.showPassword = !this.showPassword;
+			this._cdr.detectChanges();
+		}
 	}
 
 	togglePasswordVisibility(): void {
-		this.showPassword = !this.showPassword;
-		this.cdr.detectChanges();
+		if (this.isBrowser) {
+			this.showPasswordToggler.checked =
+				!this.showPasswordToggler.checked;
+			this.showPassword = !this.showPassword;
+			this._cdr.detectChanges();
+		}
 	}
 
 	passwordMatchValidator(formGroup: FormGroup) {
-		const password = formGroup.get('password')?.value;
-		const confirmPassword = formGroup.get('confirmPassword')?.value;
+		const signUpFormGroupValues = formGroup.value;
+		const password = signUpFormGroupValues.password;
+		const confirmPassword = signUpFormGroupValues.confirmPassword;
 		return password === confirmPassword ? null : { mismatch: true };
 	}
 
 	checkPasswordMatch(): void {
 		if (this.isBrowser) {
+			const signUpFormGroupValues = this.signUpFormGroup.value;
 			if (
-				this.emailPasswordFormGroup.get('password')?.value !==
-				this.emailPasswordFormGroup.get('confirmPassword')?.value
+				signUpFormGroupValues.password !==
+				signUpFormGroupValues.confirmPassword
 			) {
 				this._snackBarService.showSnackBar('Passwords do not match.');
 			} else {
@@ -179,94 +178,47 @@ export class SignupComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	submitNameForm(): void {
-		if (this.isBrowser) {
-			const errorMessage = this._signUpValidatorService.validateName(
-				this.nameFormGroup,
-			);
-			if (errorMessage) {
-				this._snackBarService.showSnackBar(errorMessage);
-			} else {
-				this._snackBarService.closeSnackBar();
-				this.nameFormGroup.markAsUntouched();
-			}
-		}
-	}
-
-	submitBirthdayForm(): void {
-		if (this.isBrowser) {
-			if (this.birthdayFormGroup.invalid) {
-				this._snackBarService.showSnackBar(
-					'Please enter your birthday.',
-				);
-			} else {
-				this._snackBarService.closeSnackBar();
-				this.birthdayFormGroup.markAsUntouched();
-			}
-		}
-	}
-
-	submitEmailPasswordForm(): void {
-		if (this.isBrowser) {
-			const errorMessage = this._signUpValidatorService.validateEmail(
-				this.emailPasswordFormGroup,
-			);
-			const passWordErrorMessage =
-				this._signUpValidatorService.validatePassword(
-					this.emailPasswordFormGroup,
-				);
-			if (errorMessage) {
-				this._snackBarService.showSnackBar(errorMessage);
-			} else if (passWordErrorMessage) {
-				this._snackBarService.showSnackBar(passWordErrorMessage);
-			} else {
-				this._snackBarService.closeSnackBar();
-				this.emailPasswordFormGroup.markAsUntouched();
-			}
-		}
-	}
-
 	async onSignUpFormSubmit(): Promise<void> {
-		if (
-			this.nameFormGroup.valid &&
-			this.emailPasswordFormGroup.valid &&
-			this.birthdayFormGroup.valid
-		) {
-			const nameFormGroupValue = this.nameFormGroup.value;
-			const emailPasswordFormGroupValue =
-				this.emailPasswordFormGroup.value;
-			const birthdayFormGroupValue = this.birthdayFormGroup.value;
-			const dialogTimer = setTimeout(() => {
-				this.openLoadingDialog();
-			}, 2000);
-			this.submitting = true;
-			try {
-				const response: ApiAuthResponse =
-					await this._authService.signUp({
-						email: emailPasswordFormGroupValue.email,
-						first_name: nameFormGroupValue.firstName,
-						last_name: nameFormGroupValue.lastName,
-						date_of_birth: birthdayFormGroupValue.birthday,
-						password: emailPasswordFormGroupValue.password,
-						confirmPassword:
-							emailPasswordFormGroupValue.confirmPassword,
-					});
-				this._snackBarService.showSnackBar(response.message);
-			} catch (error: unknown) {
-				console.log(error);
-				let errorMessage = 'An error occurred.';
-				const errorObj = error as ApiAuthErrorResponse;
-				errorMessage = errorObj.error.message;
-				this._snackBarService.showSnackBar(errorMessage);
-			} finally {
-				this.submitting = false;
-				clearTimeout(dialogTimer);
-				this.closeLoadingDialog();
+		if (this.isBrowser) {
+			if (this.signUpFormGroup.valid) {
+				const signUpFormGroupValues = this.signUpFormGroup.value;
+				const firstName = signUpFormGroupValues.firstName;
+				const lastName = signUpFormGroupValues.lastName;
+				const email = signUpFormGroupValues.email;
+				const password = signUpFormGroupValues.password;
+				const confirmPassword = signUpFormGroupValues.confirmPassword;
+				const birthday = signUpFormGroupValues.birthday;
+				const dialogTimer = setTimeout(() => {
+					this.openLoadingDialog();
+				}, 2000);
+				this.submitting = true;
+				try {
+					const response: ApiAuthResponse =
+						await this._authService.signUp({
+							email: email,
+							first_name: firstName,
+							last_name: lastName,
+							date_of_birth: birthday,
+							password: password,
+							confirmPassword: confirmPassword,
+						});
+					this._snackBarService.showSnackBar(response.message);
+				} catch (error: unknown) {
+					console.log(error);
+					let errorMessage = 'An error occurred.';
+					const errorObj = error as ApiAuthErrorResponse;
+					errorMessage = errorObj.error.message;
+					this._snackBarService.showSnackBar(errorMessage);
+				} finally {
+					this.submitting = false;
+					clearTimeout(dialogTimer);
+					this.closeLoadingDialog();
+				}
+			} else {
+				this._snackBarService.showSnackBar(
+					'Please check the information you provided.',
+				);
 			}
-		} else {
-			this._snackBarService.showSnackBar(
-				'Please check the information you provided.',
-			);
 		}
 	}
 }
