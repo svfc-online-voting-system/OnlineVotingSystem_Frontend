@@ -27,7 +27,7 @@
 		align-items: center;
 
 		@include mixins.responsive(vars.$breakpoint-md) {
-			@include mixins.p-y(4rem);
+			@include mixins.p-y(2.3rem);
 		}
 
 		.navbar {
@@ -167,6 +167,22 @@
 					div > h3 {
 						@extend .font-bold;
 					}
+				}
+			}
+		}
+
+		.benefits-section {
+			@extend .flex-col, .w-full;
+			justify-content: center;
+
+			h2 {
+				@extend .font-bold;
+			}
+
+			ol {
+				list-style-type: upper-roman;
+				li {
+					@include mixins.text-size(vars.$font-base);
 				}
 			}
 		}
