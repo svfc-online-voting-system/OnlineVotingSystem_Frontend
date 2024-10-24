@@ -6,6 +6,5 @@ import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
 	standalone: true,
 	imports: [NavbarComponent],
 	templateUrl: './settings.component.html',
-	styleUrl: './settings.component.css',
 })
 export class SettingsComponent {}

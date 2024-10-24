@@ -19,7 +19,6 @@ import { RouterLink } from '@angular/router';
 		RouterLink,
 	],
 	templateUrl: './add-new-vote-sheet.component.html',
-	styleUrl: './add-new-vote-sheet.component.css',
 })
 export class AddNewVoteSheetComponent {
 	private _bottomSheetRef =

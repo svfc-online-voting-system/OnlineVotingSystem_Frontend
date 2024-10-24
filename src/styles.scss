@@ -1,0 +1,70 @@
+@use '@angular/material' as mat;
+@use './styles/theme.scss' as theme;
+@use './styles/mixins.scss' as mixins;
+@use './styles/variables.scss' as vars;
+@use './styles/utilities.scss' as utils;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@include mat.core();
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+html,
+body {
+	background-color: theme.$background-color;
+	height: 100%;
+	@include mat.all-component-themes(theme.$light-theme);
+}
+
+li {
+	list-style-type: none;
+}
+
+.primary-color {
+	color: theme.$primary-color;
+}
+
+.primary-color-bg {
+	background-color: theme.$primary-color;
+}
+
+.highlight-color {
+	color: theme.$highlight-color;
+}
+
+.highlight-color-bg {
+	background-color: theme.$highlight-color;
+}
+
+.container {
+	width: vars.$width-full;
+	height: vars.$height-vh-100;
+}
+
+.responsive-container {
+	max-width: vars.$max-w-7xl;
+	width: 91%;
+}
+
+.flex-col {
+	@extend .flex, .flex-column;
+}
+
+.flex-row {
+	@extend .flex, .flex-row;
+}
+
+.w-full {
+	width: vars.$width-full;
+}

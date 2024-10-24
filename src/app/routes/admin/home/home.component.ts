@@ -6,6 +6,5 @@ import { NavbarComponent } from '@app/shared/ui/admin/navbar/navbar.component';
 	standalone: true,
 	imports: [NavbarComponent],
 	templateUrl: './home.component.html',
-	styleUrl: './home.component.css',
 })
 export class AdminHomeComponent {}

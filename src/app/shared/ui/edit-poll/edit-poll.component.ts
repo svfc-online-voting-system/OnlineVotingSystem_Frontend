@@ -29,7 +29,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 		ReactiveFormsModule,
 	],
 	templateUrl: './edit-poll.component.html',
-	styleUrl: './edit-poll.component.css',
 })
 export class EditPollComponent implements OnInit {
 	titleFormGroup!: FormGroup;

@@ -1,0 +1,174 @@
+@use '../../../styles.scss' as styles;
+@use '../../../styles/utilities.scss' as utils;
+@use '../../../styles/mixins.scss' as mixins;
+@use '../../../styles/variables.scss' as vars;
+
+.font-bold {
+	@extend .font-bold;
+}
+
+.primary-color {
+	@extend .primary-color;
+}
+
+.home-container {
+	@extend .container;
+	display: flex;
+	justify-content: start;
+	flex-direction: column;
+	align-items: center;
+
+	.home-sub-container {
+		@extend .responsive-container, .flex-col;
+		@include mixins.p-y(2rem);
+		@include mixins.gap(4rem);
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		@include mixins.responsive(vars.$breakpoint-md) {
+			@include mixins.p-y(4rem);
+		}
+
+		.navbar {
+			@extend .w-full, .flex-col;
+			@include mixins.gap(0.5rem);
+			justify-content: center;
+			align-items: center;
+
+			@include mixins.responsive(vars.$breakpoint-md) {
+				flex-direction: row;
+				justify-content: space-between;
+			}
+
+			a {
+				@include mixins.text-size(vars.$font-lg);
+				text-decoration: none;
+				color: black;
+				@extend .font-bold;
+
+				span {
+					@extend .primary-color;
+				}
+			}
+
+			nav {
+				@extend .w-full;
+				@include mixins.responsive(vars.$breakpoint-md) {
+					width: fit-content;
+				}
+
+				ul {
+					@extend .w-full, .flex-row;
+					padding-inline-start: 0;
+					justify-content: center;
+					align-items: center;
+					@include mixins.gap(0.5rem);
+					@include mixins.responsive(vars.$breakpoint-md) {
+						@include mixins.gap(1.5rem);
+					}
+
+					li {
+						@include mixins.text-size(vars.$font-sm);
+						cursor: pointer;
+						transition: all 0.3s ease-in-out;
+					}
+				}
+			}
+		}
+
+		.hero {
+			@extend .w-full, .flex-col;
+			justify-content: center;
+			align-items: center;
+			@include mixins.gap(1rem);
+			@include mixins.responsive(vars.$breakpoint-md) {
+				flex-direction: row;
+				@include mixins.gap(2rem);
+			}
+
+			.image-section {
+				width: 95%;
+				@include mixins.responsive(vars.$breakpoint-md) {
+					width: 50%;
+				}
+
+				img {
+					width: 100%;
+					height: auto;
+				}
+			}
+
+			.cta-section {
+				@extend .flex-col;
+				justify-content: center;
+				align-items: center;
+				@include mixins.responsive(vars.$breakpoint-md) {
+					align-items: start;
+				}
+
+				h1 {
+					@extend .font-bold;
+
+					@include mixins.responsive(vars.$breakpoint-md) {
+						@include mixins.text-size(vars.$font-4xl);
+					}
+				}
+
+				.cta-buttons {
+					@extend .flex-row;
+					@include mixins.gap(1rem);
+					justify-content: center;
+					align-items: center;
+				}
+			}
+		}
+
+		.how-it-works-section {
+			@extend .flex-col, .w-full;
+			@include mixins.gap(1rem);
+			justify-content: center;
+
+			h2 {
+				@extend .font-bold;
+			}
+
+			.step-container {
+				@include mixins.grid(1, auto, 1rem);
+				@include mixins.gap(1rem);
+
+				@include mixins.responsive(vars.$breakpoint-md) {
+					grid-template-columns: repeat(2, 1fr);
+					@include mixins.gap(2rem);
+				}
+
+				mat-card {
+					@extend .flex-row;
+					@include mixins.p(1rem);
+					@include mixins.gap(1rem);
+					@include mixins.border(0.1rem, solid, #cdc7d3);
+					box-shadow: none;
+
+					.count-container {
+						@include mixins.grid(1, auto, 1rem);
+						place-content: center;
+						.count {
+							@extend .highlight-color-bg, .primary-color;
+							@include mixins.height(3rem);
+							@include mixins.width(3rem);
+							@include mixins.text-size(vars.$font-lg);
+							justify-content: center;
+							align-items: center;
+							display: flex;
+							border-radius: 9999px;
+						}
+					}
+
+					div > h3 {
+						@extend .font-bold;
+					}
+				}
+			}
+		}
+	}
+}
