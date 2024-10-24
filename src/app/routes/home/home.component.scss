@@ -3,14 +3,6 @@
 @use '../../../styles/mixins.scss' as mixins;
 @use '../../../styles/variables.scss' as vars;
 
-.font-bold {
-	@extend .font-bold;
-}
-
-.primary-color {
-	@extend .primary-color;
-}
-
 .home-container {
 	@extend .container;
 	display: flex;

@@ -1,0 +1,94 @@
+@use '../../../../styles.scss' as styles;
+@use '../../../../styles/utilities.scss' as utils;
+@use '../../../../styles/mixins.scss' as mixins;
+@use '../../../../styles/variables.scss' as vars;
+
+.signup-container {
+	@extend .container;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+
+	.sub-container {
+		@extend .responsive-container, .flex-col;
+
+		@include mixins.responsive(vars.$breakpoint-lg) {
+			flex-direction: row;
+		}
+
+		.image-section {
+			display: none;
+			color: #000;
+			min-height: 100vh;
+			@include mixins.width(vars.$width-half);
+			@include mixins.grid(1, 1fr, 1rem);
+			place-content: center;
+
+			@include mixins.responsive(vars.$breakpoint-lg) {
+				display: block;
+			}
+
+			img {
+				@include mixins.size(vars.$width-full);
+				@include mixins.height(auto);
+			}
+		}
+
+		.login-section {
+			@extend .flex-center;
+			@include mixins.width(vars.$width-full);
+			min-height: 100vh;
+			@include mixins.responsive(vars.$breakpoint-lg) {
+				@include mixins.width(vars.$width-half);
+			}
+
+			mat-card {
+				@include mixins.max-width(vars.$max-width-screen-sm);
+				@include mixins.width(vars.$width-responsive);
+				@extend .flex-col;
+				@include mixins.gap(0.5rem);
+				@include mixins.p(0.5rem);
+				@include mixins.responsive(vars.$breakpoint-md) {
+					@include mixins.p(1.5rem);
+					@include mixins.gap(1.5rem);
+				}
+
+				mat-card-header {
+					@extend .w-full, .flex-center;
+					mat-card-title {
+						font-weight: 800;
+						@include mixins.text-size(vars.$font-lg);
+						text-align: center;
+						span {
+							@extend .primary-color;
+						}
+					}
+
+					mat-card-subtitle {
+						font-weight: 600;
+						text-align: center;
+						@include mixins.text-size(vars.$font-lg);
+					}
+				}
+
+				mat-card-content {
+					form {
+						@extend .flex-col;
+						justify-content: center;
+						align-items: center;
+						@include mixins.gap(1rem);
+						@include mixins.responsive(vars.$breakpoint-md) {
+							@include mixins.gap(1.5rem);
+						}
+
+						button,
+						a {
+							@include mixins.width(fit-content);
+						}
+					}
+				}
+			}
+		}
+	}
+}

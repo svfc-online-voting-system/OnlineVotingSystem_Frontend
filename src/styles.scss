@@ -52,6 +52,12 @@ li {
 	height: vars.$height-vh-100;
 }
 
+.flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .responsive-container {
 	max-width: vars.$max-w-7xl;
 	width: 91%;

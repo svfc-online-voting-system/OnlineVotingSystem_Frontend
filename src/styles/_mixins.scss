@@ -142,3 +142,7 @@
 @mixin width($width) {
 	width: $width;
 }
+
+@mixin max-width($width) {
+	max-width: $width;
+}
