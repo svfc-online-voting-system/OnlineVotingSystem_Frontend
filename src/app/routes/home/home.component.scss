@@ -5,28 +5,22 @@
 
 .home-container {
 	@extend .container;
-	display: flex;
-	justify-content: start;
-	flex-direction: column;
-	align-items: center;
+	@include mixins.flex(column, center, center);
 
 	.home-sub-container {
-		@extend .responsive-container, .flex-col;
+		@extend .responsive-container;
+		@include mixins.flex(column, center, center);
 		@include mixins.p-y(2rem);
 		@include mixins.gap(4rem);
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
 
 		@include mixins.responsive(vars.$breakpoint-md) {
 			@include mixins.p-y(2.3rem);
 		}
 
 		.navbar {
-			@extend .w-full, .flex-col;
+			@extend .w-full;
+			@include mixins.flex(column, center, center);
 			@include mixins.gap(0.5rem);
-			justify-content: center;
-			align-items: center;
 
 			@include mixins.responsive(vars.$breakpoint-md) {
 				flex-direction: row;
@@ -37,7 +31,7 @@
 				@include mixins.text-size(vars.$font-lg);
 				text-decoration: none;
 				color: black;
-				@extend .font-bold;
+				font-weight: 700;
 
 				span {
 					@extend .primary-color;
@@ -51,10 +45,9 @@
 				}
 
 				ul {
-					@extend .w-full, .flex-row;
+					@extend .w-full;
+					@include mixins.flex(row, center, center);
 					padding-inline-start: 0;
-					justify-content: center;
-					align-items: center;
 					@include mixins.gap(0.5rem);
 					@include mixins.responsive(vars.$breakpoint-md) {
 						@include mixins.gap(1.5rem);
@@ -70,9 +63,8 @@
 		}
 
 		.hero {
-			@extend .w-full, .flex-col;
-			justify-content: center;
-			align-items: center;
+			@extend .w-full;
+			@include mixins.flex(column, center, center);
 			@include mixins.gap(1rem);
 			@include mixins.responsive(vars.$breakpoint-md) {
 				flex-direction: row;
@@ -92,9 +84,7 @@
 			}
 
 			.cta-section {
-				@extend .flex-col;
-				justify-content: center;
-				align-items: center;
+				@include mixins.flex(column, center, center);
 				@include mixins.responsive(vars.$breakpoint-md) {
 					align-items: start;
 				}
@@ -108,18 +98,16 @@
 				}
 
 				.cta-buttons {
-					@extend .flex-row;
+					@include mixins.flex(row, center, center);
 					@include mixins.gap(1rem);
-					justify-content: center;
-					align-items: center;
 				}
 			}
 		}
 
 		.how-it-works-section {
-			@extend .flex-col, .w-full;
+			@extend .w-full;
+			@include mixins.flex(column, center);
 			@include mixins.gap(1rem);
-			justify-content: center;
 
 			h2 {
 				@extend .font-bold;
@@ -135,7 +123,7 @@
 				}
 
 				mat-card {
-					@extend .flex-row;
+					@include mixins.flex(row, center, center);
 					@include mixins.p(1rem);
 					@include mixins.gap(1rem);
 					@include mixins.border(0.1rem, solid, #cdc7d3);
@@ -149,9 +137,7 @@
 							@include mixins.height(3rem);
 							@include mixins.width(3rem);
 							@include mixins.text-size(vars.$font-lg);
-							justify-content: center;
-							align-items: center;
-							display: flex;
+							@include mixins.flex(row, center, center);
 							border-radius: 9999px;
 						}
 					}
@@ -164,8 +150,8 @@
 		}
 
 		.benefits-section {
-			@extend .flex-col, .w-full;
-			justify-content: center;
+			@include mixins.flex(column, column, center);
+			@extend .w-full;
 
 			h2 {
 				@extend .font-bold;

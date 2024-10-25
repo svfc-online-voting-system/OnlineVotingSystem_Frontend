@@ -204,7 +204,7 @@ export const routes: Routes = [
 	{
 		path: '**',
 		title: '404 | Oh no!',
-		loadChildren: () =>
+		loadComponent: () =>
 			import('@app/routes/not-found/not-found.component').then(
 				(m) => m.NotFoundComponent,
 			),

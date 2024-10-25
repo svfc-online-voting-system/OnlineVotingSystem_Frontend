@@ -1,7 +1,5 @@
-@use 'theme.scss' as theme;
 @use 'mixins.scss' as mixins;
 @use 'variables.scss' as vars;
-@use 'utilities.scss' as utils;
 @use './../styles.scss' as styles;
 
 .auth-container {
@@ -9,8 +7,8 @@
 	@include mixins.flex(column, center, center);
 
 	.auth-sub-container {
-		@extend .responsive-container, .flex-col;
-		justify-content: space-between;
+		@extend .responsive-container;
+		@include mixins.flex(column, space-between, center);
 
 		@include mixins.responsive(vars.$breakpoint-lg) {
 			flex-direction: row;
@@ -42,7 +40,7 @@
 			mat-card {
 				@include mixins.max-width(vars.$max-width-screen-sm);
 				@include mixins.width(vars.$width-responsive);
-				@extend .flex-col;
+				@include mixins.flex(column, center, center);
 				@include mixins.gap(1rem);
 				@include mixins.p(0.5rem);
 				@include mixins.responsive(vars.$breakpoint-md) {
