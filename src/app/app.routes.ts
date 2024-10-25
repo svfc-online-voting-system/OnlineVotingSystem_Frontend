@@ -44,7 +44,7 @@ export const routes: Routes = [
 	{
 		title: 'votevoyage | Verify your email',
 		path: 'auth/verify-email/:token',
-		loadChildren: () =>
+		loadComponent: () =>
 			import('@app/routes/auth/verify-email/verify-email.component').then(
 				(m) => m.VerifyEmailComponent,
 			),

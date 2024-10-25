@@ -28,11 +28,21 @@
 								matInput
 								placeholder="ex.: Juan" />
 							<mat-error
-								*ngIf="signUpFormGroup.hasError('required')">
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'firstName'
+									)
+								">
 								First Name is required
 							</mat-error>
 							<mat-error
-								*ngIf="signUpFormGroup.hasError('tooShort')">
+								*ngIf="
+									signUpFormGroup.hasError(
+										'tooShort',
+										'firstName'
+									)
+								">
 								First Name is too short
 							</mat-error>
 						</mat-form-field>
@@ -47,11 +57,21 @@
 								matInput
 								placeholder="ex.: Dela Cruz" />
 							<mat-error
-								*ngIf="signUpFormGroup.hasError('required')">
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'lastName'
+									)
+								">
 								Last Name is required
 							</mat-error>
 							<mat-error
-								*ngIf="signUpFormGroup.hasError('tooShort')">
+								*ngIf="
+									signUpFormGroup.hasError(
+										'tooShort',
+										'lastName'
+									)
+								">
 								Last Name is too short
 							</mat-error>
 						</mat-form-field>
@@ -85,11 +105,21 @@
 								matInput
 								placeholder="ex.: someone@example.com" />
 							<mat-error
-								*ngIf="signUpFormGroup.hasError('emailExists')"
+								*ngIf="
+									signUpFormGroup.hasError(
+										'emailExists',
+										'email'
+									)
+								"
 								>Email already exists</mat-error
 							>
 							<mat-error
-								*ngIf="signUpFormGroup.hasError('emailInvalid')"
+								*ngIf="
+									signUpFormGroup.hasError(
+										'emailInvalid',
+										'email'
+									)
+								"
 								>Email is invalid</mat-error
 							>
 						</mat-form-field>
@@ -107,7 +137,10 @@
 								placeholder="********" />
 							<mat-error
 								*ngIf="
-									signUpFormGroup.hasError('passwordMismatch')
+									signUpFormGroup.hasError(
+										'passwordMismatch',
+										'password'
+									)
 								">
 								Passwords do not match
 							</mat-error>
@@ -126,7 +159,10 @@
 								placeholder="********" />
 							<mat-error
 								*ngIf="
-									signUpFormGroup.hasError('passwordMismatch')
+									signUpFormGroup.hasError(
+										'passwordMismatch',
+										'confirmPassword'
+									)
 								">
 								Passwords do not match
 							</mat-error>

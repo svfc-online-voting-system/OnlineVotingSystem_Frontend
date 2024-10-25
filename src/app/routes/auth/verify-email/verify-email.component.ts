@@ -1,4 +1,4 @@
-import { Component, type OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, SnackbarService } from '@app/core/core.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -8,32 +8,31 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 	standalone: true,
 	imports: [MatProgressSpinnerModule],
 	templateUrl: './verify-email.component.html',
+	styleUrl: './verify-email.component.scss',
 })
 export class VerifyEmailComponent implements OnInit {
+	private readonly _route = inject(ActivatedRoute);
+	private readonly _router = inject(Router);
+	private readonly _authService = inject(AuthService);
+	private readonly _snackBarService = inject(SnackbarService);
 	token: string | null = null;
-	constructor(
-		private route: ActivatedRoute,
-		private router: Router,
-		private authService: AuthService,
-		private snackBarService: SnackbarService,
-	) {}
 
 	async ngOnInit(): Promise<void> {
-		this.route.paramMap.subscribe(async (params) => {
+		this._route.paramMap.subscribe(async (params) => {
 			this.token = params.get('token') as string;
 			try {
-				const result = await this.authService.verifyEmail(this.token);
+				const result = await this._authService.verifyEmail(this.token);
 				if (result) {
-					this.snackBarService.showSnackBar(
+					this._snackBarService.showSnackBar(
 						'Email verified successfully, please login.',
 					);
-					this.router.navigate(['/auth/login']);
+					this._router.navigate(['/auth/login']);
 				}
 			} catch {
-				this.snackBarService.showSnackBar(
+				this._snackBarService.showSnackBar(
 					'Error verifying email. Please try again.',
 				);
-				this.router.navigate(['/auth/login']);
+				this._router.navigate(['/auth/login']);
 			}
 		});
 	}
