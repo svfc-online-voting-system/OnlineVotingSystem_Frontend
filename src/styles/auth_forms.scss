@@ -1,17 +1,16 @@
-@use '../../../../styles.scss' as styles;
-@use '../../../../styles/utilities.scss' as utils;
-@use '../../../../styles/mixins.scss' as mixins;
-@use '../../../../styles/variables.scss' as vars;
+@use 'theme.scss' as theme;
+@use 'mixins.scss' as mixins;
+@use 'variables.scss' as vars;
+@use 'utilities.scss' as utils;
+@use './../styles.scss' as styles;
 
-.signup-container {
+.auth-container {
 	@extend .container;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
+	@include mixins.flex(column, center, center);
 
-	.sub-container {
+	.auth-sub-container {
 		@extend .responsive-container, .flex-col;
+		justify-content: space-between;
 
 		@include mixins.responsive(vars.$breakpoint-lg) {
 			flex-direction: row;
@@ -19,24 +18,21 @@
 
 		.image-section {
 			display: none;
-			color: #000;
-			min-height: 100vh;
 			@include mixins.width(vars.$width-half);
-			@include mixins.grid(1, 1fr, 1rem);
-			place-content: center;
 
 			@include mixins.responsive(vars.$breakpoint-lg) {
-				display: block;
+				@include mixins.flex(row, center, center);
 			}
 
 			img {
+				display: block;
 				@include mixins.size(vars.$width-full);
 				@include mixins.height(auto);
 			}
 		}
 
-		.login-section {
-			@extend .flex-center;
+		.auth-section {
+			@include mixins.flex(column, center, center);
 			@include mixins.width(vars.$width-full);
 			min-height: 100vh;
 			@include mixins.responsive(vars.$breakpoint-lg) {
@@ -47,7 +43,7 @@
 				@include mixins.max-width(vars.$max-width-screen-sm);
 				@include mixins.width(vars.$width-responsive);
 				@extend .flex-col;
-				@include mixins.gap(0.5rem);
+				@include mixins.gap(1rem);
 				@include mixins.p(0.5rem);
 				@include mixins.responsive(vars.$breakpoint-md) {
 					@include mixins.p(1.5rem);
@@ -55,10 +51,10 @@
 				}
 
 				mat-card-header {
-					@extend .w-full, .flex-center;
+					@include mixins.flex(column, center, center);
 					mat-card-title {
 						font-weight: 800;
-						@include mixins.text-size(vars.$font-lg);
+						@include mixins.text-size(vars.$font-xl);
 						text-align: center;
 						span {
 							@extend .primary-color;
@@ -73,13 +69,17 @@
 				}
 
 				mat-card-content {
+					@include mixins.width(vars.$width-full);
 					form {
-						@extend .flex-col;
-						justify-content: center;
-						align-items: center;
+						@include mixins.width(vars.$width-full);
+						@include mixins.flex(column, center, center);
 						@include mixins.gap(1rem);
 						@include mixins.responsive(vars.$breakpoint-md) {
 							@include mixins.gap(1.5rem);
+						}
+
+						mat-form-field {
+							@include mixins.width(vars.$width-full);
 						}
 
 						button,

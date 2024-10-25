@@ -4,7 +4,7 @@ import {
 	PLATFORM_ID,
 	ChangeDetectorRef,
 } from '@angular/core';
-import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { isPlatformBrowser, NgIf } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -53,7 +53,7 @@ import {
 		},
 	],
 	imports: [
-		CommonModule,
+		NgIf,
 		MatDatepickerModule,
 		MatCardModule,
 		RouterLink,
@@ -65,7 +65,7 @@ import {
 		MatCheckboxModule,
 	],
 	templateUrl: './signup.component.html',
-	styleUrl: './signup.component.scss',
+	styleUrl: '../../../../styles/auth_forms.scss',
 })
 export class SignupComponent {
 	private readonly _formBuilder = inject(FormBuilder);
@@ -126,9 +126,12 @@ export class SignupComponent {
 				signUpFormGroupValues.password !==
 				signUpFormGroupValues.confirmPassword
 			) {
-				this._snackBarService.showSnackBar('Passwords do not match.');
-			} else {
-				this._snackBarService.closeSnackBar();
+				this.signUpFormGroup.controls['confirmPassword'].setErrors({
+					passwordMismatch: true,
+				});
+				this.signUpFormGroup.controls['password'].setErrors({
+					passwordMismatch: true,
+				});
 			}
 		}
 	}

@@ -1,5 +1,5 @@
-<main class="signup-container">
-	<div class="sub-container">
+<main class="auth-container">
+	<div class="auth-sub-container">
 		<section class="image-section">
 			<img
 				src="images/root/sign-up-image.png"
@@ -7,22 +7,17 @@
 					An illustration that shows two hands from two different phone section
 				" />
 		</section>
-		<section class="login-section">
+		<section class="auth-section">
 			<mat-card appearance="outlined">
 				<mat-card-header>
-					<mat-card-title class="font-bold font-primary"
-						><span class="text-primary">vote</span
-						>voyage</mat-card-title
-					>
-					<mat-card-subtitle class="font-normal font-primary"
-						>Sign Up</mat-card-subtitle
-					>
+					<mat-card-title><span>vote</span>voyage</mat-card-title>
+					<mat-card-subtitle>Sign Up</mat-card-subtitle>
 				</mat-card-header>
 				<mat-card-content>
 					<form
 						(ngSubmit)="onSignUpFormSubmit()"
 						[formGroup]="signUpFormGroup">
-						<mat-form-field class="w-full mt-2">
+						<mat-form-field>
 							<mat-label>First Name</mat-label>
 							<input
 								required
@@ -41,7 +36,7 @@
 								First Name is too short
 							</mat-error>
 						</mat-form-field>
-						<mat-form-field class="w-full">
+						<mat-form-field>
 							<mat-label>Last Name</mat-label>
 							<input
 								required
@@ -60,7 +55,7 @@
 								Last Name is too short
 							</mat-error>
 						</mat-form-field>
-						<mat-form-field class="w-full mt-2">
+						<mat-form-field>
 							<mat-label>Birth Date</mat-label>
 							<input
 								min="1900-01-01"
@@ -80,7 +75,7 @@
 								[for]="picker"></mat-datepicker-toggle>
 							<mat-datepicker #picker></mat-datepicker>
 						</mat-form-field>
-						<mat-form-field class="w-full mt-2">
+						<mat-form-field>
 							<mat-label>Email</mat-label>
 							<input
 								required
@@ -98,14 +93,15 @@
 								>Email is invalid</mat-error
 							>
 						</mat-form-field>
-						<mat-form-field class="w-full mt-2">
+						<mat-form-field>
 							<mat-label>Password</mat-label>
 							<input
 								required
 								autocomplete="new-password"
 								formControlName="password"
 								matInput
-								#passwordField
+								type="password"
+								onchange="checkPasswordMatch()"
 								min="8"
 								minlength="8"
 								placeholder="********" />
@@ -116,12 +112,13 @@
 								Passwords do not match
 							</mat-error>
 						</mat-form-field>
-						<mat-form-field class="w-full">
+						<mat-form-field>
 							<mat-label>Confirm Password</mat-label>
 							<input
 								required
 								autocomplete="new-password"
 								type="password"
+								onchange="checkPasswordMatch()"
 								formControlName="confirmPassword"
 								matInput
 								min="8"
@@ -136,7 +133,6 @@
 						</mat-form-field>
 						<mat-checkbox
 							formControlName="showPassword"
-							class="mt-2"
 							aria-label="Show password"
 							>Show Password</mat-checkbox
 						>
@@ -147,7 +143,7 @@
 						</button>
 						<a
 							mat-stroked-button
-							routerLink="/login">
+							routerLink="/auth/login">
 							Login Instead
 						</a>
 					</form>

@@ -7,6 +7,7 @@ import {
 	inject,
 	afterNextRender,
 } from '@angular/core';
+import { NgIf } from '@angular/common';
 import {
 	FormBuilder,
 	Validators,
@@ -16,7 +17,10 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+	MAT_FORM_FIELD_DEFAULT_OPTIONS,
+	MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
 import {
@@ -30,11 +34,23 @@ import {
 	type ApiAuthErrorResponse,
 } from '@app/core/models/authResponseType';
 import { LoginValidatorsService, SnackbarService } from '@app/core/core.module';
+import {
+	ErrorStateMatcher,
+	ShowOnDirtyErrorStateMatcher,
+} from '@angular/material/core';
 
 @Component({
+	providers: [
+		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+		{
+			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+			useValue: { appearance: 'outline' },
+		},
+	],
 	selector: 'app-login',
 	standalone: true,
 	imports: [
+		NgIf,
 		RouterLink,
 		MatCardModule,
 		ReactiveFormsModule,
@@ -46,27 +62,30 @@ import { LoginValidatorsService, SnackbarService } from '@app/core/core.module';
 		MatCheckboxModule,
 	],
 	templateUrl: './login.component.html',
+	styleUrl: '../../../../styles/auth_forms.scss',
 })
 export class LoginComponent implements OnInit {
+	private readonly _snackBarService = inject(SnackbarService);
+	private readonly _formBuilder = inject(FormBuilder);
+	private readonly _authService = inject(AuthService);
+	private readonly _logInValidatorService = inject(LoginValidatorsService);
+	private readonly _router = inject(Router);
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 	@ViewChild('loginButton') loginButton!: HTMLButtonElement;
 	readonly dialog = inject(MatDialog);
-
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
-	constructor(
-		private _snackBarService: SnackbarService,
-		private _formBuilder: FormBuilder,
-		private _authService: AuthService,
-		private _logInValidatorService: LoginValidatorsService,
-		private _router: Router,
-	) {
+	constructor() {
 		afterNextRender(() => {
-			this.togglePasswordVisibility();
 			this.disableLoginButtonOnSubmit();
 			this.enableLoginButton();
 		});
 	}
+
+	loginFormGroup = this._formBuilder.group({
+		email: ['', [Validators.required, Validators.email]],
+		password: ['', Validators.required],
+	});
 
 	ngOnInit(): void {
 		this.emailFormGroup = this._formBuilder.group({
@@ -85,19 +104,6 @@ export class LoginComponent implements OnInit {
 
 	closeLoadingDialog(): void {
 		this.dialog.closeAll();
-	}
-
-	togglePasswordVisibility(): void {
-		const isChecked = this.showPasswordToggler.checked;
-		const passwordInput = document.querySelector(
-			'input[formControlName="password"]',
-		) as HTMLInputElement;
-
-		if (isChecked) {
-			passwordInput.type = 'text';
-		} else {
-			passwordInput.type = 'password';
-		}
 	}
 
 	disableLoginButtonOnSubmit(): void {
@@ -119,24 +125,16 @@ export class LoginComponent implements OnInit {
 		}
 	}
 
-	submitPasswordForm(): void {
-		const passwordValidationResult =
-			this._logInValidatorService.validatePassword(
-				this.passwordFormGroup,
-			);
-		if (passwordValidationResult) {
-			this._snackBarService.showSnackBar(passwordValidationResult);
-		}
-	}
-
 	async submitLogInForm(): Promise<void> {
-		this.submitEmailForm();
-		this.submitPasswordForm();
-
-		if (this.emailFormGroup.valid && this.passwordFormGroup.valid) {
+		const loginFormGroupData = this.loginFormGroup.value;
+		if (
+			this.loginFormGroup.valid &&
+			loginFormGroupData.email &&
+			loginFormGroupData.password
+		) {
 			const loginInformation = {
-				email: this.emailFormGroup.value.email,
-				password: this.passwordFormGroup.value.password,
+				email: loginFormGroupData.email,
+				password: loginFormGroupData.password,
 			};
 			const dialogTimer = setTimeout(() => {
 				this.openLoadingDialog();
