@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {
 	CanActivate,
 	Router,
@@ -17,15 +18,25 @@ import {
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-	constructor(private authService: AuthService, private router: Router) {}
+	// Do a DI Pattern for AuthService, Router, and PLATFORM_ID
+	private readonly _authService = inject(AuthService);
+	private readonly _router = inject(Router);
+	private readonly _platformId = inject(PLATFORM_ID);
 
 	canActivate(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot,
 	): Observable<boolean> {
+		if (!isPlatformBrowser(this._platformId)) {
+			return of(true);
+		}
+
 		const currentUrl = state.url;
-		if (currentUrl.startsWith('/u')) {
-			return this.authService.isTokenValid().pipe(
+		const isProtectedRoute =
+			currentUrl.startsWith('/u') || currentUrl.startsWith('/a');
+
+		if (isProtectedRoute) {
+			return this._authService.isTokenValid().pipe(
 				map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
 					if ('error' in res) {
 						console.log(
@@ -37,34 +48,12 @@ export class AuthGuard implements CanActivate {
 				}),
 				tap((isValid: boolean) => {
 					if (!isValid) {
-						this.router.navigate(['/auth/login']);
+						this._router.navigate(['/auth/login']);
 					}
 				}),
 				catchError((error) => {
 					console.error('An unexpected error occurred:', error);
-					this.router.navigate(['/auth/login']);
-					return of(false);
-				}),
-			);
-		} else if (currentUrl.startsWith('/a')) {
-			return this.authService.isTokenValid().pipe(
-				map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
-					if ('error' in res) {
-						console.log(
-							`Authentication failed: ${res.error.message}`,
-						);
-						return false;
-					}
-					return res.code === 'success';
-				}),
-				tap((isValid: boolean) => {
-					if (!isValid) {
-						this.router.navigate(['/auth/login']);
-					}
-				}),
-				catchError((error) => {
-					console.error('An unexpected error occurred:', error);
-					this.router.navigate(['/auth/login']);
+					this._router.navigate(['/auth/login']);
 					return of(false);
 				}),
 			);
