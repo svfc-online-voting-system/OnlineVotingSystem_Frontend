@@ -12,15 +12,11 @@ describe('ManageElectionsComponent', () => {
 			imports: [ManageElectionsComponent],
 			providers: [
 				{
-					providers: [
-						{
-							provide: ActivatedRoute,
-							useValue: {
-								snapshot: { paramMap: { get: () => 'mockId' } },
-								params: of({ id: 'mockId' }),
-							},
-						},
-					],
+					provide: ActivatedRoute,
+					useValue: {
+						snapshot: { paramMap: { get: () => 'mockId' } },
+						params: of({ id: 'mockId' }),
+					},
 				},
 			],
 		}).compileComponents();

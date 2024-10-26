@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { UserHomeComponent } from '@app/routes/user/home/home.component';
 import { provideHttpClient } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('UserHomeComponent', () => {
 	let component: UserHomeComponent;
@@ -10,7 +11,7 @@ describe('UserHomeComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [UserHomeComponent],
+			imports: [UserHomeComponent, BrowserAnimationsModule],
 			providers: [
 				provideHttpClient(),
 				{

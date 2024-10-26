@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf, NgFor } from '@angular/common';
 import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
@@ -31,16 +31,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 	templateUrl: './edit-poll.component.html',
 })
 export class EditPollComponent implements OnInit {
+	private readonly _pollService = inject(PollService);
+	private readonly _router = inject(Router);
+	private readonly _route = inject(ActivatedRoute);
 	titleFormGroup!: FormGroup;
 	pollTitle: string | null = '';
 	pollOptions: string[] = [];
 	saving = false;
 
-	constructor(
-		private pollService: PollService,
-		private router: Router,
-		private route: ActivatedRoute,
-	) {
+	constructor() {
 		this.titleFormGroup = new FormGroup({
 			title: new FormControl('', [
 				Validators.required,
@@ -58,18 +57,18 @@ export class EditPollComponent implements OnInit {
 				this.saving = true;
 			});
 
-		this.route.paramMap.subscribe((params) => {
+		this._route.paramMap.subscribe((params) => {
 			const pollId = Number(params.get('id'));
 			if (pollId) {
 				this.loadPoll(pollId);
 			} else {
-				this.router.navigate(['/u/new/poll']);
+				this._router.navigate(['/u/new/poll']);
 			}
 		});
 	}
 
 	loadPoll(pollId: number): void {
-		this.pollService.getPollData(pollId).subscribe((poll) => {
+		this._pollService.getPollData(pollId).subscribe((poll) => {
 			this.pollTitle = poll.title;
 			this.pollOptions = poll.options;
 			this.titleFormGroup.setValue({ title: poll.title });

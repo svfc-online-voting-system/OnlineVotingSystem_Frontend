@@ -12,8 +12,9 @@ describe('AddNewVoteSheetComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [AddNewVoteSheetComponent],
 			providers: [
+				MatBottomSheetRef,
 				{
-					provide: [ActivatedRoute, MatBottomSheetRef],
+					provide: ActivatedRoute,
 					useValue: {
 						snapshot: {
 							paramMap: {

@@ -3,6 +3,7 @@ import { NewPollComponent } from './new-poll.component';
 import { provideHttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('NewPollComponent', () => {
 	let component: NewPollComponent;
@@ -10,7 +11,7 @@ describe('NewPollComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [NewPollComponent],
+			imports: [NewPollComponent, BrowserAnimationsModule],
 			providers: [
 				provideHttpClient(),
 				{

@@ -10,10 +10,10 @@ describe('FilterNavComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FilterNavComponent],
+			imports: [FilterNavComponent, BrowserAnimationsModule],
 			providers: [
 				{
-					provide: [ActivatedRoute, BrowserAnimationsModule],
+					provide: ActivatedRoute,
 					useValue: {
 						snapshot: {
 							paramMap: {
