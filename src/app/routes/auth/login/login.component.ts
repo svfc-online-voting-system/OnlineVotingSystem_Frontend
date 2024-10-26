@@ -1,19 +1,11 @@
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '@app/core/core.module';
-import {
-	Component,
-	ViewChild,
-	OnInit,
-	inject,
-	afterNextRender,
-	PLATFORM_ID,
-} from '@angular/core';
+import { Component, ViewChild, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import {
 	FormBuilder,
 	Validators,
 	FormsModule,
-	FormGroup,
 	ReactiveFormsModule,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,7 +24,7 @@ import {
 	ApiAuthResponse,
 	type ApiAuthErrorResponse,
 } from '@app/core/models/authResponseType';
-import { LoginValidatorsService, SnackbarService } from '@app/core/core.module';
+import { SnackbarService } from '@app/core/core.module';
 import {
 	ErrorStateMatcher,
 	ShowOnDirtyErrorStateMatcher,
@@ -63,52 +55,29 @@ import {
 	templateUrl: './login.component.html',
 	styleUrl: '../../../../styles/auth_forms_styles/auth_forms.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 	private readonly _snackBarService = inject(SnackbarService);
 	private readonly _formBuilder = inject(FormBuilder);
 	private readonly _authService = inject(AuthService);
-	private readonly _logInValidatorService = inject(LoginValidatorsService);
 	private readonly _router = inject(Router);
 	private readonly _platformId = inject(PLATFORM_ID);
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 	@ViewChild('loginButton') loginButton!: HTMLButtonElement;
 	isBrowser: boolean;
-	emailFormGroup!: FormGroup;
-	passwordFormGroup!: FormGroup;
+	isLoggingIn = false;
+	showPassword = false;
 	constructor() {
 		this.isBrowser = isPlatformBrowser(this._platformId);
-		afterNextRender(() => {
-			this.disableLoginButtonOnSubmit();
-			this.enableLoginButton();
-		});
 	}
 
 	loginFormGroup = this._formBuilder.group({
 		email: ['', [Validators.required, Validators.email]],
 		password: ['', Validators.required],
+		showPasswordCheckbox: [false],
 	});
 
-	ngOnInit(): void {
-		this.emailFormGroup = this._formBuilder.group({
-			email: ['', [Validators.required, Validators.email]],
-		});
-		this.passwordFormGroup = this._formBuilder.group({
-			password: ['', Validators.required],
-		});
-	}
-
-	disableLoginButtonOnSubmit(): void {
-		if (this.isBrowser) {
-			this.loginButton.textContent = 'Logging in...';
-			this.loginButton.disabled = true;
-		}
-	}
-
-	enableLoginButton(): void {
-		if (this.isBrowser) {
-			this.loginButton.textContent = 'Log in';
-			this.loginButton.disabled = false;
-		}
+	togglePasswordVisibility() {
+		this.showPassword = !this.showPassword;
 	}
 
 	async submitLogInForm(): Promise<void> {
@@ -123,33 +92,31 @@ export class LoginComponent implements OnInit {
 					email: loginFormGroupData.email,
 					password: loginFormGroupData.password,
 				};
-				this.disableLoginButtonOnSubmit();
+				this.isLoggingIn = true;
 
 				this._authService.login(loginInformation).subscribe({
 					next: (response: ApiAuthResponse) => {
 						if (response.code === 'otp_sent') {
-							this._snackBarService.showSnackBar(response.message);
+							this._snackBarService.showSnackBar(
+								response.message,
+							);
 							this._router.navigate(['/auth/otp-verification']);
 						} else {
-							this._snackBarService.showSnackBar(response.message);
+							this._snackBarService.showSnackBar(
+								response.message,
+							);
 						}
 					},
 					error: (error: ApiAuthErrorResponse) => {
-						// TODO: Remove the console.error() statement
-						console.error('An error occurred:', error);
 						this._snackBarService.showSnackBar(
 							`${error.error.message}`,
 						);
 						this.loginButton.disabled = false;
 					},
 					complete: () => {
-						this.enableLoginButton();
+						this.isLoggingIn = false;
 					},
 				});
-			} else {
-				this._snackBarService.showSnackBar(
-					'Please enter valid email and password.',
-				);
 			}
 		}
 	}

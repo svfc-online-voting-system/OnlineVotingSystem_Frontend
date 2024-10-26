@@ -25,7 +25,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
 	SnackbarService,
-	SignupValidatorsService,
 	AuthService,
 } from '@app/core/core.module';
 import {
@@ -64,7 +63,6 @@ export class SignupComponent {
 	private readonly _formBuilder = inject(FormBuilder);
 	private readonly _snackBarService = inject(SnackbarService);
 	private readonly _authService = inject(AuthService);
-	private readonly _signUpValidatorService = inject(SignupValidatorsService);
 	private readonly _platformId = inject(PLATFORM_ID);
 	isBrowser: boolean;
 	readonly maximumDate: Date | null;

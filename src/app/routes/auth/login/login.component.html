@@ -44,7 +44,7 @@
 							<input
 								required
 								autocomplete="current-password"
-								type="password"
+								[type]="showPassword ? 'text' : 'password'"
 								formControlName="password"
 								matInput
 								min="8"
@@ -69,10 +69,15 @@
 								Password must be at least 8 characters
 							</mat-error>
 						</mat-form-field>
+						<mat-checkbox
+							(click)="togglePasswordVisibility()"
+							formControlName="showPasswordCheckbox"
+							aria-label="Show password"
+							>Show Password</mat-checkbox
+						>
 						<button
-							mat-flat-button
-							color="primary"
-							class="w-full mt-4">
+							[disabled]="isLoggingIn"
+							mat-flat-button>
 							Login
 						</button>
 						<a
