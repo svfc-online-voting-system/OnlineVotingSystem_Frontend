@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import {
-	MAT_FORM_FIELD_DEFAULT_OPTIONS,
 	MatFormFieldModule,
 } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -20,19 +19,8 @@ import {
 	ApiAuthErrorResponse,
 	ApiAuthResponse,
 } from '@app/core/models/authResponseType';
-import {
-	ErrorStateMatcher,
-	ShowOnDirtyErrorStateMatcher,
-} from '@angular/material/core';
 
 @Component({
-	providers: [
-		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
-		{
-			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-			useValue: { appearance: 'outline' },
-		},
-	],
 	selector: 'app-otp',
 	standalone: true,
 	imports: [

@@ -10,6 +10,11 @@ import {
 	withJsonpSupport,
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import {
+	ErrorStateMatcher,
+	ShowOnDirtyErrorStateMatcher,
+} from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -23,5 +28,10 @@ export const appConfig: ApplicationConfig = {
 			withJsonpSupport(),
 			withInterceptorsFromDi(),
 		),
+		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+		{
+			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+			useValue: { appearance: 'outline' },
+		},
 	],
 };

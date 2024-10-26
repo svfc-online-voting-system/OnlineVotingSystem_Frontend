@@ -31,6 +31,7 @@ import { AddNewVoteSheetComponent } from '../../add-new-vote-sheet/add-new-vote-
 		MatIcon,
 	],
 	templateUrl: './filter-nav.component.html',
+	styleUrl: './filter-nav.component.scss',
 })
 export class FilterNavComponent {
 	@ViewChild('filterVoteCreator')

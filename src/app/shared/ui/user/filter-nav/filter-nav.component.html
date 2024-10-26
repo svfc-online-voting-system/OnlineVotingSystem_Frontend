@@ -17,9 +17,9 @@
 		<div>
 			<p class="font-bold">Filter by voting schedule</p>
 			<mat-button-toggle-group
-				name="ingredients"
+				name="filter-schedule"
 				class="h-auto"
-				aria-label="Ingredients"
+				aria-label="Filter by schedule"
 				multiple>
 				@for (schedule of VOTING_SCHEDULE; track schedule) {
 				<mat-button-toggle value="{{ schedule }}">{{
@@ -28,8 +28,8 @@
 				}
 			</mat-button-toggle-group>
 		</div>
-		<form class="example-form">
-			<mat-form-field class="example-full-width">
+		<form>
+			<mat-form-field>
 				<mat-label> Filter by creator </mat-label>
 				<input
 					#input

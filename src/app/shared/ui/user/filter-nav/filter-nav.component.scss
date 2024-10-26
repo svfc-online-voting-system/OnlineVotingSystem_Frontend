@@ -1,0 +1,22 @@
+@use './../../../../../styles/base_utilities';
+@use './../../../../../styles/mixins' as mixins;
+@use './../../../../../styles/variables' as vars;
+
+section {
+	@extend %w-full, %min-h-screen;
+	@include mixins.flex(row);
+
+	:nth-child(1) {
+		@extend %w-full;
+		@include mixins.gap(vars.$space-4);
+		@include mixins.flex(row);
+	}
+
+	:nth-child(2) {
+		@extend %w-full;
+
+		button {
+			@extend %w-fit;
+		}
+	}
+}

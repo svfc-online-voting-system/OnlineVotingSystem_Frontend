@@ -7,5 +7,6 @@ import { FilterNavComponent } from '@app/shared/ui/user/filter-nav/filter-nav.co
 	standalone: true,
 	imports: [NavbarComponent, FilterNavComponent],
 	templateUrl: './home.component.html',
+	styleUrl: './home.component.scss',
 })
 export class UserHomeComponent {}

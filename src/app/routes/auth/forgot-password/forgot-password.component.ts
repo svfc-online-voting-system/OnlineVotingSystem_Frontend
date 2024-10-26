@@ -3,7 +3,6 @@ import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import {
-	MAT_FORM_FIELD_DEFAULT_OPTIONS,
 	MatFormFieldModule,
 } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -11,18 +10,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { SnackbarService } from '@app/core/core.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-	ErrorStateMatcher,
-	ShowOnDirtyErrorStateMatcher,
-} from '@angular/material/core';
 @Component({
-	providers: [
-		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
-		{
-			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-			useValue: { appearance: 'outline' },
-		},
-	],
 	selector: 'app-forgot-password',
 	standalone: true,
 	imports: [

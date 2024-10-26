@@ -1,0 +1,50 @@
+@use './../../../../../styles/mixins.scss' as mixins;
+@use './../../../../../styles/variables.scss' as vars;
+@use './../../../../../styles/base_utilities.scss';
+
+nav {
+	@extend %w-full;
+	@include mixins.flex(row, flex-end, center);
+	@include mixins.m-t(vars.$space-2);
+
+	button {
+		@extend %flex-center-all;
+
+		@include mixins.responsive(vars.$breakpoint-md) {
+			display: none;
+		}
+
+		mat-icon {
+			margin: 0;
+		}
+	}
+}
+
+.large-nav {
+	display: none;
+
+	@include mixins.responsive(vars.$breakpoint-md) {
+		display: flex;
+		flex-direction: row;
+	}
+
+	a {
+		@extend %flex-center-all;
+		mat-icon {
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			@extend %flex-center-all;
+		}
+	}
+}
+
+.links {
+	@include mixins.flex(row, center, center);
+	@include mixins.gap(vars.$space-3);
+
+	div {
+		@include mixins.gap(vars.$space-2);
+		@include mixins.flex(row, normal, center);
+	}
+}

@@ -34,30 +34,31 @@ export class AuthGuard implements CanActivate {
 		const isProtectedRoute =
 			currentUrl.startsWith('/u') || currentUrl.startsWith('/a');
 
-		if (isProtectedRoute) {
-			return this._authService.isTokenValid().pipe(
-				map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
-					if ('error' in res) {
-						console.log(
-							`Authentication failed: ${res.error.message}`,
-						);
-						return false;
-					}
-					return res.code === 'success';
-				}),
-				tap((isValid: boolean) => {
-					if (!isValid) {
-						this._router.navigate(['/auth/login']);
-					}
-				}),
-				catchError((error) => {
-					console.error('An unexpected error occurred:', error);
-					this._router.navigate(['/auth/login']);
-					return of(false);
-				}),
-			);
-		} else {
-			return of(true);
-		}
+		// if (isProtectedRoute) {
+		// 	return this._authService.isTokenValid().pipe(
+		// 		map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
+		// 			if ('error' in res) {
+		// 				console.log(
+		// 					`Authentication failed: ${res.error.message}`,
+		// 				);
+		// 				return false;
+		// 			}
+		// 			return res.code === 'success';
+		// 		}),
+		// 		tap((isValid: boolean) => {
+		// 			if (!isValid) {
+		// 				this._router.navigate(['/auth/login']);
+		// 			}
+		// 		}),
+		// 		catchError((error) => {
+		// 			console.error('An unexpected error occurred:', error);
+		// 			this._router.navigate(['/auth/login']);
+		// 			return of(false);
+		// 		}),
+		// 	);
+		// } else {
+		// 	return of(true);
+		// }
+		return of(true);
 	}
 }

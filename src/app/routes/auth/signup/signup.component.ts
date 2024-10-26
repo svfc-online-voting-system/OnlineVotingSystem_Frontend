@@ -2,15 +2,10 @@ import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import {
-	MAT_FORM_FIELD_DEFAULT_OPTIONS,
-	MatFormFieldModule,
-} from '@angular/material/form-field';
-import {
-	ErrorStateMatcher,
 	MAT_DATE_LOCALE,
 	provideNativeDateAdapter,
-	ShowOnDirtyErrorStateMatcher,
 } from '@angular/material/core';
 import { RouterLink } from '@angular/router';
 import {
@@ -23,10 +18,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {
-	SnackbarService,
-	AuthService,
-} from '@app/core/core.module';
+import { SnackbarService, AuthService } from '@app/core/core.module';
 import {
 	ApiAuthResponse,
 	ApiAuthErrorResponse,
@@ -38,11 +30,6 @@ import {
 	providers: [
 		{ provide: MAT_DATE_LOCALE, useValue: 'en-CA' },
 		provideNativeDateAdapter(),
-		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
-		{
-			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-			useValue: { appearance: 'outline' },
-		},
 	],
 	imports: [
 		NgIf,

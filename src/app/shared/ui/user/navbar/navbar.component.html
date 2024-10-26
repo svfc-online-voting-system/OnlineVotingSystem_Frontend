@@ -1,274 +1,132 @@
-<nav class="w-full flex flex-row justify-between mt-5">
-	<button mat-button>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			height="24px"
-			viewBox="0 -960 960 960"
-			width="24px"
-			fill="#ba005c">
-			<path
-				d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
-		</svg>
-	</button>
+<nav>
 	<button
-		class="flex md:hidden"
 		mat-button
 		[matMenuTriggerFor]="menu">
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			height="24px"
-			viewBox="0 -960 960 960"
-			width="24px"
-			fill="#ba005c">
-			<path
-				d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z" />
-		</svg>
+		<mat-icon> menu </mat-icon>
 	</button>
-	<mat-menu
-		class="block md:hidden"
-		#menu="matMenu">
+	<mat-menu #menu="matMenu">
 		<a
+			class="links"
 			routerLink="/u/home"
 			mat-menu-item>
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M160-200v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H600q-17 0-28.5-11.5T560-160v-200q0-17-11.5-28.5T520-400h-80q-17 0-28.5 11.5T400-360v200q0 17-11.5 28.5T360-120H240q-33 0-56.5-23.5T160-200Z" /></svg
-				>Home
+			<div>
+				<mat-icon>home</mat-icon>
+				Home
 			</div>
 		</a>
 		<a
+			class="links"
 			routerLink="/u/vote"
-			mat-menu-item
-			class="flex flex-row gap-3">
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M200-80q-33 0-56.5-23.5T120-160v-152q0-14 5-28t15-25l62-70q11-13 28.5-13.5T260-437q11 11 12 27t-10 28l-55 62h546l-53-60q-11-12-10-28t12-27q12-12 29.5-11.5T760-433l60 68q10 11 15 25t5 28v152q0 33-23.5 56.5T760-80H200Zm224-304L285-525q-23-23-23-57t23-57l196-196q23-23 57-23t57 23l141 139q23 23 23.5 56.5T737-583L537-383q-23 23-56.5 22.5T424-384Zm256-256L538-780 340-582l142 140 198-198Z" /></svg
-				>Vote
+			mat-menu-item>
+			<div>
+				<mat-icon>how_to_vote</mat-icon>
+				Vote
 			</div>
 		</a>
 		<a
+			class="links"
 			routerLink="/u/voting-instructions"
-			mat-menu-item
-			class="flex flex-row gap-3">
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm280-640v245q0 12 10 17.5t20-.5l49-30q10-6 21-6t21 6l49 30q10 6 20 .5t10-17.5v-245H480Z" /></svg
-				>Voting Instructions
+			mat-menu-item>
+			<div>
+				<mat-icon>menu_book</mat-icon>
+				Voting Instructions
 			</div>
 		</a>
 		<a
+			class="links"
 			routerLink="/u/view-ballot"
-			mat-menu-item
-			class="flex flex-row gap-3">
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-134 0-244.5-72T61-462q-5-9-7.5-18.5T51-500q0-10 2.5-19.5T61-538q64-118 174.5-190T480-800q134 0 244.5 72T899-538q5 9 7.5 18.5T909-500q0 10-2.5 19.5T899-462q-64 118-174.5 190T480-200Z" /></svg
-				>View Ballot
+			mat-menu-item>
+			<div>
+				<mat-icon>visibility</mat-icon>
+				View Ballot
 			</div>
 		</a>
 		<a
+			class="links"
 			routerLink="/u/voting-status"
-			mat-menu-item
-			class="flex flex-row gap-3">
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M108-255q-12-12-11.5-28.5T108-311l211-214q23-23 57-23t57 23l103 104 208-206h-64q-17 0-28.5-11.5T640-667q0-17 11.5-28.5T680-707h160q17 0 28.5 11.5T880-667v160q0 17-11.5 28.5T840-467q-17 0-28.5-11.5T800-507v-64L593-364q-23 23-57 23t-57-23L376-467 164-255q-11 11-28 11t-28-11Z" />
-				</svg>
+			mat-menu-item>
+			<div>
+				<mat-icon>timeline</mat-icon>
 				View Voting Status
 			</div>
 		</a>
 		<a
+			class="links"
 			routerLink="/u/contact-us"
-			mat-menu-item
-			class="flex flex-row gap-3">
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M80-120q-33 0-56.5-23.5T0-200v-560q0-33 23.5-56.5T80-840h800q33 0 56.5 23.5T960-760v560q0 33-23.5 56.5T880-120H80Zm280-280q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM84-200h552q-42-75-116-117.5T360-360q-86 0-160 42.5T84-200Zm616-280q0-21 4-40.5t10-39.5h46q10 0 18-4t14-12l27-36q9-12 8-27t-12-26l-28-28q-11-11-27-11.5T732-694q-43 40-67.5 97.5T640-480q0 59 24.5 116.5T732-266q12 11 28 10.5t27-11.5l28-28q11-11 12-26t-8-27l-27-36q-6-8-14-12t-18-4h-46q-6-18-10-38.5t-4-41.5Z" /></svg
-				>Contact Us
+			mat-menu-item>
+			<div>
+				<mat-icon>contact_phone</mat-icon>
+				Contact Us
 			</div>
 		</a>
 		<a
+			class="links"
 			routerLink="/u/settings"
-			mat-menu-item
-			class="flex flex-row gap-3">
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M433-80q-27 0-46.5-18T363-142l-9-66q-13-5-24.5-12T307-235l-62 26q-25 11-50 2t-39-32l-47-82q-14-23-8-49t27-43l53-40q-1-7-1-13.5v-27q0-6.5 1-13.5l-53-40q-21-17-27-43t8-49l47-82q14-23 39-32t50 2l62 26q11-8 23-15t24-12l9-66q4-26 23.5-44t46.5-18h94q27 0 46.5 18t23.5 44l9 66q13 5 24.5 12t22.5 15l62-26q25-11 50-2t39 32l47 82q14 23 8 49t-27 43l-53 40q1 7 1 13.5v27q0 6.5-2 13.5l53 40q21 17 27 43t-8 49l-48 82q-14 23-39 32t-50-2l-60-26q-11 8-23 15t-24 12l-9 66q-4 26-23.5 44T527-80h-94Zm49-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z" /></svg
-				>Settings
+			mat-menu-item>
+			<div>
+				<mat-icon>settings</mat-icon>
+				Settings
 			</div>
 		</a>
 		<button
 			(click)="logoutCurrentSession()"
 			mat-menu-item
-			class="flex flex-row gap-3">
-			<div class="flex flex-row gap-2 items-center">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					height="24px"
-					viewBox="0 -960 960 960"
-					width="24px"
-					fill="#ba005c">
-					<path
-						d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h240q17 0 28.5 11.5T480-800q0 17-11.5 28.5T440-760H200v560h240q17 0 28.5 11.5T480-160q0 17-11.5 28.5T440-120H200Zm487-320H400q-17 0-28.5-11.5T360-480q0-17 11.5-28.5T400-520h287l-75-75q-11-11-11-27t11-28q11-12 28-12.5t29 11.5l143 143q12 12 12 28t-12 28L669-309q-12 12-28.5 11.5T612-310q-11-12-10.5-28.5T613-366l74-74Z" /></svg
-				>Logout
+			class="links">
+			<div>
+				<mat-icon>logout</mat-icon>
+				Logout
 			</div>
 		</button>
 	</mat-menu>
 
-	<div class="hidden md:flex flex-row">
+	<div class="large-nav">
 		<a
 			routerLink="/u/home"
 			mat-button
 			matTooltip="Home">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M160-200v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H600q-17 0-28.5-11.5T560-160v-200q0-17-11.5-28.5T520-400h-80q-17 0-28.5 11.5T400-360v200q0 17-11.5 28.5T360-120H240q-33 0-56.5-23.5T160-200Z" />
-			</svg>
+			<mat-icon> home </mat-icon>
 		</a>
 		<a
 			routerLink="/u/vote"
 			mat-button
 			matTooltip="Vote">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M200-80q-33 0-56.5-23.5T120-160v-152q0-14 5-28t15-25l62-70q11-13 28.5-13.5T260-437q11 11 12 27t-10 28l-55 62h546l-53-60q-11-12-10-28t12-27q12-12 29.5-11.5T760-433l60 68q10 11 15 25t5 28v152q0 33-23.5 56.5T760-80H200Zm224-304L285-525q-23-23-23-57t23-57l196-196q23-23 57-23t57 23l141 139q23 23 23.5 56.5T737-583L537-383q-23 23-56.5 22.5T424-384Zm256-256L538-780 340-582l142 140 198-198Z" />
-			</svg>
+			<mat-icon> how_to_vote </mat-icon>
 		</a>
 		<a
 			routerLink="/u/voting-instructions"
 			mat-button
 			matTooltip="Voting Instructions">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm280-640v245q0 12 10 17.5t20-.5l49-30q10-6 21-6t21 6l49 30q10 6 20 .5t10-17.5v-245H480Z" />
-			</svg>
+			<mat-icon> menu_book </mat-icon>
 		</a>
 		<a
 			routerLink="/u/view-ballot"
 			mat-button
 			matTooltip="View Ballot">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-134 0-244.5-72T61-462q-5-9-7.5-18.5T51-500q0-10 2.5-19.5T61-538q64-118 174.5-190T480-800q134 0 244.5 72T899-538q5 9 7.5 18.5T909-500q0 10-2.5 19.5T899-462q-64 118-174.5 190T480-200Z" />
-			</svg>
+			<mat-icon> visibility </mat-icon>
 		</a>
 		<a
 			routerLink="/u/voting-status"
 			mat-button
 			matTooltip="View Voting Status">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M108-255q-12-12-11.5-28.5T108-311l211-214q23-23 57-23t57 23l103 104 208-206h-64q-17 0-28.5-11.5T640-667q0-17 11.5-28.5T680-707h160q17 0 28.5 11.5T880-667v160q0 17-11.5 28.5T840-467q-17 0-28.5-11.5T800-507v-64L593-364q-23 23-57 23t-57-23L376-467 164-255q-11 11-28 11t-28-11Z" />
-			</svg>
+			<mat-icon> timeline </mat-icon>
 		</a>
 		<a
 			routerLink="/u/contact-us"
 			mat-button
 			matTooltip="Contact Us">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M80-120q-33 0-56.5-23.5T0-200v-560q0-33 23.5-56.5T80-840h800q33 0 56.5 23.5T960-760v560q0 33-23.5 56.5T880-120H80Zm280-280q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM84-200h552q-42-75-116-117.5T360-360q-86 0-160 42.5T84-200Zm616-280q0-21 4-40.5t10-39.5h46q10 0 18-4t14-12l27-36q9-12 8-27t-12-26l-28-28q-11-11-27-11.5T732-694q-43 40-67.5 97.5T640-480q0 59 24.5 116.5T732-266q12 11 28 10.5t27-11.5l28-28q11-11 12-26t-8-27l-27-36q-6-8-14-12t-18-4h-46q-6-18-10-38.5t-4-41.5Z" />
-			</svg>
+			<mat-icon> contact_phone </mat-icon>
 		</a>
 		<a
 			routerLink="/u/settings"
 			mat-button
 			matTooltip="Settings">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M433-80q-27 0-46.5-18T363-142l-9-66q-13-5-24.5-12T307-235l-62 26q-25 11-50 2t-39-32l-47-82q-14-23-8-49t27-43l53-40q-1-7-1-13.5v-27q0-6.5 1-13.5l-53-40q-21-17-27-43t8-49l47-82q14-23 39-32t50 2l62 26q11-8 23-15t24-12l9-66q4-26 23.5-44t46.5-18h94q27 0 46.5 18t23.5 44l9 66q13 5 24.5 12t22.5 15l62-26q25-11 50-2t39 32l47 82q14 23 8 49t-27 43l-53 40q1 7 1 13.5v27q0 6.5-2 13.5l53 40q21 17 27 43t-8 49l-48 82q-14 23-39 32t-50-2l-60-26q-11 8-23 15t-24 12l-9 66q-4 26-23.5 44T527-80h-94Zm49-260q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Z" />
-			</svg>
+			<mat-icon> settings </mat-icon>
 		</a>
 		<button
 			(click)="logoutCurrentSession()"
 			mat-button
 			matTooltip="Logout">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				height="24px"
-				viewBox="0 -960 960 960"
-				width="24px"
-				fill="#ba005c">
-				<path
-					d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h240q17 0 28.5 11.5T480-800q0 17-11.5 28.5T440-760H200v560h240q17 0 28.5 11.5T480-160q0 17-11.5 28.5T440-120H200Zm487-320H400q-17 0-28.5-11.5T360-480q0-17 11.5-28.5T400-520h287l-75-75q-11-11-11-27t11-28q11-12 28-12.5t29 11.5l143 143q12 12 12 28t-12 28L669-309q-12 12-28.5 11.5T612-310q-11-12-10.5-28.5T613-366l74-74Z" />
-			</svg>
+			<mat-icon> logout </mat-icon>
 		</button>
 	</div>
 </nav>

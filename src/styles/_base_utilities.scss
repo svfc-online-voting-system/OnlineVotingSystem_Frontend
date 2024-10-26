@@ -32,6 +32,10 @@
 	font-weight: 700;
 }
 
+%w-fit {
+	width: fit-content;
+}
+
 %w-full {
 	@include mixins.width(vars.$width-full);
 }
@@ -46,6 +50,14 @@
 
 %h-auto {
 	@include mixins.height(auto);
+}
+
+%h-full {
+	@include mixins.height(vars.$height-vh-100);
+}
+
+%min-h-screen {
+	min-height: vars.$height-vh-100;
 }
 
 %flex-center-all {

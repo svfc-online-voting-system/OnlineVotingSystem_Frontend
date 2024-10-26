@@ -1,78 +1,147 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+	ComponentFixture,
+	TestBed,
+	fakeAsync,
+	tick,
+} from '@angular/core/testing';
 import { EditPollComponent } from './edit-poll.component';
-import { provideHttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PollService } from '@app/core/core.module';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 describe('EditPollComponent', () => {
-    let component: EditPollComponent;
-    let fixture: ComponentFixture<EditPollComponent>;
-    let pollService: jasmine.SpyObj<PollService>;
-    let router: jasmine.SpyObj<Router>;
+	let component: EditPollComponent;
+	let fixture: ComponentFixture<EditPollComponent>;
+	let router: Router;
+	let pollService: PollService;
+	let paramMapSubject: BehaviorSubject<{
+		get: (param: string) => string | null;
+	}>;
 
-    beforeEach(async () => {
-        const pollServiceSpy = jasmine.createSpyObj('PollService', [
-            'getPollData',
-        ]);
-        const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+	beforeEach(async () => {
+		paramMapSubject = new BehaviorSubject<{
+			get: (param: string) => string | null;
+		}>({
+			get: (param: string) => (param === 'id' ? '1' : null),
+		});
 
-        await TestBed.configureTestingModule({
-            imports: [EditPollComponent, RouterModule.forRoot([])],
-            providers: [
-                provideHttpClient(),
-                { provide: PollService, useValue: pollServiceSpy },
-                { provide: Router, useValue: routerSpy },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        paramMap: of({ get: (key: string) => '1' }),
-                    },
-                },
-            ],
-            schemas: [NO_ERRORS_SCHEMA],
-        }).compileComponents();
+		await TestBed.configureTestingModule({
+			imports: [
+				EditPollComponent,
+				RouterTestingModule.withRoutes([
+					{ path: 'u/new/poll', component: EditPollComponent },
+				]),
+				ReactiveFormsModule,
+				NoopAnimationsModule,
+				MatFormFieldModule,
+				MatInputModule,
+			],
+			providers: [
+				PollService,
+				{
+					provide: ActivatedRoute,
+					useValue: {
+						paramMap: paramMapSubject.asObservable(),
+					},
+				},
+			],
+		}).compileComponents();
 
-        fixture = TestBed.createComponent(EditPollComponent);
-        component = fixture.componentInstance;
-        pollService = TestBed.inject(
-            PollService,
-        ) as jasmine.SpyObj<PollService>;
-        router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-        fixture.detectChanges();
-    });
+		router = TestBed.inject(Router);
+		pollService = TestBed.inject(PollService);
+		spyOn(router, 'navigate').and.callThrough();
+	});
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(EditPollComponent);
+		component = fixture.componentInstance;
+	});
 
-    it('should load poll data when id is present', () => {
-        const mockPoll = {
-            id: 1,
-            title: 'Mock Poll',
-            options: ['Option 1', 'Option 2'],
-        };
-        pollService.getPollData.and.returnValue(of(mockPoll));
+	it('should create', () => {
+		fixture.detectChanges();
+		expect(component).toBeTruthy();
+	});
 
-        component.ngOnInit();
+	it('should load poll data when id is present and poll exists', fakeAsync(() => {
+		const pollId = pollService.createPoll('Test Poll');
+		pollService.saveModifiedPollData(pollId, 'Test Poll', [
+			'Option 1',
+			'Option 2',
+		]);
 
-        expect(pollService.getPollData).toHaveBeenCalledWith(1);
-        expect(component.pollTitle).toBe(mockPoll.title);
-        expect(component.pollOptions).toEqual(mockPoll.options);
-    });
+		paramMapSubject.next({
+			get: (param: string) => (param === 'id' ? pollId.toString() : null),
+		});
 
-    it('should navigate to new poll page when id is not present', () => {
-        TestBed.overrideProvider(ActivatedRoute, {
-            useValue: {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                paramMap: of({ get: (key: string) => null }),
-            },
-        });
+		fixture.detectChanges();
+		tick(1000);
 
-        component.ngOnInit();
+		expect(component.pollTitle).toBe('Test Poll');
+		expect(component.pollOptions).toEqual(['Option 1', 'Option 2']);
+	}));
 
-        expect(router.navigate).toHaveBeenCalledWith(['/u/new/poll']);
-    });
+	it('should navigate to new poll page when id is not present', fakeAsync(() => {
+		paramMapSubject.next({
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			get: (param: string) => null,
+		});
+
+		fixture.detectChanges();
+		tick(1000);
+
+		expect(router.navigate).toHaveBeenCalledWith(['/u/new/poll']);
+	}));
+
+	it('should navigate to new poll page when poll is not found', fakeAsync(() => {
+		paramMapSubject.next({
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			get: (param: string) => '999',
+		});
+
+		fixture.detectChanges();
+		tick(1000);
+
+		expect(router.navigate).toHaveBeenCalledWith(['/u/new/poll']);
+	}));
+
+	it('should update poll title when form changes', fakeAsync(() => {
+		fixture.detectChanges();
+
+		const newTitle = 'Updated Poll Title';
+		component.titleFormGroup.get('title')?.setValue(newTitle);
+
+		tick(1000);
+
+		expect(component.pollTitle).toBe(newTitle);
+		expect(component.saving).toBe(false);
+	}));
+
+	it('should add new option', () => {
+		fixture.detectChanges();
+
+		const initialLength = component.pollOptions.length;
+		component.addOption();
+
+		expect(component.pollOptions.length).toBe(initialLength + 1);
+		expect(component.pollOptions[component.pollOptions.length - 1]).toBe(
+			`Option: ${initialLength + 1}`,
+		);
+	});
+
+	it('should delete option', () => {
+		fixture.detectChanges();
+
+		component.pollOptions = ['Option 1', 'Option 2', 'Option 3'];
+		const initialLength = component.pollOptions.length;
+
+		component.deleteOption(1);
+
+		expect(component.pollOptions.length).toBe(initialLength - 1);
+		expect(component.pollOptions).not.toContain('Option 2');
+	});
 });
