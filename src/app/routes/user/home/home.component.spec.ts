@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { UserHomeComponent } from '@app/routes/user/home/home.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('UserHomeComponent', () => {
 	let component: UserHomeComponent;
@@ -11,6 +12,7 @@ describe('UserHomeComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [UserHomeComponent],
 			providers: [
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {

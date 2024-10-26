@@ -6,8 +6,9 @@ import {
 	OnInit,
 	inject,
 	afterNextRender,
+	PLATFORM_ID,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { isPlatformBrowser, NgIf } from '@angular/common';
 import {
 	FormBuilder,
 	Validators,
@@ -68,11 +69,14 @@ export class LoginComponent implements OnInit {
 	private readonly _authService = inject(AuthService);
 	private readonly _logInValidatorService = inject(LoginValidatorsService);
 	private readonly _router = inject(Router);
+	private readonly _platformId = inject(PLATFORM_ID);
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 	@ViewChild('loginButton') loginButton!: HTMLButtonElement;
+	isBrowser: boolean;
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
 	constructor() {
+		this.isBrowser = isPlatformBrowser(this._platformId);
 		afterNextRender(() => {
 			this.disableLoginButtonOnSubmit();
 			this.enableLoginButton();
@@ -94,62 +98,59 @@ export class LoginComponent implements OnInit {
 	}
 
 	disableLoginButtonOnSubmit(): void {
-		this.loginButton.textContent = 'Logging in...';
-		this.loginButton.disabled = true;
+		if (this.isBrowser) {
+			this.loginButton.textContent = 'Logging in...';
+			this.loginButton.disabled = true;
+		}
 	}
 
 	enableLoginButton(): void {
-		this.loginButton.textContent = 'Log in';
-		this.loginButton.disabled = false;
-	}
-
-	submitEmailForm(): void {
-		const emailValidationResult = this._logInValidatorService.validateEmail(
-			this.emailFormGroup,
-		);
-		if (emailValidationResult) {
-			this._snackBarService.showSnackBar(emailValidationResult);
+		if (this.isBrowser) {
+			this.loginButton.textContent = 'Log in';
+			this.loginButton.disabled = false;
 		}
 	}
 
 	async submitLogInForm(): Promise<void> {
-		const loginFormGroupData = this.loginFormGroup.value;
-		if (
-			this.loginFormGroup.valid &&
-			loginFormGroupData.email &&
-			loginFormGroupData.password
-		) {
-			const loginInformation = {
-				email: loginFormGroupData.email,
-				password: loginFormGroupData.password,
-			};
-			this.disableLoginButtonOnSubmit();
+		if (this.isBrowser) {
+			const loginFormGroupData = this.loginFormGroup.value;
+			if (
+				this.loginFormGroup.valid &&
+				loginFormGroupData.email &&
+				loginFormGroupData.password
+			) {
+				const loginInformation = {
+					email: loginFormGroupData.email,
+					password: loginFormGroupData.password,
+				};
+				this.disableLoginButtonOnSubmit();
 
-			this._authService.login(loginInformation).subscribe({
-				next: (response: ApiAuthResponse) => {
-					if (response.code === 'otp_sent') {
-						this._snackBarService.showSnackBar(response.message);
-						this._router.navigate(['/auth/otp-verification']);
-					} else {
-						this._snackBarService.showSnackBar(response.message);
-					}
-				},
-				error: (error: ApiAuthErrorResponse) => {
-					// TODO: Remove the console.error() statement
-					console.error('An error occurred:', error);
-					this._snackBarService.showSnackBar(
-						`${error.error.message}`,
-					);
-					this.loginButton.disabled = false;
-				},
-				complete: () => {
-					this.enableLoginButton();
-				},
-			});
-		} else {
-			this._snackBarService.showSnackBar(
-				'Please enter valid email and password.',
-			);
+				this._authService.login(loginInformation).subscribe({
+					next: (response: ApiAuthResponse) => {
+						if (response.code === 'otp_sent') {
+							this._snackBarService.showSnackBar(response.message);
+							this._router.navigate(['/auth/otp-verification']);
+						} else {
+							this._snackBarService.showSnackBar(response.message);
+						}
+					},
+					error: (error: ApiAuthErrorResponse) => {
+						// TODO: Remove the console.error() statement
+						console.error('An error occurred:', error);
+						this._snackBarService.showSnackBar(
+							`${error.error.message}`,
+						);
+						this.loginButton.disabled = false;
+					},
+					complete: () => {
+						this.enableLoginButton();
+					},
+				});
+			} else {
+				this._snackBarService.showSnackBar(
+					'Please enter valid email and password.',
+				);
+			}
 		}
 	}
 }

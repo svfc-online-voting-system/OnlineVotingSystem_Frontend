@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AddNewVoteSheetComponent } from './add-new-vote-sheet.component';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 describe('AddNewVoteSheetComponent', () => {
 	let component: AddNewVoteSheetComponent;
@@ -12,7 +13,7 @@ describe('AddNewVoteSheetComponent', () => {
 			imports: [AddNewVoteSheetComponent],
 			providers: [
 				{
-					provide: ActivatedRoute,
+					provide: [ActivatedRoute, MatBottomSheetRef],
 					useValue: {
 						snapshot: {
 							paramMap: {

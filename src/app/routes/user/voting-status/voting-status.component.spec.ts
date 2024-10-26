@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { VotingStatusComponent } from './voting-status.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('VotingStatusComponent', () => {
 	let component: VotingStatusComponent;
@@ -11,6 +12,7 @@ describe('VotingStatusComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [VotingStatusComponent],
 			providers: [
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FilterNavComponent } from './filter-nav.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('FilterNavComponent', () => {
 	let component: FilterNavComponent;
@@ -12,7 +13,7 @@ describe('FilterNavComponent', () => {
 			imports: [FilterNavComponent],
 			providers: [
 				{
-					provide: ActivatedRoute,
+					provide: [ActivatedRoute, BrowserAnimationsModule],
 					useValue: {
 						snapshot: {
 							paramMap: {
