@@ -18,7 +18,6 @@ import {
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-	// Do a DI Pattern for AuthService, Router, and PLATFORM_ID
 	private readonly _authService = inject(AuthService);
 	private readonly _router = inject(Router);
 	private readonly _platformId = inject(PLATFORM_ID);

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { UserHomeComponent } from '@app/authenticated/user/home/home.component';
+import { UserHomeComponent } from '@app/routes/user/home/home.component';
 
 describe('UserHomeComponent', () => {
 	let component: UserHomeComponent;

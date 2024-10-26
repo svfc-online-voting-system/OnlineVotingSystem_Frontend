@@ -1,8 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import {
+	Router,
+	type ActivatedRouteSnapshot,
+	type RouterStateSnapshot,
+} from '@angular/router';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from '@app/core/services/api/auth/auth.service';
-import type { ApiAuthResponse } from '@app/core/models/authResponseType';
+import {
+	ApiAuthErrorResponse,
+	ApiAuthResponse,
+} from '@app/core/models/authResponseType';
+import { of } from 'rxjs';
 
 describe('AuthGuard', () => {
 	let guard: AuthGuard;
@@ -34,27 +42,37 @@ describe('AuthGuard', () => {
 		expect(guard).toBeTruthy();
 	});
 
-	it('should allow activation when token is valid', async () => {
+	it('should allow activation when token is valid', (done) => {
 		const response: ApiAuthResponse = {
 			code: 'success',
 			message: 'Token is valid',
 		};
-		authService.isTokenValid.and.returnValue(Promise.resolve(response));
+		authService.isTokenValid.and.returnValue(of(response));
+		const route = {} as ActivatedRouteSnapshot;
+		const state = { url: '/some-url' } as RouterStateSnapshot;
 
-		const result = await guard.canActivate();
-		expect(result).toBe(true);
-		expect(router.navigate).not.toHaveBeenCalled();
+		guard.canActivate(route, state).subscribe((result) => {
+			expect(result).toBe(true);
+			expect(router.navigate).not.toHaveBeenCalled();
+			done();
+		});
 	});
 
-	it('should prevent activation and redirect to login when token is invalid', async () => {
-		const response: ApiAuthResponse = {
-			code: 'error',
-			message: 'Token is invalid',
+	it('should prevent activation and redirect to login when token is invalid', (done) => {
+		const response: ApiAuthErrorResponse = {
+			error: {
+				code: 'invalid_token',
+				message: 'Token is invalid',
+			},
 		};
-		authService.isTokenValid.and.returnValue(Promise.resolve(response));
+		authService.isTokenValid.and.returnValue(of(response));
+		const route = {} as ActivatedRouteSnapshot;
+		const state = { url: '/some-url' } as RouterStateSnapshot;
 
-		const result = await guard.canActivate();
-		expect(result).toBe(false);
-		expect(router.navigate).toHaveBeenCalledWith(['/auth/login']);
+		guard.canActivate(route, state).subscribe((result) => {
+			expect(result).toBe(false);
+			expect(router.navigate).toHaveBeenCalledWith(['/auth/login']);
+			done();
+		});
 	});
 });
