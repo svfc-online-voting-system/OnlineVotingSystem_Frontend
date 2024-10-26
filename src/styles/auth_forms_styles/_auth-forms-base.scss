@@ -1,0 +1,71 @@
+@use './../mixins.scss' as mixins;
+@use './../variables.scss' as vars;
+
+%auth-container-base {
+	@include mixins.flex(column, center, center);
+}
+
+%auth-sub-container-base {
+	@include mixins.flex(column, space-between, center);
+
+	@include mixins.responsive(vars.$breakpoint-lg) {
+		flex-direction: row;
+	}
+}
+
+%image-section-base {
+	display: none;
+	@include mixins.width(vars.$width-half);
+
+	@include mixins.responsive(vars.$breakpoint-lg) {
+		@include mixins.flex(row, center, center);
+	}
+
+	img {
+		display: block;
+		@include mixins.size(vars.$width-full);
+		@include mixins.height(auto);
+	}
+}
+
+%auth-section-base {
+	@include mixins.flex(column, center, center);
+	@include mixins.width(vars.$width-full);
+	min-height: 100vh;
+
+	@include mixins.responsive(vars.$breakpoint-lg) {
+		@include mixins.width(vars.$width-half);
+	}
+}
+
+%auth-card-base {
+	@include mixins.max-width(vars.$max-width-screen-sm);
+	@include mixins.width(vars.$width-responsive);
+	@include mixins.flex(column, center, center);
+	@include mixins.gap(1rem);
+	@include mixins.p(0.5rem);
+
+	@include mixins.responsive(vars.$breakpoint-md) {
+		@include mixins.p(1.5rem);
+		@include mixins.gap(1.5rem);
+	}
+}
+
+%auth-form-base {
+	@include mixins.width(vars.$width-full);
+	@include mixins.flex(column, center, center);
+	@include mixins.gap(1rem);
+
+	@include mixins.responsive(vars.$breakpoint-md) {
+		@include mixins.gap(1.5rem);
+	}
+
+	mat-form-field {
+		@include mixins.width(vars.$width-full);
+	}
+
+	button,
+	a {
+		@include mixins.width(fit-content);
+	}
+}

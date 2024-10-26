@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'any',
 })
 export class SignupValidatorsService {
 	validateName(formGroup: FormGroup): string | null {
@@ -64,6 +64,5 @@ export class SignupValidatorsService {
 			}
 			return null;
 		};
-
 	}
 }

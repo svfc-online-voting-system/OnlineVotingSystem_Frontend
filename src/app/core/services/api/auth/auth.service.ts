@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, lastValueFrom, Observable, of } from 'rxjs';
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'any',
 })
 export class AuthService {
 	private apiBaseURL = environment.API_BASE_URL;

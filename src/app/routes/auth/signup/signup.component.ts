@@ -65,7 +65,7 @@ import {
 		MatCheckboxModule,
 	],
 	templateUrl: './signup.component.html',
-	styleUrl: '../../../../styles/auth_forms.scss',
+	styleUrl: '../../../../styles/auth_forms_styles/auth_forms.scss',
 })
 export class SignupComponent {
 	private readonly _formBuilder = inject(FormBuilder);

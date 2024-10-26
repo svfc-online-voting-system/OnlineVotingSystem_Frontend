@@ -3,13 +3,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'any',
 })
 export class SnackbarService {
 	isBrowser: boolean;
 	constructor(
 		private _snackBar: MatSnackBar,
-		@Inject(PLATFORM_ID) private platformId: object
+		@Inject(PLATFORM_ID) private platformId: object,
 	) {
 		this.isBrowser = isPlatformBrowser(this.platformId);
 	}

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'any',
 })
 export class PollService {
 	constructor(private _router: Router) {}

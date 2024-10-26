@@ -43,7 +43,7 @@ import {
 		MatFormFieldModule,
 	],
 	templateUrl: './otp.component.html',
-	styleUrl: '../../../../styles/auth_forms.scss',
+	styleUrl: '../../../../styles/auth_forms_styles/auth_forms.scss',
 })
 export class OtpComponent implements OnInit, OnDestroy {
 	private readonly _formBuilder = inject(FormBuilder);

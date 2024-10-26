@@ -27,8 +27,6 @@ import {
 	MatCheckboxModule,
 	type MatCheckbox,
 } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
-import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
 import {
 	ApiAuthResponse,
 	type ApiAuthErrorResponse,
@@ -62,7 +60,7 @@ import {
 		MatCheckboxModule,
 	],
 	templateUrl: './login.component.html',
-	styleUrl: '../../../../styles/auth_forms.scss',
+	styleUrl: '../../../../styles/auth_forms_styles/auth_forms.scss',
 })
 export class LoginComponent implements OnInit {
 	private readonly _snackBarService = inject(SnackbarService);
@@ -72,7 +70,6 @@ export class LoginComponent implements OnInit {
 	private readonly _router = inject(Router);
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 	@ViewChild('loginButton') loginButton!: HTMLButtonElement;
-	readonly dialog = inject(MatDialog);
 	emailFormGroup!: FormGroup;
 	passwordFormGroup!: FormGroup;
 	constructor() {
@@ -94,16 +91,6 @@ export class LoginComponent implements OnInit {
 		this.passwordFormGroup = this._formBuilder.group({
 			password: ['', Validators.required],
 		});
-	}
-
-	openLoadingDialog(): void {
-		this.dialog.open(SpinnerComponent, {
-			data: { message: 'Logging in...' },
-		});
-	}
-
-	closeLoadingDialog(): void {
-		this.dialog.closeAll();
 	}
 
 	disableLoginButtonOnSubmit(): void {
@@ -136,9 +123,6 @@ export class LoginComponent implements OnInit {
 				email: loginFormGroupData.email,
 				password: loginFormGroupData.password,
 			};
-			const dialogTimer = setTimeout(() => {
-				this.openLoadingDialog();
-			}, 2000);
 			this.disableLoginButtonOnSubmit();
 
 			this._authService.login(loginInformation).subscribe({
@@ -157,11 +141,8 @@ export class LoginComponent implements OnInit {
 						`${error.error.message}`,
 					);
 					this.loginButton.disabled = false;
-					this.closeLoadingDialog();
 				},
 				complete: () => {
-					clearTimeout(dialogTimer);
-					this.closeLoadingDialog();
 					this.enableLoginButton();
 				},
 			});

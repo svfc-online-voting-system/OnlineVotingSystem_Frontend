@@ -35,7 +35,7 @@ import {
 		ReactiveFormsModule,
 	],
 	templateUrl: './forgot-password.component.html',
-	styleUrl: '../../../../styles/auth_forms.scss',
+	styleUrl: '../../../../styles/auth_forms_styles/auth_forms.scss',
 })
 export class ForgotPasswordComponent implements OnInit {
 	private readonly _snackBarService = inject(SnackbarService);

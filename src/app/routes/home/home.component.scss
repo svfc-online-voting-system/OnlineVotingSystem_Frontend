@@ -1,168 +1,162 @@
-@use '../../../styles.scss' as styles;
-@use '../../../styles/utilities.scss' as utils;
 @use '../../../styles/mixins.scss' as mixins;
 @use '../../../styles/variables.scss' as vars;
+@use './../../../styles/base_utilities.scss';
 
 .home-container {
-	@extend .container;
-	@include mixins.flex(column, center, center);
+	@extend %container, %flex-center-items-start;
+}
 
-	.home-sub-container {
-		@extend .responsive-container;
-		@include mixins.flex(column, center, center);
-		@include mixins.p-y(2rem);
-		@include mixins.gap(4rem);
+.home-sub-container {
+	@extend %responsive-container, %flex-center-all;
+	@include mixins.p-y(2rem);
+	@include mixins.gap(4rem);
+	flex-direction: column;
 
-		@include mixins.responsive(vars.$breakpoint-md) {
-			@include mixins.p-y(2.3rem);
-		}
+	@include mixins.responsive(vars.$breakpoint-md) {
+		@include mixins.p-y(2.3rem);
+	}
+}
 
-		.navbar {
-			@extend .w-full;
-			@include mixins.flex(column, center, center);
-			@include mixins.gap(0.5rem);
+.navbar {
+	@extend %w-full, %flex-center-all;
+	flex-direction: column;
 
-			@include mixins.responsive(vars.$breakpoint-md) {
-				flex-direction: row;
-				justify-content: space-between;
-			}
+	@include mixins.responsive(vars.$breakpoint-md) {
+		flex-direction: row;
+		justify-content: space-between;
+	}
 
-			a {
-				@include mixins.text-size(vars.$font-lg);
-				text-decoration: none;
-				color: black;
-				font-weight: 700;
+	a {
+		@extend %font-bold, %font-lg;
+		text-decoration: none;
+		color: black;
 
-				span {
-					@extend .primary-color;
-				}
-			}
-
-			nav {
-				@extend .w-full;
-				@include mixins.responsive(vars.$breakpoint-md) {
-					width: fit-content;
-				}
-
-				ul {
-					@extend .w-full;
-					@include mixins.flex(row, center, center);
-					padding-inline-start: 0;
-					@include mixins.gap(0.5rem);
-					@include mixins.responsive(vars.$breakpoint-md) {
-						@include mixins.gap(1.5rem);
-					}
-
-					li {
-						@include mixins.text-size(vars.$font-sm);
-						cursor: pointer;
-						transition: all 0.3s ease-in-out;
-					}
-				}
-			}
-		}
-
-		.hero {
-			@extend .w-full;
-			@include mixins.flex(column, center, center);
-			@include mixins.gap(1rem);
-			@include mixins.responsive(vars.$breakpoint-md) {
-				flex-direction: row;
-				@include mixins.gap(2rem);
-			}
-
-			.image-section {
-				width: 95%;
-				@include mixins.responsive(vars.$breakpoint-md) {
-					width: 50%;
-				}
-
-				img {
-					width: 100%;
-					height: auto;
-				}
-			}
-
-			.cta-section {
-				@include mixins.flex(column, center, center);
-				@include mixins.responsive(vars.$breakpoint-md) {
-					align-items: start;
-				}
-
-				h1 {
-					@extend .font-bold;
-
-					@include mixins.responsive(vars.$breakpoint-md) {
-						@include mixins.text-size(vars.$font-4xl);
-					}
-				}
-
-				.cta-buttons {
-					@include mixins.flex(row, center, center);
-					@include mixins.gap(1rem);
-				}
-			}
-		}
-
-		.how-it-works-section {
-			@extend .w-full;
-			@include mixins.flex(column, center);
-			@include mixins.gap(1rem);
-
-			h2 {
-				@extend .font-bold;
-			}
-
-			.step-container {
-				@include mixins.grid(1, auto, 1rem);
-				@include mixins.gap(1rem);
-
-				@include mixins.responsive(vars.$breakpoint-md) {
-					grid-template-columns: repeat(2, 1fr);
-					@include mixins.gap(2rem);
-				}
-
-				mat-card {
-					@include mixins.flex(row, center, center);
-					@include mixins.p(1rem);
-					@include mixins.gap(1rem);
-					@include mixins.border(0.1rem, solid, #cdc7d3);
-					box-shadow: none;
-
-					.count-container {
-						@include mixins.grid(1, auto, 1rem);
-						place-content: center;
-						.count {
-							@extend .highlight-color-bg, .primary-color;
-							@include mixins.height(3rem);
-							@include mixins.width(3rem);
-							@include mixins.text-size(vars.$font-lg);
-							@include mixins.flex(row, center, center);
-							border-radius: 9999px;
-						}
-					}
-
-					div > h3 {
-						@extend .font-bold;
-					}
-				}
-			}
-		}
-
-		.benefits-section {
-			@include mixins.flex(column, column, center);
-			@extend .w-full;
-
-			h2 {
-				@extend .font-bold;
-			}
-
-			ol {
-				list-style-type: upper-roman;
-				li {
-					@include mixins.text-size(vars.$font-base);
-				}
-			}
+		span {
+			@extend %primary-color;
 		}
 	}
+}
+
+nav {
+	@extend %w-full;
+	@include mixins.responsive(vars.$breakpoint-md) {
+		width: fit-content;
+	}
+
+	ul {
+		@extend %flex-center-all, %w-full;
+		padding-inline-start: 0;
+		@include mixins.gap(0.5rem);
+		@include mixins.responsive(vars.$breakpoint-md) {
+			@include mixins.gap(1.5rem);
+		}
+
+		li {
+			@extend %font-sm;
+			cursor: pointer;
+			transition: all 0.3s ease-in-out;
+		}
+	}
+}
+
+.hero {
+	@extend %w-full, %flex-center-all;
+	flex-direction: column;
+	@include mixins.gap(1rem);
+	@include mixins.responsive(vars.$breakpoint-md) {
+		flex-direction: row;
+		@include mixins.gap(2rem);
+	}
+}
+
+.image-section {
+	@include mixins.width(95%);
+	@include mixins.responsive(vars.$breakpoint-md) {
+		@include mixins.width(50%);
+	}
+
+	img {
+		@extend %h-auto, %w-full;
+	}
+}
+
+.cta-section {
+	@extend %flex-center-all;
+	flex-direction: column;
+	@include mixins.responsive(vars.$breakpoint-md) {
+		align-items: start;
+	}
+
+	h1 {
+		@extend %font-bold;
+
+		@include mixins.responsive(vars.$breakpoint-md) {
+			font-size: 2.25rem;
+		}
+	}
+}
+.cta-buttons {
+	@extend %flex-center-all;
+	@include mixins.gap(1rem);
+}
+
+.benefits-section {
+	@extend %flex-center-items-start, %w-full;
+	flex-direction: column;
+
+	h2 {
+		@extend %font-bold;
+	}
+
+	ol {
+		list-style-type: upper-roman;
+		li {
+			@extend %font-base;
+		}
+	}
+}
+
+.how-it-works-section {
+	@extend %w-full;
+	@include mixins.flex(column, center);
+	@include mixins.gap(1rem);
+
+	h2 {
+		@extend %font-bold;
+	}
+}
+.step-container {
+	@include mixins.grid(1, auto, 1rem);
+	@include mixins.gap(1rem);
+
+	@include mixins.responsive(vars.$breakpoint-md) {
+		grid-template-columns: repeat(2, 1fr);
+		@include mixins.gap(2rem);
+	}
+}
+
+mat-card {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-direction: row;
+	@include mixins.p(1rem);
+	@include mixins.gap(1rem);
+	box-shadow: none;
+
+	div > h3 {
+		@extend %font-bold;
+	}
+}
+
+.count-container {
+	@include mixins.grid(1, auto, 1rem);
+	place-content: center;
+}
+
+.count {
+	@extend %highlight-color-bg, %primary-color, %flex-center-all, %font-base;
+	@include mixins.height(3rem);
+	@include mixins.width(3rem);
+	border-radius: 9999px;
 }

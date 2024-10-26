@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'any',
 })
 export class LoginValidatorsService {
 	validatePassword(formGroup: FormGroup): string | null {

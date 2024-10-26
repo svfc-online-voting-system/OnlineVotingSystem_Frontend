@@ -1,0 +1,54 @@
+@use './../variables.scss' as vars;
+@use './auth-forms-base.scss' as auth-base;
+@use './../mixins.scss' as mixins;
+@use './../base_utilities.scss';
+
+.auth-container {
+	@extend %auth-container-base;
+	@extend %container;
+}
+
+.auth-sub-container {
+	@extend %auth-sub-container-base;
+	@extend %responsive-container;
+}
+
+.image-section {
+	@extend %image-section-base;
+}
+
+.auth-section {
+	@extend %auth-section-base;
+
+	mat-card {
+		@extend %auth-card-base;
+
+		mat-card-header {
+			@include mixins.flex(column, center, center);
+
+			mat-card-title {
+				font-weight: 800;
+				@include mixins.text-size(vars.$font-xl);
+				text-align: center;
+
+				span {
+					@extend %primary-color;
+				}
+			}
+
+			mat-card-subtitle {
+				font-weight: 600;
+				text-align: center;
+				@include mixins.text-size(vars.$font-lg);
+			}
+		}
+
+		mat-card-content {
+			@include mixins.width(vars.$width-full);
+
+			form {
+				@extend %auth-form-base;
+			}
+		}
+	}
+}
