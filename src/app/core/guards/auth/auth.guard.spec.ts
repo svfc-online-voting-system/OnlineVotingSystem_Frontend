@@ -49,7 +49,7 @@ describe('AuthGuard', () => {
 		};
 		authService.isTokenValid.and.returnValue(of(response));
 		const route = {} as ActivatedRouteSnapshot;
-		const state = { url: '/some-url' } as RouterStateSnapshot;
+		const state = { url: '/u/home' } as RouterStateSnapshot;
 
 		guard.canActivate(route, state).subscribe((result) => {
 			expect(result).toBe(true);
@@ -67,7 +67,7 @@ describe('AuthGuard', () => {
 		};
 		authService.isTokenValid.and.returnValue(of(response));
 		const route = {} as ActivatedRouteSnapshot;
-		const state = { url: '/some-url' } as RouterStateSnapshot;
+		const state = { url: '/u/home' } as RouterStateSnapshot;
 
 		guard.canActivate(route, state).subscribe((result) => {
 			expect(result).toBe(false);
