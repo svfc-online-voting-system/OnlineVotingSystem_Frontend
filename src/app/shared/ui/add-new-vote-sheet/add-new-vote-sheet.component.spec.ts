@@ -10,9 +10,8 @@ describe('AddNewVoteSheetComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [AddNewVoteSheetComponent],
+			imports: [AddNewVoteSheetComponent, MatBottomSheetRef],
 			providers: [
-				MatBottomSheetRef,
 				{
 					provide: ActivatedRoute,
 					useValue: {

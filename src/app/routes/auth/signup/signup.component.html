@@ -122,6 +122,15 @@
 								"
 								>Email is invalid</mat-error
 							>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'email'
+									)
+								"
+								>Email is required</mat-error
+							>
 						</mat-form-field>
 						<mat-form-field>
 							<mat-label>Password</mat-label>
@@ -130,19 +139,37 @@
 								autocomplete="new-password"
 								formControlName="password"
 								matInput
-								type="password"
-								onchange="checkPasswordMatch()"
+								(change)="checkPasswordMatch()"
 								min="8"
+								[type]="showPassword ? 'text' : 'password'"
 								minlength="8"
 								placeholder="********" />
 							<mat-error
 								*ngIf="
 									signUpFormGroup.hasError(
-										'passwordMismatch',
+										'mismatch',
 										'password'
 									)
 								">
 								Passwords do not match
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'password'
+									)
+								">
+								Password is required
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'minlength',
+										'password'
+									)
+								">
+								Password must be at least 8 characters
 							</mat-error>
 						</mat-form-field>
 						<mat-form-field>
@@ -151,7 +178,7 @@
 								required
 								autocomplete="new-password"
 								type="password"
-								onchange="checkPasswordMatch()"
+								(change)="checkPasswordMatch()"
 								formControlName="confirmPassword"
 								matInput
 								min="8"
@@ -160,14 +187,33 @@
 							<mat-error
 								*ngIf="
 									signUpFormGroup.hasError(
-										'passwordMismatch',
+										'mismatch',
 										'confirmPassword'
 									)
 								">
 								Passwords do not match
 							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'confirmPassword'
+									)
+								">
+								Password is required
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'minlength',
+										'confirmPassword'
+									)
+								">
+								Password must be at least 8 characters
+							</mat-error>
 						</mat-form-field>
 						<mat-checkbox
+							(click)="togglePasswordVisibility()"
 							formControlName="showPassword"
 							aria-label="Show password"
 							>Show Password</mat-checkbox

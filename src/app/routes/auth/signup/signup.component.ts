@@ -1,9 +1,4 @@
-import {
-	Component,
-	inject,
-	PLATFORM_ID,
-	ChangeDetectorRef,
-} from '@angular/core';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -18,7 +13,6 @@ import {
 	ShowOnDirtyErrorStateMatcher,
 } from '@angular/material/core';
 import { RouterLink } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import {
 	FormBuilder,
 	Validators,
@@ -34,7 +28,6 @@ import {
 	SignupValidatorsService,
 	AuthService,
 } from '@app/core/core.module';
-import { SpinnerComponent } from '@app/shared/ui/spinner/spinner.component';
 import {
 	ApiAuthResponse,
 	ApiAuthErrorResponse,
@@ -72,8 +65,6 @@ export class SignupComponent {
 	private readonly _snackBarService = inject(SnackbarService);
 	private readonly _authService = inject(AuthService);
 	private readonly _signUpValidatorService = inject(SignupValidatorsService);
-	private readonly _cdr = inject(ChangeDetectorRef);
-	private readonly _dialog = inject(MatDialog);
 	private readonly _platformId = inject(PLATFORM_ID);
 	isBrowser: boolean;
 	readonly maximumDate: Date | null;
@@ -101,52 +92,52 @@ export class SignupComponent {
 			showPassword: [false],
 		},
 		{
-			validators: this.passwordMatchValidator,
+			validators: (formGroup: FormGroup) => {
+				const password = formGroup.get('password')?.value;
+				const confirmPassword = formGroup.get('confirmPassword')?.value;
+				if (password !== confirmPassword) {
+					formGroup
+						.get('confirmPassword')
+						?.setErrors({ mismatch: true });
+					formGroup.get('password')?.setErrors({ mismatch: true });
+				} else {
+					formGroup.get('confirmPassword')?.setErrors(null);
+					formGroup.get('password')?.setErrors(null);
+				}
+			},
 		},
 	);
 
-	changePasswordVisibility(): void {
+	togglePasswordVisibility(): void {
 		if (this.isBrowser) {
-			this.showPassword = !this.showPassword;
-			this._cdr.detectChanges();
-		}
-	}
-
-	passwordMatchValidator(formGroup: FormGroup) {
-		const signUpFormGroupValues = formGroup.value;
-		const password = signUpFormGroupValues.password;
-		const confirmPassword = signUpFormGroupValues.confirmPassword;
-		return password === confirmPassword ? null : { mismatch: true };
-	}
-
-	checkPasswordMatch(): void {
-		if (this.isBrowser) {
-			const signUpFormGroupValues = this.signUpFormGroup.value;
-			if (
-				signUpFormGroupValues.password !==
-				signUpFormGroupValues.confirmPassword
-			) {
-				this.signUpFormGroup.controls['confirmPassword'].setErrors({
-					passwordMismatch: true,
-				});
-				this.signUpFormGroup.controls['password'].setErrors({
-					passwordMismatch: true,
-				});
+			const signUpFormGroupState = this.signUpFormGroup.value;
+			if (signUpFormGroupState.showPassword) {
+				this.showPassword = true;
+			} else {
+				this.showPassword = false;
 			}
 		}
 	}
 
-	openLoadingDialog(): void {
-		if (this.isBrowser) {
-			this._dialog.open(SpinnerComponent, {
-				data: { message: 'Logging in...' },
+	checkPasswordMatch(): void {
+		const signUpFormGroupValues = this.signUpFormGroup.value;
+		if (
+			signUpFormGroupValues.password !==
+			signUpFormGroupValues.confirmPassword
+		) {
+			this.signUpFormGroup.controls['confirmPassword'].setErrors({
+				mismatch: true,
 			});
-		}
-	}
-
-	closeLoadingDialog(): void {
-		if (this.isBrowser) {
-			this._dialog.closeAll();
+			this.signUpFormGroup.controls['password'].setErrors({
+				mismatch: true,
+			});
+		} else {
+			this.signUpFormGroup.controls['confirmPassword'].setErrors({
+				mismatch: null,
+			});
+			this.signUpFormGroup.controls['password'].setErrors({
+				mismatch: null,
+			});
 		}
 	}
 
@@ -154,25 +145,24 @@ export class SignupComponent {
 		if (this.isBrowser) {
 			if (this.signUpFormGroup.valid) {
 				const signUpFormGroupValues = this.signUpFormGroup.value;
-				const firstName = signUpFormGroupValues.firstName;
-				const lastName = signUpFormGroupValues.lastName;
-				const email = signUpFormGroupValues.email;
-				const password = signUpFormGroupValues.password;
-				const confirmPassword = signUpFormGroupValues.confirmPassword;
-				const birthday = signUpFormGroupValues.birthday;
-				const dialogTimer = setTimeout(() => {
-					this.openLoadingDialog();
-				}, 2000);
+				const {
+					firstName,
+					lastName,
+					email,
+					password,
+					confirmPassword,
+					birthday,
+				} = signUpFormGroupValues;
 				this.submitting = true;
 				try {
 					const response: ApiAuthResponse =
 						await this._authService.signUp({
-							email: email,
+							email,
 							first_name: firstName,
 							last_name: lastName,
 							date_of_birth: birthday,
-							password: password,
-							confirmPassword: confirmPassword,
+							password,
+							confirmPassword,
 						});
 					this._snackBarService.showSnackBar(response.message);
 				} catch (error: unknown) {
@@ -183,13 +173,7 @@ export class SignupComponent {
 					this._snackBarService.showSnackBar(errorMessage);
 				} finally {
 					this.submitting = false;
-					clearTimeout(dialogTimer);
-					this.closeLoadingDialog();
 				}
-			} else {
-				this._snackBarService.showSnackBar(
-					'Please check the information you provided.',
-				);
 			}
 		}
 	}
