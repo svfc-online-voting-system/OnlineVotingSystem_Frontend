@@ -31,6 +31,11 @@ describe('EditPollComponent', () => {
 			get: (param: string) => (param === 'id' ? '1' : null),
 		});
 
+		const pollServiceSpy = jasmine.createSpyObj('PollService', [
+			'getPollData',
+			'saveModifiedPollData',
+		]);
+
 		await TestBed.configureTestingModule({
 			imports: [
 				EditPollComponent,
@@ -43,7 +48,7 @@ describe('EditPollComponent', () => {
 				MatInputModule,
 			],
 			providers: [
-				PollService,
+				{ provide: PollService, useValue: pollServiceSpy },
 				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
@@ -104,6 +109,8 @@ describe('EditPollComponent', () => {
 	}));
 
 	it('should navigate to new poll page when poll is not found', fakeAsync(() => {
+		pollService.getPollData.and.returnValue(of(undefined));
+
 		paramMapSubject.next({
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			get: (param: string) => '999',

@@ -29,7 +29,9 @@ export class PollService {
 
 	getPollData(
 		pollId: number,
-	): Observable<{ id: number; title: string; options: string[] }> {
+	): Observable<{ id: number; title: string; options: string[] } |
+	undefined
+	> {
 		return new Observable((observer) => {
 			const poll = this.pollList.find((p) => p.id === pollId);
 			if (poll) {
