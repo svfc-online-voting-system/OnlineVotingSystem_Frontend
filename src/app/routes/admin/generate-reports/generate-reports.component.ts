@@ -6,5 +6,6 @@ import { NavbarComponent } from '@app/shared/ui/admin/navbar/navbar.component';
 	standalone: true,
 	imports: [NavbarComponent],
 	templateUrl: './generate-reports.component.html',
+	styleUrl: './generate-reports.component.scss',
 })
 export class GenerateReportsComponent {}

@@ -6,5 +6,6 @@ import { NavbarComponent } from '@app/shared/ui/admin/navbar/navbar.component';
 	standalone: true,
 	imports: [NavbarComponent],
 	templateUrl: './manage-elections.component.html',
+	styleUrl: './manage-elections.component.scss',
 })
 export class ManageElectionsComponent {}

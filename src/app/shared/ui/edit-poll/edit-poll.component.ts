@@ -34,33 +34,30 @@ export class EditPollComponent implements OnInit {
 	private readonly _pollService = inject(PollService);
 	private readonly _router = inject(Router);
 	private readonly _route = inject(ActivatedRoute);
-	titleFormGroup!: FormGroup;
+	_pollId = 0;
 	pollTitle: string | null = '';
 	pollOptions: string[] = [];
 	saving = false;
-
-	constructor() {
-		this.titleFormGroup = new FormGroup({
-			title: new FormControl('', [
-				Validators.required,
-				Validators.minLength(3),
-				Validators.maxLength(255),
-			]),
-		});
-	}
+	titleFormGroup = new FormGroup({
+		title: new FormControl('', [
+			Validators.required,
+			Validators.minLength(3),
+			Validators.maxLength(255),
+		]),
+	});
 
 	ngOnInit(): void {
 		this.titleFormGroup.valueChanges
 			.pipe(debounceTime(1000))
 			.subscribe((value) => {
-				this.saveUpdatedTitle(value.title);
-				this.saving = true;
+				this.saveUpdatedPollInformation(value.title);
 			});
 
 		this._route.paramMap.subscribe((params) => {
 			const pollId = Number(params.get('id'));
-			if (pollId) {
+			if (pollId && !isNaN(pollId) && pollId != null) {
 				this.loadPoll(pollId);
+				this._pollId = pollId;
 			} else {
 				this._router.navigate(['/u/new/poll']);
 			}
@@ -84,8 +81,14 @@ export class EditPollComponent implements OnInit {
 		this.pollOptions.push(`Option: ${length}`);
 	}
 
-	saveUpdatedTitle(pollTitle: string | null): void {
-		this.pollTitle = pollTitle;
+	saveUpdatedPollInformation(pollTitle: string | null | undefined): void {
+		const newTitle = pollTitle || 'Untitled Poll';
+		this._pollService.saveModifiedPollData(
+			this._pollId,
+			newTitle,
+			this.pollOptions,
+		);
+		this.pollTitle = newTitle;
 		this.saving = false;
 	}
 }
