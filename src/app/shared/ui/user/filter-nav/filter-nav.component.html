@@ -1,5 +1,5 @@
 <section class="w-full flex flex-row min-h-screen">
-	<div class="flex flex-row w-full gap-4">
+	<div class="flex flex-row w-full gap-4 filter-section">
 		<div>
 			<p class="font-bold">Filter by voting type</p>
 			<mat-button-toggle-group
@@ -28,34 +28,11 @@
 				}
 			</mat-button-toggle-group>
 		</div>
-		<form>
-			<mat-form-field>
-				<mat-label> Filter by creator </mat-label>
-				<input
-					#input
-					type="text"
-					placeholder="Pick one"
-					matInput
-					#filterVoteCreator
-					[matAutocomplete]="auto"
-					(input)="filterCreator()"
-					(focus)="filterCreator()" />
-				<mat-autocomplete
-					requireSelection
-					#auto="matAutocomplete">
-					@for (option of filteredOptions; track option) {
-					<mat-option [value]="option">{{ option }}</mat-option>
-					}
-				</mat-autocomplete>
-			</mat-form-field>
-		</form>
-	</div>
-	<div class="w-full">
 		<button
 			mat-fab
 			(click)="openCreationMenu()"
 			extended
-			class="w-fit">
+			class="button-with-icon">
 			<mat-icon>add_circle</mat-icon>
 			New vote
 		</button>

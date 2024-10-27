@@ -6,5 +6,6 @@ import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
 	standalone: true,
 	imports: [NavbarComponent],
 	templateUrl: './voting-instructions.component.html',
+	styleUrl: './voting-instructions.component.scss',
 })
 export class VotingInstructionsComponent {}

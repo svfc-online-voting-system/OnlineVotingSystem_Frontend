@@ -5,18 +5,22 @@
 nav {
 	@extend %w-full;
 	@include mixins.flex(row, flex-end, center);
-	@include mixins.m-t(vars.$space-2);
+	@include mixins.m-t(vars.$space-5);
 
-	button {
-		@extend %flex-center-all;
+	@include mixins.responsive(vars.$breakpoint-md) {
+		@include mixins.m-t(vars.$space-10);
+	}
+}
 
-		@include mixins.responsive(vars.$breakpoint-md) {
-			display: none;
-		}
+.menu-button {
+	@extend %flex-center-all;
 
-		mat-icon {
-			margin: 0;
-		}
+	@include mixins.responsive(vars.$breakpoint-md) {
+		display: none;
+	}
+
+	mat-icon {
+		margin: 0;
 	}
 }
 
@@ -27,15 +31,15 @@ nav {
 		display: flex;
 		flex-direction: row;
 	}
+}
 
-	a {
+.large-links {
+	@extend %flex-center-all;
+	mat-icon {
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
 		@extend %flex-center-all;
-		mat-icon {
-			padding: 0;
-			margin: 0;
-			box-sizing: border-box;
-			@extend %flex-center-all;
-		}
 	}
 }
 

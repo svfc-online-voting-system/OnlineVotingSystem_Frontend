@@ -1,5 +1,6 @@
 <nav>
 	<button
+		class="menu-button"
 		mat-button
 		[matMenuTriggerFor]="menu">
 		<mat-icon> menu </mat-icon>
@@ -83,48 +84,56 @@
 		<a
 			routerLink="/u/home"
 			mat-button
+			class="large-links"
 			matTooltip="Home">
 			<mat-icon> home </mat-icon>
 		</a>
 		<a
 			routerLink="/u/vote"
 			mat-button
+			class="large-links"
 			matTooltip="Vote">
 			<mat-icon> how_to_vote </mat-icon>
 		</a>
 		<a
 			routerLink="/u/voting-instructions"
 			mat-button
+			class="large-links"
 			matTooltip="Voting Instructions">
 			<mat-icon> menu_book </mat-icon>
 		</a>
 		<a
 			routerLink="/u/view-ballot"
 			mat-button
+			class="large-links"
 			matTooltip="View Ballot">
 			<mat-icon> visibility </mat-icon>
 		</a>
 		<a
 			routerLink="/u/voting-status"
 			mat-button
+			class="large-links"
 			matTooltip="View Voting Status">
 			<mat-icon> timeline </mat-icon>
 		</a>
 		<a
 			routerLink="/u/contact-us"
 			mat-button
+			class="large-links"
 			matTooltip="Contact Us">
 			<mat-icon> contact_phone </mat-icon>
 		</a>
 		<a
 			routerLink="/u/settings"
 			mat-button
+			class="large-links"
 			matTooltip="Settings">
 			<mat-icon> settings </mat-icon>
 		</a>
 		<button
 			(click)="logoutCurrentSession()"
 			mat-button
+			class="large-links"
 			matTooltip="Logout">
 			<mat-icon> logout </mat-icon>
 		</button>

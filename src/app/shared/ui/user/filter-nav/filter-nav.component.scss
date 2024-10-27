@@ -3,20 +3,26 @@
 @use './../../../../../styles/variables' as vars;
 
 section {
-	@extend %w-full, %min-h-screen;
+	@extend %w-full;
 	@include mixins.flex(row);
+}
 
-	:nth-child(1) {
-		@extend %w-full;
-		@include mixins.gap(vars.$space-4);
-		@include mixins.flex(row);
+.filter-section {
+	@extend %w-full;
+	@include mixins.gap(vars.$space-4);
+	@include mixins.grid(1, auto, 1rem, normal);
+
+	@include mixins.responsive(vars.$breakpoint-md) {
+		@include mixins.flex(row, normal, center);
 	}
+}
 
-	:nth-child(2) {
-		@extend %w-full;
+.button-with-icon {
+	width: auto;
+	max-width: fit-content;
+	align-self: flex-end;
+}
 
-		button {
-			@extend %w-fit;
-		}
-	}
+p {
+	@extend %font-bold;
 }

@@ -13,6 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('EditPollComponent', () => {
 	let component: EditPollComponent;
@@ -43,6 +44,7 @@ describe('EditPollComponent', () => {
 			],
 			providers: [
 				PollService,
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {

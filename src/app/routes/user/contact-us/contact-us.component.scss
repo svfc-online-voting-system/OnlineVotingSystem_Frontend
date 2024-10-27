@@ -4,10 +4,8 @@
 main {
 	@extend %container;
 	@include mixins.flex(column, normal, center);
-
 }
 
-app-user-navbar,
-app-filter-nav {
+app-user-navbar {
 	@extend %responsive-container;
 }

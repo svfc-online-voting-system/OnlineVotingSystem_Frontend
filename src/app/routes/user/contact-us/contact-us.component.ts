@@ -6,5 +6,6 @@ import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
 	standalone: true,
 	imports: [NavbarComponent],
 	templateUrl: './contact-us.component.html',
+	styleUrl: './contact-us.component.scss',
 })
 export class ContactUsComponent {}
