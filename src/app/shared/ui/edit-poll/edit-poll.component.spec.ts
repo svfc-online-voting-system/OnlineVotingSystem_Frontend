@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PollService } from '@app/core/core.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,7 +19,7 @@ describe('EditPollComponent', () => {
 	let component: EditPollComponent;
 	let fixture: ComponentFixture<EditPollComponent>;
 	let router: Router;
-	let pollService: PollService;
+	let pollService: jasmine.SpyObj<PollService>;
 	let paramMapSubject: BehaviorSubject<{
 		get: (param: string) => string | null;
 	}>;
@@ -55,7 +55,9 @@ describe('EditPollComponent', () => {
 		}).compileComponents();
 
 		router = TestBed.inject(Router);
-		pollService = TestBed.inject(PollService);
+		pollService = TestBed.inject(
+			PollService,
+		) as jasmine.SpyObj<PollService>;
 		spyOn(router, 'navigate').and.callThrough();
 	});
 
@@ -70,14 +72,16 @@ describe('EditPollComponent', () => {
 	});
 
 	it('should load poll data when id is present and poll exists', fakeAsync(() => {
-		const pollId = pollService.createPoll('Test Poll');
-		pollService.saveModifiedPollData(pollId, 'Test Poll', [
-			'Option 1',
-			'Option 2',
-		]);
+		const mockPoll = {
+			id: 1,
+			title: 'Test Poll',
+			options: ['Option 1', 'Option 2'],
+		};
+		pollService.getPollData.and.returnValue(of(mockPoll));
 
 		paramMapSubject.next({
-			get: (param: string) => (param === 'id' ? pollId.toString() : null),
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			get: (param: string) => '1',
 		});
 
 		fixture.detectChanges();
