@@ -29,17 +29,15 @@ export class PollService {
 
 	getPollData(
 		pollId: number,
-	): Observable<{ id: number; title: string; options: string[] } |
-	undefined
+	): Observable<
+		{ id: number; title: string; options: string[] }
 	> {
 		return new Observable((observer) => {
 			const poll = this.pollList.find((p) => p.id === pollId);
 			if (poll) {
 				observer.next(poll);
-				console.log(poll);
-			} else {
-				this._router.navigate(['/u/new/poll']);
 			}
+			this._router.navigate(['/u/new/poll']);
 		});
 	}
 }

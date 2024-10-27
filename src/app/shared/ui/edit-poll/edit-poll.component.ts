@@ -65,10 +65,18 @@ export class EditPollComponent implements OnInit {
 	}
 
 	loadPoll(pollId: number): void {
-		this._pollService.getPollData(pollId).subscribe((poll) => {
-			this.pollTitle = poll.title;
-			this.pollOptions = poll.options;
-			this.titleFormGroup.setValue({ title: poll.title });
+		this._pollService.getPollData(pollId).subscribe({
+			next: (poll) => {
+				this.pollTitle = poll.title;
+				this.pollOptions = poll.options;
+				this.titleFormGroup.setValue({ title: poll.title });
+			},
+			error: (err) => {
+				console.error('Error loading poll data', err);
+			},
+			complete: () => {
+				console.log('Poll data loading complete');
+			},
 		});
 	}
 
