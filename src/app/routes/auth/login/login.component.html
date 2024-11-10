@@ -14,83 +14,139 @@
 					<mat-card-subtitle>Login to your account</mat-card-subtitle>
 				</mat-card-header>
 				<mat-card-content>
-					<form
-						(ngSubmit)="submitLogInForm()"
-						[formGroup]="loginFormGroup">
-						<mat-form-field>
-							<mat-label>Email</mat-label>
-							<input
-								required
-								autocomplete="email"
-								type="email"
-								formControlName="email"
-								matInput
-								placeholder="someone@example.com" />
-							<mat-error
-								*ngIf="
-									loginFormGroup.hasError('required', 'email')
-								">
-								Email is required
-							</mat-error>
-							<mat-error
-								*ngIf="
-									loginFormGroup.hasError('email', 'email')
-								">
-								Please enter a valid email address
-							</mat-error>
-						</mat-form-field>
-						<mat-form-field>
-							<mat-label>Password</mat-label>
-							<input
-								required
-								autocomplete="current-password"
-								[type]="showPassword ? 'text' : 'password'"
-								formControlName="password"
-								matInput
-								min="8"
-								minlength="8"
-								placeholder="********" />
-							<mat-error
-								*ngIf="
-									loginFormGroup.hasError(
-										'required',
-										'password'
-									)
-								">
-								Password is required
-							</mat-error>
-							<mat-error
-								*ngIf="
-									loginFormGroup.hasError(
-										'minlength',
-										'password'
-									)
-								">
-								Password must be at least 8 characters
-							</mat-error>
-						</mat-form-field>
-						<mat-checkbox
-							(click)="togglePasswordVisibility()"
-							formControlName="showPasswordCheckbox"
-							aria-label="Show password"
-							>Show Password</mat-checkbox
-						>
-						<button
-							[disabled]="isLoggingIn"
-							mat-flat-button>
-							Login
-						</button>
-						<a
-							mat-stroked-button
-							routerLink="/auth/forgot-password"
-							>Forgot your password?</a
-						>
-						<a
-							mat-stroked-button
-							routerLink="/auth/sign-up"
-							>Create an account</a
-						>
-					</form>
+					<mat-stepper
+						[linear]="false"
+						#stepper
+						orientation="vertical">
+						<mat-step
+							[stepControl]="loginFormGroup"
+							state="fingerprint">
+							<form
+								[formGroup]="loginFormGroup"
+								(ngSubmit)="submitLoginForm(stepper)">
+								<ng-template matStepLabel>
+									Enter your account email and password
+								</ng-template>
+								<mat-form-field>
+									<mat-label> Email </mat-label>
+									<input
+										matInput
+										placeholder="someone@example.com"
+										formControlName="email"
+										required />
+									<mat-error
+										*ngIf="
+											loginFormGroup.hasError(
+												'required',
+												'email'
+											)
+										"
+										>Email is required</mat-error
+									>
+									<mat-error
+										*ngIf="
+											loginFormGroup.hasError(
+												'email',
+												'email'
+											)
+										"
+										>Please enter a valid email
+										address</mat-error
+									>
+								</mat-form-field>
+								<mat-form-field>
+									<mat-label> Password </mat-label>
+									<input
+										required
+										autocomplete="current-password"
+										[type]="
+											showPassword ? 'text' : 'password'
+										"
+										formControlName="password"
+										matInput
+										min="8"
+										minlength="8"
+										placeholder="********" />
+									<mat-error
+										*ngIf="
+											loginFormGroup.hasError(
+												'minlength',
+												'password'
+											)
+										">
+										Password must be at least 8 characters
+									</mat-error>
+									<mat-error
+										*ngIf="
+											loginFormGroup.hasError(
+												'required',
+												'password'
+											)
+										">
+										Password is required
+									</mat-error>
+								</mat-form-field>
+								<mat-checkbox
+									(click)="togglePasswordVisibility()"
+									formControlName="showPasswordCheckbox"
+									aria-label="Show password"
+									>Show Password</mat-checkbox
+								>
+								<div>
+									<div>
+
+										<a
+											mat-button
+											routerLink="/auth/sign-up"
+											>Create an account</a
+										>
+										<a
+											mat-button
+											routerLink="/auth/forgot-password"
+											>Forgot your password?</a
+										>
+									</div>
+									<button
+										mat-button
+										type="submit">
+										Next
+									</button>
+								</div>
+							</form>
+						</mat-step>
+						<mat-step
+							[stepControl]="otpFormGroup"
+							state="key">
+							<form
+								[formGroup]="otpFormGroup"
+								(ngSubmit)="submitOtpForm()">
+								<ng-template matStepLabel>
+									Enter the OTP sent to your email
+								</ng-template>
+								<mat-form-field>
+									<mat-label> One Time Password </mat-label>
+									<input
+										required
+										matInput
+										autocomplete="off"
+										max="9999999"
+										min="1000000"
+										type="number"
+										formControlName="otp"
+										placeholder="1234567"
+										maxlength="7"
+										minlength="7" />
+								</mat-form-field>
+								<div>
+									<button
+										type="submit"
+										mat-flat-button>
+										Verify OTP
+									</button>
+								</div>
+							</form>
+						</mat-step>
+					</mat-stepper>
 				</mat-card-content>
 			</mat-card>
 		</section>

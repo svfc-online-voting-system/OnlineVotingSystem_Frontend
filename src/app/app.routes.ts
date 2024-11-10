@@ -34,14 +34,6 @@ export const routes: Routes = [
 			).then((m) => m.ForgotPasswordComponent),
 	},
 	{
-		title: 'votevoyage | OTP Verification',
-		path: 'auth/otp-verification',
-		loadComponent: () =>
-			import('@app/routes/auth/otp/otp.component').then(
-				(m) => m.OtpComponent,
-			),
-	},
-	{
 		title: 'votevoyage | Verify your email',
 		path: 'auth/verify-email/:token',
 		loadComponent: () =>
@@ -212,9 +204,11 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, {
-		preloadingStrategy: PreloadAllModules,
-	})],
+	imports: [
+		RouterModule.forRoot(routes, {
+			preloadingStrategy: PreloadAllModules,
+		}),
+	],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

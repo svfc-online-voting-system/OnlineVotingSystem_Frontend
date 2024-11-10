@@ -11,7 +11,7 @@ import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import {
 	ApiAuthResponse,
-	type ApiAuthErrorResponse,
+	ApiAuthErrorResponse,
 } from '@app/core/models/authResponseType';
 
 @Injectable({

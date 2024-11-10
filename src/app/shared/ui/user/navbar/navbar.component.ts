@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService, SnackbarService } from '@app/core/core.module';
 
 @Component({
@@ -20,17 +20,20 @@ import { AuthService, SnackbarService } from '@app/core/core.module';
 	styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-	private _snackBarService = inject(SnackbarService);
-	private _authService = inject(AuthService);
-	async logoutCurrentSession(): Promise<void> {
+	private readonly _snackBarService = inject(SnackbarService);
+	private readonly _authService = inject(AuthService);
+	private readonly _router = inject(Router);
+
+	logoutCurrentSession() {
 		this._authService.logoutSession().subscribe({
-			next: (response) => {
-				this._snackBarService.showSnackBar(response.message);
+			next: () => {
+				this._snackBarService.showSnackBar('Logged out successfully');
+				this._router.navigateByUrl('/');
 			},
 			error: (error) => {
-				this._snackBarService.showSnackBar(error.message);
+				this._snackBarService.showSnackBar('Failed to log out');
+				console.error('Error logging out:', error);
 			},
 		});
-		this._snackBarService.showSnackBar('Logging out...');
 	}
 }
