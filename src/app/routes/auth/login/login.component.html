@@ -15,13 +15,14 @@
 				</mat-card-header>
 				<mat-card-content>
 					<mat-stepper
-						[linear]="false"
+						[linear]="true"
 						#stepper
 						orientation="vertical">
 						<mat-step
 							[stepControl]="loginFormGroup"
 							state="fingerprint">
 							<form
+								class="login-form"
 								[formGroup]="loginFormGroup"
 								(ngSubmit)="submitLoginForm(stepper)">
 								<ng-template matStepLabel>
@@ -86,19 +87,13 @@
 										Password is required
 									</mat-error>
 								</mat-form-field>
-								<mat-checkbox
-									(click)="togglePasswordVisibility()"
-									formControlName="showPasswordCheckbox"
-									aria-label="Show password"
-									>Show Password</mat-checkbox
-								>
-								<div>
+								<div class="login-button-container">
 									<div>
-
-										<a
-											mat-button
-											routerLink="/auth/sign-up"
-											>Create an account</a
+										<mat-checkbox
+											(click)="togglePasswordVisibility()"
+											formControlName="showPasswordCheckbox"
+											aria-label="Show password"
+											>Show Password</mat-checkbox
 										>
 										<a
 											mat-button
@@ -106,11 +101,19 @@
 											>Forgot your password?</a
 										>
 									</div>
-									<button
-										mat-button
-										type="submit">
-										Next
-									</button>
+									<div>
+										<button
+											[disabled]="isProcessing"
+											mat-flat-button
+											type="submit">
+											Next
+										</button>
+										<a
+											mat-button
+											routerLink="/auth/sign-up"
+											>Create an account</a
+										>
+									</div>
 								</div>
 							</form>
 						</mat-step>
@@ -118,6 +121,7 @@
 							[stepControl]="otpFormGroup"
 							state="key">
 							<form
+								class="otp-form"
 								[formGroup]="otpFormGroup"
 								(ngSubmit)="submitOtpForm()">
 								<ng-template matStepLabel>
@@ -136,13 +140,42 @@
 										placeholder="1234567"
 										maxlength="7"
 										minlength="7" />
+									<mat-error
+										*ngIf="
+											otpFormGroup.hasError(
+												'required',
+												'otp'
+											)
+										"
+										>OTP is required</mat-error
+									>
+									<mat-error
+										*ngIf="
+											otpFormGroup.hasError(
+												'maxlength',
+												'otp'
+											)
+										"
+										>OTP must be 7 digits</mat-error
+									>
+									<mat-error
+										*ngIf="
+											otpFormGroup.hasError(
+												'minlength',
+												'otp'
+											)
+										">
+										OTP must be 7 digits
+									</mat-error>
 								</mat-form-field>
-								<div>
+
+								<div class="otp-button-container">
 									<button
 										type="submit"
 										mat-flat-button>
 										Verify OTP
 									</button>
+									<button mat-button>Resend OTP</button>
 								</div>
 							</form>
 						</mat-step>

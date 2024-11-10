@@ -18,15 +18,16 @@ import { lastValueFrom, Observable, of, throwError } from 'rxjs';
 	providedIn: 'any',
 })
 export class AuthService {
-	private apiBaseURL = environment.API_BASE_URL;
-	private apiPort = environment.API_PORT;
-	private apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
-	private apiCreateAccountRoute = environment.API_CREATE_ACCOUNT_ROUTE;
-	private apiLogoutRoute = environment.API_LOGOUT_ROUTE;
-	private apiVerifyJWT = environment.API_VERIFY_JWT;
-	private apiVerifyEmail = environment.API_VERIFY_EMAIL;
-	private apiVerifyOTP = environment.API_VERIFY_OTP;
-
+	private readonly apiBaseURL = environment.API_BASE_URL;
+	private readonly apiPort = environment.API_PORT;
+	private readonly apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
+	private readonly apiCreateAccountRoute =
+		environment.API_CREATE_ACCOUNT_ROUTE;
+	private readonly apiLogoutRoute = environment.API_LOGOUT_ROUTE;
+	private readonly apiVerifyJWT = environment.API_VERIFY_JWT;
+	private readonly apiVerifyEmail = environment.API_VERIFY_EMAIL;
+	private readonly apiVerifyOTP = environment.API_VERIFY_OTP;
+	private readonly apiResendOTP = environment.API_RESEND_OTP;
 	constructor(private httpClient: HttpClient, private router: Router) {}
 
 	login(loginInformation: {
@@ -143,6 +144,14 @@ export class AuthService {
 				headers,
 				withCredentials: true,
 			},
+		);
+	}
+
+	resendOTP(email: string): Observable<ApiAuthResponse> {
+		return this.httpClient.patch<ApiAuthResponse>(
+			`${this.apiBaseURL}:${this.apiPort}/${this.apiResendOTP}/${email}`,
+			{},
+			{ withCredentials: true },
 		);
 	}
 
