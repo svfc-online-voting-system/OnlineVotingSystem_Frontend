@@ -10,11 +10,9 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import {
-	MatFormFieldModule,
-} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import {
 	MatCheckboxModule,
 	type MatCheckbox,
@@ -24,6 +22,7 @@ import {
 	type ApiAuthErrorResponse,
 } from '@app/core/models/authResponseType';
 import { SnackbarService } from '@app/core/core.module';
+import { timeout } from 'rxjs';
 
 @Component({
 	selector: 'app-login',
@@ -36,12 +35,15 @@ import { SnackbarService } from '@app/core/core.module';
 		MatButtonModule,
 		MatInputModule,
 		MatFormFieldModule,
-		FormsModule,
 		MatStepperModule,
+		FormsModule,
 		MatCheckboxModule,
 	],
 	templateUrl: './login.component.html',
-	styleUrl: '../../../../styles/auth_forms_styles/auth_forms.scss',
+	styleUrls: [
+		'../../../../styles/auth_forms_styles/auth_forms.scss',
+		'./login.component.scss',
+	],
 })
 export class LoginComponent {
 	private readonly _snackBarService = inject(SnackbarService);
@@ -52,8 +54,9 @@ export class LoginComponent {
 	@ViewChild('showPasswordToggler') showPasswordToggler!: MatCheckbox;
 	@ViewChild('loginButton') loginButton!: HTMLButtonElement;
 	isBrowser: boolean;
-	isLoggingIn = false;
+	isProcessing = false;
 	showPassword = false;
+	email = '';
 	constructor() {
 		this.isBrowser = isPlatformBrowser(this._platformId);
 	}
@@ -64,48 +67,87 @@ export class LoginComponent {
 		showPasswordCheckbox: [false],
 	});
 
+	otpFormGroup = this._formBuilder.group({
+		otp: [
+			'',
+			[
+				Validators.required,
+				Validators.pattern('^[0-9]{7}$'),
+				Validators.minLength(7),
+				Validators.maxLength(7),
+			],
+		],
+	});
+
 	togglePasswordVisibility() {
 		this.showPassword = !this.showPassword;
 	}
 
-	async submitLogInForm(): Promise<void> {
-		if (this.isBrowser) {
-			const loginFormGroupData = this.loginFormGroup.value;
-			if (
-				this.loginFormGroup.valid &&
-				loginFormGroupData.email &&
-				loginFormGroupData.password
-			) {
-				const loginInformation = {
-					email: loginFormGroupData.email,
-					password: loginFormGroupData.password,
-				};
-				this.isLoggingIn = true;
+	submitLoginForm(stepper: MatStepper): void {
+		if (this.isBrowser && this.loginFormGroup.valid) {
+			const { email, password } = this.loginFormGroup.value;
+			this.isProcessing = true;
 
-				this._authService.login(loginInformation).subscribe({
+			this._authService
+				.login({ email: email!, password: password! })
+				.subscribe({
 					next: (response: ApiAuthResponse) => {
-						if (response.code === 'otp_sent') {
-							this._snackBarService.showSnackBar(
-								response.message,
-							);
-							this._router.navigate(['/auth/otp-verification']);
-						} else {
-							this._snackBarService.showSnackBar(
-								response.message,
-							);
-						}
+						this._snackBarService.showSnackBar(response.message);
+						this.email = email!;
+						stepper.next();
 					},
 					error: (error: ApiAuthErrorResponse) => {
-						this._snackBarService.showSnackBar(
-							`${error.error.message}`,
-						);
-						this.loginButton.disabled = false;
+						this._snackBarService.showSnackBar(error.error.message);
+						this.isProcessing = false;
 					},
 					complete: () => {
-						this.isLoggingIn = false;
+						this.isProcessing = false;
 					},
 				});
-			}
+		}
+	}
+
+	resendOTP(): void {
+		this.isProcessing = true;
+		this._authService.resendOTP(this.email).subscribe({
+			next: (response: ApiAuthResponse) => {
+				this._snackBarService.showSnackBar(response.message);
+				this.isProcessing = false;
+				this.loginButton.disabled = true;
+				this.otpFormGroup.reset();
+			},
+			error: (error: ApiAuthErrorResponse) => {
+				this._snackBarService.showSnackBar(error.error.message);
+				this.isProcessing = false;
+			},
+		});
+	}
+
+	submitOtpForm(): void {
+		if (this.otpFormGroup.valid) {
+			const otp = String(this.otpFormGroup.value.otp);
+			this.isProcessing = true;
+
+			this._authService
+				.verifyOTP(otp, this.email)
+				.pipe(timeout(15000))
+				.subscribe({
+					next: (response: ApiAuthResponse) => {
+						if (response.code === 'success') {
+							this._snackBarService.showSnackBar(
+								"OTP verified, you're being redirected to the home page",
+							);
+							this._router.navigate(['/u/home']);
+						} else {
+							this._snackBarService.showSnackBar('Invalid OTP');
+						}
+						this.isProcessing = false;
+					},
+					error: (error: ApiAuthErrorResponse) => {
+						this._snackBarService.showSnackBar(error.error.message);
+						this.isProcessing = false;
+					},
+				});
 		}
 	}
 }

@@ -34,14 +34,6 @@ export const routes: Routes = [
 			).then((m) => m.ForgotPasswordComponent),
 	},
 	{
-		title: 'votevoyage | OTP Verification',
-		path: 'auth/otp-verification',
-		loadComponent: () =>
-			import('@app/routes/auth/otp/otp.component').then(
-				(m) => m.OtpComponent,
-			),
-	},
-	{
 		title: 'votevoyage | Verify your email',
 		path: 'auth/verify-email/:token',
 		loadComponent: () =>
@@ -83,6 +75,15 @@ export const routes: Routes = [
 			import(
 				'@app/routes/admin/manage-elections/manage-elections.component'
 			).then((m) => m.ManageElectionsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
+		path: 'a/manage-polls',
+		title: 'votevoyage Manage Polls | Admin',
+		loadComponent: () =>
+			import(
+				'@app/routes/admin/manage-polls/manage-polls.component'
+			).then((m) => m.ManagePollsComponent),
 		canActivate: [AuthGuard],
 	},
 	{
@@ -128,15 +129,6 @@ export const routes: Routes = [
 			import('@app/routes/user/contact-us/contact-us.component').then(
 				(m) => m.ContactUsComponent,
 			),
-		canActivate: [AuthGuard],
-	},
-	{
-		path: 'u/voting-instructions',
-		title: 'votevoyage Voting Instructions | User',
-		loadComponent: () =>
-			import(
-				'@app/routes/user/voting-instructions/voting-instructions.component'
-			).then((m) => m.VotingInstructionsComponent),
 		canActivate: [AuthGuard],
 	},
 	{
@@ -212,9 +204,11 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, {
-		preloadingStrategy: PreloadAllModules,
-	})],
+	imports: [
+		RouterModule.forRoot(routes, {
+			preloadingStrategy: PreloadAllModules,
+		}),
+	],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -24,15 +24,15 @@
 				Vote
 			</div>
 		</a>
-		<a
+		<button
+			(click)="openVotingInstructionsDialog()"
 			class="links"
-			routerLink="/u/voting-instructions"
 			mat-menu-item>
 			<div>
 				<mat-icon>menu_book</mat-icon>
 				Voting Instructions
 			</div>
-		</a>
+		</button>
 		<a
 			class="links"
 			routerLink="/u/view-ballot"
@@ -95,13 +95,13 @@
 			matTooltip="Vote">
 			<mat-icon> how_to_vote </mat-icon>
 		</a>
-		<a
-			routerLink="/u/voting-instructions"
+		<button
+			(click)="openVotingInstructionsDialog()"
 			mat-button
 			class="large-links"
 			matTooltip="Voting Instructions">
 			<mat-icon> menu_book </mat-icon>
-		</a>
+		</button>
 		<a
 			routerLink="/u/view-ballot"
 			mat-button

@@ -10,6 +10,14 @@
 	background-color: theme.$primary-color;
 }
 
+%error-color {
+	color: theme.$error-color;
+}
+
+%error-color-bg {
+	background-color: theme.$error-color;
+}
+
 %highlight-color {
 	color: theme.$highlight-color;
 }
@@ -34,6 +42,10 @@
 
 %w-fit {
 	width: fit-content;
+}
+
+%w-11-12 {
+	width: 91.6666666667%;
 }
 
 %w-full {

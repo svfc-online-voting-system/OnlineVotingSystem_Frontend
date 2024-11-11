@@ -1,55 +1,44 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@app/../environments/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+	HttpClient,
+	HttpErrorResponse,
+	HttpHeaders,
+} from '@angular/common/http';
 import {
 	ApiAuthResponse,
 	SignUpInformation,
 	ApiAuthErrorResponse,
 } from '@app/core/models/authResponseType';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { BehaviorSubject, lastValueFrom, Observable, of } from 'rxjs';
+import { lastValueFrom, Observable, of, throwError } from 'rxjs';
 
 @Injectable({
 	providedIn: 'any',
 })
 export class AuthService {
-	private apiBaseURL = environment.API_BASE_URL;
-	private apiPort = environment.API_PORT;
-	private apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
-	private apiCreateAccountRoute = environment.API_CREATE_ACCOUNT_ROUTE;
-	private apiLogoutRoute = environment.API_LOGOUT_ROUTE;
-	private apiVerifyJWT = environment.API_VERIFY_JWT;
-	private apiVerifyEmail = environment.API_VERIFY_EMAIL;
-	private apiVerifyOTP = environment.API_VERIFY_OTP;
-	private currentUserSubject = new BehaviorSubject<{ email: string } | null>(
-		null,
-	);
-	private currentUser = this.currentUserSubject.asObservable();
-
+	private readonly apiBaseURL = environment.API_BASE_URL;
+	private readonly apiPort = environment.API_PORT;
+	private readonly apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
+	private readonly apiCreateAccountRoute =
+		environment.API_CREATE_ACCOUNT_ROUTE;
+	private readonly apiLogoutRoute = environment.API_LOGOUT_ROUTE;
+	private readonly apiVerifyJWT = environment.API_VERIFY_JWT;
+	private readonly apiVerifyEmail = environment.API_VERIFY_EMAIL;
+	private readonly apiVerifyOTP = environment.API_VERIFY_OTP;
+	private readonly apiResendOTP = environment.API_RESEND_OTP;
 	constructor(private httpClient: HttpClient, private router: Router) {}
 
 	login(loginInformation: {
 		email: string;
 		password: string;
 	}): Observable<ApiAuthResponse> {
-		return this.httpClient
-			.post<ApiAuthResponse>(
-				`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
-				loginInformation,
-				{ withCredentials: true },
-			)
-			.pipe(
-				tap((response) => {
-					if (response.code === 'otp_sent') {
-						this.currentUserSubject.next({
-							email: loginInformation.email,
-						});
-						console.log(loginInformation.email);
-						console.log(this.currentUserSubject.value?.email);
-					}
-				}),
-			);
+		return this.httpClient.post<ApiAuthResponse>(
+			`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
+			loginInformation,
+			{ withCredentials: true },
+		);
 	}
 
 	isTokenValid(): Observable<ApiAuthResponse | ApiAuthErrorResponse> {
@@ -72,34 +61,18 @@ export class AuthService {
 			);
 	}
 
-	verifyOTP(otp: string): Observable<ApiAuthResponse> {
-		console.log(this.currentUserSubject.value?.email);
+	verifyOTP(otp: string, email: string): Observable<ApiAuthResponse> {
 		const data = {
-			email: this.currentUserSubject.value?.email,
+			email: email,
 			otp_code: otp,
 		};
-		console.log(`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyOTP}`);
 		return this.httpClient
 			.patch<ApiAuthResponse>(
-				`https://localhost:5000/auth/otp-verification`,
+				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyOTP}`,
 				data,
 				{ withCredentials: true },
 			)
-			.pipe(
-				tap((response) => {
-					if (response.code === 'success') {
-						this.currentUserSubject.next(null);
-					}
-				}),
-			);
-	}
-
-	getCurrentUser(): Observable<{ email: string } | null> {
-		return this.currentUserSubject.asObservable();
-	}
-
-	clearCurrentUser(): void {
-		this.currentUserSubject.next(null);
+			.pipe();
 	}
 
 	signUp({
@@ -129,8 +102,8 @@ export class AuthService {
 				`${this.apiBaseURL}:${this.apiPort}/${this.apiCreateAccountRoute}`,
 				{
 					email,
-					first_name,
-					last_name,
+					firstname: first_name,
+					lastname: last_name,
 					date_of_birth: formattedDate,
 					password,
 				},
@@ -152,9 +125,42 @@ export class AuthService {
 	}
 
 	logoutSession(): Observable<ApiAuthResponse> {
+		const csrfToken = this.getCookie('X-CSRF-TOKEN');
+		const refreshToken = this.getCookie('csrf_refresh_token');
+
+		if (!csrfToken || !refreshToken) {
+			return throwError(() => new Error('Missing CSRF tokens'));
+		}
+
+		const headers = new HttpHeaders({
+			'X-CSRF-TOKEN': csrfToken,
+			'csrf-refresh-token': refreshToken,
+		});
+
 		return this.httpClient.post<ApiAuthResponse>(
 			`${this.apiBaseURL}:${this.apiPort}/${this.apiLogoutRoute}`,
+			{},
+			{
+				headers,
+				withCredentials: true,
+			},
+		);
+	}
+
+	resendOTP(email: string): Observable<ApiAuthResponse> {
+		return this.httpClient.patch<ApiAuthResponse>(
+			`${this.apiBaseURL}:${this.apiPort}/${this.apiResendOTP}/${email}`,
+			{},
 			{ withCredentials: true },
 		);
+	}
+
+	private getCookie(name: string): string | null {
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${name}=`);
+		if (parts.length === 2) {
+			return parts.pop()?.split(';').shift() ?? null;
+		}
+		return null;
 	}
 }

@@ -1,0 +1,24 @@
+.login-form > mat-form-field,
+.otp-form > mat-form-field {
+	margin-top: 0.5rem;
+}
+
+.otp-button-container {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+}
+
+.login-button-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.login-button-container > div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 1rem;
+}

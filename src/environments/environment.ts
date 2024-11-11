@@ -7,4 +7,5 @@ export const environment = {
 	API_VERIFY_JWT: 'v1/auth/verify-jwt-identity',
 	API_VERIFY_EMAIL: 'v1/auth/verify-email',
 	API_VERIFY_OTP: 'v1/auth/otp-verification',
+	API_RESEND_OTP: 'v1/auth/generate-otp',
 };
