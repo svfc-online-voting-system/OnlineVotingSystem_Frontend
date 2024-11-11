@@ -1,0 +1,11 @@
+@use './../../../../styles/base_utilities';
+@use './../../../../styles/mixins' as mixins;
+
+main {
+	@extend %container;
+	@include mixins.flex(column, normal, center);
+}
+
+app-admin-navbar {
+	@extend %responsive-container;
+}

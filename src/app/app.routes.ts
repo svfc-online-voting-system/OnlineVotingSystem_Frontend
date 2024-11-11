@@ -78,6 +78,15 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
+		path: 'a/manage-polls',
+		title: 'votevoyage Manage Polls | Admin',
+		loadComponent: () =>
+			import(
+				'@app/routes/admin/manage-polls/manage-polls.component'
+			).then((m) => m.ManagePollsComponent),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: 'a/monitor-elections',
 		title: 'votevoyage Monitor Elections | Admin',
 		loadComponent: () =>
