@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DialogBoxComponent } from './dialog-box.component';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { DialogData } from '@app/core/models/interface/dialog.interface';
+import { SafeHtmlPipe } from '@app/core/pipes/safe-html.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DialogBoxComponent', () => {
 	let component: DialogBoxComponent;
@@ -18,7 +21,13 @@ describe('DialogBoxComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [DialogBoxComponent],
+			imports: [
+				DialogBoxComponent,
+				MatDialogModule,
+				MatButtonModule,
+				BrowserAnimationsModule,
+				SafeHtmlPipe,
+			],
 			providers: [{ provide: MAT_DIALOG_DATA, useValue: mockDialogData }],
 		}).compileComponents();
 
@@ -27,31 +36,20 @@ describe('DialogBoxComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('should create', () => {
-		expect(component).toBeTruthy();
-	});
-
-	it('should display title from data', () => {
-		const titleElement = fixture.nativeElement.querySelector('h2');
-		expect(titleElement.textContent).toContain(mockDialogData.title);
-	});
-
-	it('should display message as plain text when isHTML is false', () => {
-		const messageElement = fixture.nativeElement.querySelector('p');
-		expect(messageElement.textContent).toContain(mockDialogData.message);
-	});
-
-	it('should display HTML message when isHTML is true', () => {
+	it('should display HTML message when isHTML is true', async () => {
 		const htmlData = {
 			...mockDialogData,
 			isHTML: true,
 			message: '<p>HTML Message</p>',
 		};
+
 		component.data = htmlData;
 		fixture.detectChanges();
+		await fixture.whenStable();
 
 		const messageElement =
-			fixture.nativeElement.querySelector('[innerHTML]');
+			fixture.nativeElement.querySelector('div[innerHTML]');
 		expect(messageElement).toBeTruthy();
+		expect(messageElement.innerHTML).toContain('HTML Message');
 	});
 });

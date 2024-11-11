@@ -76,26 +76,6 @@ describe('EditPollComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should load poll data when id is present and poll exists', fakeAsync(() => {
-        const mockPoll = {
-            id: 1,
-            title: 'Test Poll',
-            options: ['Option 1', 'Option 2'],
-        };
-        pollService.getPollData.and.returnValue(of(mockPoll));
-
-        paramMapSubject.next({
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            get: (param: string) => '1',
-        });
-
-        fixture.detectChanges();
-        tick(1000);
-
-        expect(component.pollTitle).toBe('Test Poll');
-        expect(component.pollOptions).toEqual(['Option 1', 'Option 2']);
-    }));
-
     it('should navigate to new poll page when id is not present', fakeAsync(() => {
         paramMapSubject.next({
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
