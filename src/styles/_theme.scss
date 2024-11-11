@@ -134,11 +134,13 @@ $_rest: (
 );
 $_primary: map.merge(map.get($_palettes, primary), $_rest);
 $_tertiary: map.merge(map.get($_palettes, tertiary), $_rest);
+$_error: map.merge(map.get($_palettes, error), $_rest);
 
 $primary-color: map.get($_primary, 40);
 $neutral-palette: map.get($_palettes, neutral);
 $background-color: map.get($neutral-palette, 87);
 $highlight-color: map.get($_primary, 90);
+$error-color: map.get($_error, 40);
 
 $light-theme: mat.define-theme(
 	(

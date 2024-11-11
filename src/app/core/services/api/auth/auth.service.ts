@@ -102,8 +102,8 @@ export class AuthService {
 				`${this.apiBaseURL}:${this.apiPort}/${this.apiCreateAccountRoute}`,
 				{
 					email,
-					first_name,
-					last_name,
+					firstname: first_name,
+					lastname: last_name,
 					date_of_birth: formattedDate,
 					password,
 				},
