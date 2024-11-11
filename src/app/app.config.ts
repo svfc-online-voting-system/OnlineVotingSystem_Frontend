@@ -9,11 +9,19 @@ import {
 	withInterceptorsFromDi,
 	withJsonpSupport,
 } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import {
+	ErrorStateMatcher,
+	ShowOnDirtyErrorStateMatcher,
+} from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideZoneChangeDetection({ eventCoalescing: true }),
 		provideRouter(routes),
+		provideAnimations(),
 		provideClientHydration(),
 		provideAnimationsAsync(),
 		provideHttpClient(
@@ -21,6 +29,14 @@ export const appConfig: ApplicationConfig = {
 			withJsonpSupport(),
 			withInterceptorsFromDi(),
 		),
-		// { provide: HTTP_INTERCEPTORS, useClass: AuthenticatedInterceptor, multi: true }
+		{
+			provide: STEPPER_GLOBAL_OPTIONS,
+			useValue: { displayDefaultIndicatorType: false },
+		},
+		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+		{
+			provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+			useValue: { appearance: 'outline' },
+		},
 	],
 };

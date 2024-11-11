@@ -1,0 +1,33 @@
+<mat-nav-list>
+	<a
+		routerLink="/u/new/poll"
+		mat-list-item
+		class="cursor-pointer"
+		(click)="openBottomSheet($event)">
+		<span
+			matListItemTitle
+			class="font-bold">
+			Add new polling question vote
+		</span>
+		<span matLine>
+			Add a new polling question with multiple choice answers and share it
+			with other people here.
+		</span>
+	</a>
+
+	<a
+		routerLink="/u/new/election"
+		mat-list-item
+		class="cursor-pointer"
+		(click)="openBottomSheet($event)">
+		<span
+			matListItemTitle
+			class="font-bold">
+			Add new election vote
+		</span>
+		<span matLine>
+			Add a new election with multiple candidates and share it with other
+			people here.
+		</span>
+	</a>
+</mat-nav-list>

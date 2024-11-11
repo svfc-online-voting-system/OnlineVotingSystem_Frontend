@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+@use './styles/theme.scss' as theme;
+@use './styles/mixins.scss' as mixins;
+@use './styles/variables.scss' as vars;
+@use './styles/utilities.scss' as utils;
+
+@include mat.core();
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+html,
+body {
+	background-color: theme.$background-color;
+	height: 100%;
+	@include mat.all-component-themes(theme.$light-theme);
+}
+
+li {
+	list-style-type: none;
+}

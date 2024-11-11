@@ -1,0 +1,236 @@
+<main class="auth-container">
+	<div class="auth-sub-container">
+		<section class="image-section">
+			<img
+				src="images/root/sign-up-image.png"
+				alt="
+					An illustration that shows two hands from two different phone section
+				" />
+		</section>
+		<section class="auth-section">
+			<mat-card appearance="outlined">
+				<mat-card-header>
+					<mat-card-title><span>vote</span>voyage</mat-card-title>
+					<mat-card-subtitle>Sign Up</mat-card-subtitle>
+				</mat-card-header>
+				<mat-card-content>
+					<form
+						(ngSubmit)="onSignUpFormSubmit()"
+						[formGroup]="signUpFormGroup">
+						<mat-form-field>
+							<mat-label>First Name</mat-label>
+							<input
+								required
+								type="text"
+								aria-label="First Name"
+								autocomplete="given-name"
+								formControlName="firstName"
+								matInput
+								placeholder="ex.: Juan" />
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'firstName'
+									)
+								">
+								First Name is required
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'tooShort',
+										'firstName'
+									)
+								">
+								First Name is too short
+							</mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Last Name</mat-label>
+							<input
+								required
+								aria-label="Last Name"
+								autocomplete="family-name"
+								type="text"
+								formControlName="lastName"
+								matInput
+								placeholder="ex.: Dela Cruz" />
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'lastName'
+									)
+								">
+								Last Name is required
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'tooShort',
+										'lastName'
+									)
+								">
+								Last Name is too short
+							</mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Birth Date</mat-label>
+							<input
+								min="1900-01-01"
+								autocomplete="bday"
+								required
+								matInput
+								[max]="maximumDate"
+								[matDatepicker]="picker"
+								formControlName="birthday" />
+							<mat-hint>YYYY-MM-DD</mat-hint>
+							<mat-error
+								*ngIf="signUpFormGroup.hasError('required')">
+								Birth Date is required
+							</mat-error>
+							<mat-datepicker-toggle
+								matIconSuffix
+								[for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker #picker></mat-datepicker>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Email</mat-label>
+							<input
+								required
+								autocomplete="email"
+								type="email"
+								formControlName="email"
+								matInput
+								placeholder="ex.: someone@example.com" />
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'emailExists',
+										'email'
+									)
+								"
+								>Email already exists</mat-error
+							>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'emailInvalid',
+										'email'
+									)
+								"
+								>Email is invalid</mat-error
+							>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'email'
+									)
+								"
+								>Email is required</mat-error
+							>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Password</mat-label>
+							<input
+								required
+								autocomplete="new-password"
+								formControlName="password"
+								matInput
+								(change)="checkPasswordMatch()"
+								min="8"
+								[type]="showPassword ? 'text' : 'password'"
+								minlength="8"
+								placeholder="********" />
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'mismatch',
+										'password'
+									)
+								">
+								Passwords do not match
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'password'
+									)
+								">
+								Password is required
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'minlength',
+										'password'
+									)
+								">
+								Password must be at least 8 characters
+							</mat-error>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-label>Confirm Password</mat-label>
+							<input
+								required
+								autocomplete="new-password"
+								type="password"
+								(change)="checkPasswordMatch()"
+								formControlName="confirmPassword"
+								matInput
+								min="8"
+								minlength="8"
+								placeholder="********" />
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'mismatch',
+										'confirmPassword'
+									)
+								">
+								Passwords do not match
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'required',
+										'confirmPassword'
+									)
+								">
+								Password is required
+							</mat-error>
+							<mat-error
+								*ngIf="
+									signUpFormGroup.hasError(
+										'minlength',
+										'confirmPassword'
+									)
+								">
+								Password must be at least 8 characters
+							</mat-error>
+						</mat-form-field>
+						<mat-checkbox
+							(click)="togglePasswordVisibility()"
+							formControlName="showPassword"
+							aria-label="Show password"
+							>Show Password</mat-checkbox
+						>
+						<button
+							mat-flat-button
+							type="submit">
+							Sign Up
+						</button>
+						<a
+							mat-stroked-button
+							routerLink="/auth/login">
+							Login Instead
+						</a>
+					</form>
+				</mat-card-content>
+			</mat-card>
+		</section>
+	</div>
+</main>

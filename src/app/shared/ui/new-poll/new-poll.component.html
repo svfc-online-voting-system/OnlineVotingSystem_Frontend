@@ -1,0 +1,23 @@
+<main class="w-full min-h-screen flex flex-col items-center gap-20">
+	<app-user-navbar class="w-11/12 max-w-screen-2xl"></app-user-navbar>
+	<section class="w-full flex flex-col gap-4 justify-center items-center">
+		<div [formGroup]="pollTitleGroup" class="w-2/3">
+			<mat-form-field class="w-full">
+				<mat-label>Poll Title</mat-label>
+				<input
+					matInput
+					formControlName="title"
+					placeholder="Some fancy title"
+					value="Some fancy title" />
+			</mat-form-field>
+		</div>
+		<button
+			mat-fab
+			(click)="saveNewPoll()"
+			extended
+			class="w-fit">
+			<mat-icon>add_circle</mat-icon>
+			Save new poll
+		</button>
+	</section>
+</main>

@@ -1,0 +1,40 @@
+<section class="w-full flex flex-row min-h-screen">
+	<div class="flex flex-row w-full gap-4 filter-section">
+		<div>
+			<p class="font-bold">Filter by voting type</p>
+			<mat-button-toggle-group
+				name="ingredients"
+				class="h-auto"
+				aria-label="Ingredients"
+				multiple>
+				@for (type of VOTING_TYPE; track type) {
+				<mat-button-toggle value="{{ type }}">{{
+					type
+				}}</mat-button-toggle>
+				}
+			</mat-button-toggle-group>
+		</div>
+		<div>
+			<p class="font-bold">Filter by voting schedule</p>
+			<mat-button-toggle-group
+				name="filter-schedule"
+				class="h-auto"
+				aria-label="Filter by schedule"
+				multiple>
+				@for (schedule of VOTING_SCHEDULE; track schedule) {
+				<mat-button-toggle value="{{ schedule }}">{{
+					schedule
+				}}</mat-button-toggle>
+				}
+			</mat-button-toggle-group>
+		</div>
+		<button
+			mat-fab
+			(click)="openCreationMenu()"
+			extended
+			class="button-with-icon">
+			<mat-icon>add_circle</mat-icon>
+			New vote
+		</button>
+	</div>
+</section>

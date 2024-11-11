@@ -1,0 +1,117 @@
+@use './theme.scss' as theme;
+@use './mixins.scss' as mixins;
+@use './variables.scss' as vars;
+
+%primary-color {
+	color: theme.$primary-color;
+}
+
+%primary-color-bg {
+	background-color: theme.$primary-color;
+}
+
+%error-color {
+	color: theme.$error-color;
+}
+
+%error-color-bg {
+	background-color: theme.$error-color;
+}
+
+%highlight-color {
+	color: theme.$highlight-color;
+}
+
+%highlight-color-bg {
+	background-color: theme.$highlight-color;
+}
+
+%container {
+	@include mixins.width(vars.$width-full);
+	@include mixins.height(vars.$height-vh-100);
+}
+
+%responsive-container {
+	max-width: vars.$max-w-screen-2xl;
+	@include mixins.width(vars.$width-responsive);
+}
+
+%font-bold {
+	font-weight: 700;
+}
+
+%w-fit {
+	width: fit-content;
+}
+
+%w-11-12 {
+	width: 91.6666666667%;
+}
+
+%w-full {
+	@include mixins.width(vars.$width-full);
+}
+
+%w-half {
+	@include mixins.width(vars.$width-half);
+}
+
+%w-auto {
+	@include mixins.width(auto);
+}
+
+%h-auto {
+	@include mixins.height(auto);
+}
+
+%h-full {
+	@include mixins.height(vars.$height-vh-100);
+}
+
+%min-h-screen {
+	min-height: vars.$height-vh-100;
+}
+
+%flex-center-all {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+%flex-center-items-start {
+	display: flex;
+	justify-content: center;
+	align-items: start;
+}
+
+%font-xs {
+	font-size: vars.$font-xs;
+}
+
+%font-sm {
+	font-size: vars.$font-sm;
+}
+
+%font-base {
+	font-size: vars.$font-base;
+}
+
+%font-lg {
+	font-size: vars.$font-lg;
+}
+
+%font-xl {
+	font-size: vars.$font-xl;
+}
+
+%font-2xl {
+	font-size: vars.$font-2xl;
+}
+
+%font-3xl {
+	font-size: vars.$font-3xl;
+}
+
+%font-4xl {
+	font-size: vars.$font-4xl;
+}

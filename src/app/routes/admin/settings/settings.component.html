@@ -1,0 +1,177 @@
+<main class="w-full min-h-screen flex flex-col items-center">
+	<app-admin-navbar class="w-11/12 max-w-screen-2xl"></app-admin-navbar>
+
+	<div class="form-container">
+		<mat-card appearance="outlined">
+			<mat-card-header>
+				<mat-card-title>Personal Information</mat-card-title>
+				<mat-card-subtitle>
+					Update your personal information here. This information will
+					be used for your voting records and account settings.
+				</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<form
+					[formGroup]="personalInfoFormGroup"
+					class="personal-info-form">
+					<mat-form-field>
+						<mat-label>Email</mat-label>
+						<input
+							required
+							type="email"
+							aria-label="Email"
+							autocomplete="email"
+							matInput
+							formControlName="email" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Username</mat-label>
+						<input
+							matInput
+							formControlName="username" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>First Name</mat-label>
+						<input
+							matInput
+							autocomplete="name"
+							type="text"
+							formControlName="firstName" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Last Name</mat-label>
+						<input
+							matInput
+							autocomplete="family-name"
+							type="text"
+							formControlName="lastName" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Birthdate</mat-label>
+						<input
+							matInput
+							aria-label="Birthdate"
+							autocomplete="bday"
+							type="date"
+							formControlName="birthday" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Account creation date</mat-label>
+						<input
+							matInput
+							aria-label="Account creation date"
+							type="date"
+							formControlName="accountCreationDate" />
+					</mat-form-field>
+				</form>
+			</mat-card-content>
+			<mat-card-actions>
+				<button mat-flat-button>Save changes</button>
+				<button mat-stroked-button>Cancel</button>
+			</mat-card-actions>
+		</mat-card>
+
+		<mat-card appearance="outlined">
+			<mat-card-header>
+				<mat-card-title> Change Password </mat-card-title>
+				<mat-card-subtitle>
+					Change your password here. Make sure to remember your new
+					password.
+				</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<form
+					[formGroup]="passwordFormGroup"
+					class="change-password-form">
+					<mat-form-field>
+						<mat-label> Current Password </mat-label>
+						<input
+							required
+							matInput
+							autocomplete="current-password"
+							type="password"
+							formControlName="currentPassword" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label> New Password </mat-label>
+						<input
+							matInput
+							aria-label="New Password"
+							type="password"
+							formControlName="newPassword" />
+					</mat-form-field>
+					<mat-form-field>
+						<mat-label> Confirm New Password </mat-label>
+						<input
+							matInput
+							formControlName="confirmPassword" />
+					</mat-form-field>
+				</form>
+			</mat-card-content>
+			<mat-card-actions>
+				<button mat-flat-button>Save</button>
+				<button mat-stroked-button>Cancel</button>
+			</mat-card-actions>
+		</mat-card>
+
+		<mat-card appearance="outlined">
+			<mat-card-header>
+				<mat-card-title class="delete-account-title">
+					Delete my account
+				</mat-card-title>
+				<mat-card-subtitle>
+					Deleting your account will remove all your voting records
+					and account settings. This action is irreversible. Please be
+					certain about this action.
+				</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<form
+					[formGroup]="deleteAccountFormGroup"
+					class="delete-form">
+					<mat-form-field>
+						<mat-label> Current Password </mat-label>
+						<input
+							required
+							matInput
+							autocomplete="current-password"
+							type="password"
+							formControlName="currentPassword" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>
+							Type "DELETE" to confirm account deletion
+						</mat-label>
+						<input
+							matInput
+							aria-label="Delete Account"
+							type="text"
+							placeholder="DELETE"
+							formControlName="deleteMyAccountText" />
+					</mat-form-field>
+
+					<mat-checkbox
+						formControlName="understandIrreversibleAction"
+						class="delete-checkbox">
+						I understand and agree that deleting my account is an
+						irreversible action.
+					</mat-checkbox>
+				</form>
+			</mat-card-content>
+			<mat-card-actions>
+				<button
+					class="delete-account-button"
+					mat-flat-button>
+					Delete Account
+				</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+</main>

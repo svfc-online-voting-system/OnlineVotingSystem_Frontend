@@ -1,0 +1,144 @@
+@mixin m($value: 0) {
+	margin: $value;
+}
+
+@mixin m-t($top: 0) {
+	margin-top: $top;
+}
+
+@mixin m-r($right: 0) {
+	margin-right: $right;
+}
+
+@mixin m-b($bottom: 0) {
+	margin-bottom: $bottom;
+}
+
+@mixin m-l($left: 0) {
+	margin-left: $left;
+}
+
+@mixin m-x($x: 0) {
+	margin-left: $x;
+	margin-right: $x;
+}
+
+@mixin m-y($y: 0) {
+	margin-top: $y;
+	margin-bottom: $y;
+}
+
+@mixin p($value: 0) {
+	padding: $value;
+}
+
+@mixin p-t($top: 0) {
+	padding-top: $top;
+}
+
+@mixin p-r($right: 0) {
+	padding-right: $right;
+}
+
+@mixin p-b($bottom: 0) {
+	padding-bottom: $bottom;
+}
+
+@mixin p-l($left: 0) {
+	padding-left: $left;
+}
+
+@mixin p-x($x: 0) {
+	padding-left: $x;
+	padding-right: $x;
+}
+
+@mixin p-y($y: 0) {
+	padding-top: $y;
+	padding-bottom: $y;
+}
+
+@mixin border($width: 1px, $style: solid, $color: $border-color) {
+	border: $width $style $color;
+}
+
+@mixin gap($gap: 0) {
+	gap: $gap;
+}
+
+@mixin gap-x($x: 0) {
+	column-gap: $x;
+}
+
+@mixin gap-y($y: 0) {
+	row-gap: $y;
+}
+
+@mixin gap-row($row: 0) {
+	row-gap: $row;
+}
+
+@mixin gap-column($column: 0) {
+	column-gap: $column;
+}
+
+@mixin responsive($breakpoint) {
+	@media (min-width: $breakpoint) {
+		@content;
+	}
+}
+
+@mixin text-size($size: 1rem) {
+	font-size: $size;
+}
+
+@mixin flex($direction: row, $justify: normal, $align: normal, $wrap: nowrap) {
+	display: flex;
+	flex-direction: $direction;
+	justify-content: $justify;
+	align-items: $align;
+	flex-wrap: $wrap;
+}
+
+@mixin grid($columns: 1, $rows: auto, $gap: 0, $place-content: normal) {
+	display: grid;
+	grid-template-columns: repeat($columns, 1fr);
+	grid-template-rows: $rows;
+	gap: $gap;
+	place-content: $place-content;
+}
+
+@mixin position(
+	$position: relative,
+	$top: null,
+	$right: null,
+	$bottom: null,
+	$left: null
+) {
+	position: $position;
+	top: $top;
+	right: $right;
+	bottom: $bottom;
+	left: $left;
+}
+
+@mixin size($width, $height: $width) {
+	width: $width;
+	height: $height;
+}
+
+@mixin square($size) {
+	@include size($size);
+}
+
+@mixin height($height) {
+	height: $height;
+}
+
+@mixin width($width) {
+	width: $width;
+}
+
+@mixin max-width($width) {
+	max-width: $width;
+}

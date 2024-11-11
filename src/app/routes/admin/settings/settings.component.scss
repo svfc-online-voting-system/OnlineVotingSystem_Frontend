@@ -1,0 +1,73 @@
+@use './../../../../styles/base_utilities';
+@use './../../../../styles/mixins' as mixins;
+@use './../../../../styles/variables' as variables;
+
+main {
+	@extend %container;
+	@include mixins.flex(column, normal, center);
+}
+
+app-admin-navbar {
+	@extend %responsive-container;
+}
+
+.form-container {
+	@include mixins.flex(column, normal, center);
+	@include mixins.gap(2rem);
+	@extend %w-11-12, %responsive-container;
+}
+
+mat-card {
+	@include mixins.gap(2rem);
+	@include mixins.p(1rem);
+	@extend %w-full;
+}
+
+mat-card-content,
+form {
+	@include mixins.flex(column, center, center);
+	@include mixins.gap(1rem);
+	@extend %w-full;
+}
+
+mat-form-field,
+input {
+	@include mixins.width(100%);
+}
+
+mat-card-actions {
+	@include mixins.flex(row-reverse, space-between, center);
+}
+
+mat-card-title {
+	@extend %font-bold;
+}
+
+.delete-account-title {
+	@extend %error-color;
+}
+
+.delete-form {
+	@include mixins.responsive(variables.$breakpoint-md) {
+		@include mixins.grid(2, auto, 2rem, center);
+	}
+}
+
+.change-password-form {
+	@include mixins.responsive(variables.$breakpoint-md) {
+		@include mixins.grid(2, auto, 2rem, center);
+	}
+	@include mixins.responsive(variables.$breakpoint-lg) {
+		@include mixins.grid(3, auto, 2rem, center);
+	}
+}
+
+.personal-info-form {
+	@include mixins.responsive(variables.$breakpoint-md) {
+		@include mixins.grid(2, auto, 2rem, center);
+	}
+
+	@include mixins.responsive(variables.$breakpoint-lg) {
+		@include mixins.grid(3, auto, 2rem, center);
+	}
+}

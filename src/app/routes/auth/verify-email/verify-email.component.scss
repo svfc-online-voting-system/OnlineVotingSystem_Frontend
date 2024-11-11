@@ -1,0 +1,9 @@
+@use '../../../../styles/mixins' as mixins;
+@use '../../../../styles/variables' as vars;
+
+main {
+	@include mixins.flex(column, center, center);
+	@include mixins.width(100%);
+	@include mixins.height(vars.$height-vh-100);
+	@include mixins.gap(1rem);
+}

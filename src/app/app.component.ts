@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 	standalone: true,
 	imports: [RouterLink, RouterModule],
 	template: `<main class="w-full"><router-outlet></router-outlet></main>`,
-	styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
 	title = 'online-voting-system';
