@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+	<div
+		*ngIf="data.isHTML"
+		[innerHTML]="data.message | safeHtml"></div>
+	<p *ngIf="!data.isHTML">{{ data.message }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button
+		mat-button
+		*ngIf="data.showCancel"
+		[mat-dialog-close]="false">
+		{{ data.cancelText || 'Cancel' }}
+	</button>
+	<button
+		mat-flat-button
+		color="primary"
+		cdkFocusInitial
+		[mat-dialog-close]="true">
+		{{ data.confirmText || 'Confirm' }}
+	</button>
+</mat-dialog-actions>

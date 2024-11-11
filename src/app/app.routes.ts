@@ -123,15 +123,6 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
-		path: 'u/voting-instructions',
-		title: 'votevoyage Voting Instructions | User',
-		loadComponent: () =>
-			import(
-				'@app/routes/user/voting-instructions/voting-instructions.component'
-			).then((m) => m.VotingInstructionsComponent),
-		canActivate: [AuthGuard],
-	},
-	{
 		path: 'u/voting-status',
 		title: 'votevoyage Voting Status | User',
 		loadComponent: () =>
