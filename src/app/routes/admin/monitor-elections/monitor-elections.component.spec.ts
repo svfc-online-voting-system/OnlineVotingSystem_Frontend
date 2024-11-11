@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { MonitorElectionsComponent } from './monitor-elections.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('MonitorElectionsComponent', () => {
 	let component: MonitorElectionsComponent;
@@ -11,6 +12,7 @@ describe('MonitorElectionsComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [MonitorElectionsComponent],
 			providers: [
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {

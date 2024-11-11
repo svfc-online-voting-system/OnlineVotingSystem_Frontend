@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ManageAdminsComponent } from './manage-admins.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('ManageAdminsComponent', () => {
 	let component: ManageAdminsComponent;
@@ -11,6 +12,7 @@ describe('ManageAdminsComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [ManageAdminsComponent],
 			providers: [
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {
