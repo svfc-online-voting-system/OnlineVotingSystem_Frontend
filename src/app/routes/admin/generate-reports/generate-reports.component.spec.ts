@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { GenerateReportsComponent } from './generate-reports.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('GenerateReportsComponent', () => {
 	let component: GenerateReportsComponent;
@@ -11,6 +12,7 @@ describe('GenerateReportsComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [GenerateReportsComponent],
 			providers: [
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {

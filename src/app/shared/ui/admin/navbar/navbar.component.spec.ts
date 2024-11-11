@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { NavbarComponent } from './navbar.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('NavbarComponent', () => {
 	let component: NavbarComponent;
@@ -11,6 +12,7 @@ describe('NavbarComponent', () => {
 		await TestBed.configureTestingModule({
 			imports: [NavbarComponent],
 			providers: [
+				provideHttpClient(),
 				{
 					provide: ActivatedRoute,
 					useValue: {
