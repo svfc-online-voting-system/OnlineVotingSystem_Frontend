@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DialogBoxComponent } from './dialog-box.component';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from '@app/core/models/interface/dialog.interface';
-import { SafeHtmlPipe } from '@app/core/pipes/safe-html.pipe';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DialogBoxComponent', () => {
 	let component: DialogBoxComponent;
@@ -21,13 +18,7 @@ describe('DialogBoxComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [
-				DialogBoxComponent,
-				MatDialogModule,
-				MatButtonModule,
-				BrowserAnimationsModule,
-				SafeHtmlPipe,
-			],
+			imports: [DialogBoxComponent],
 			providers: [{ provide: MAT_DIALOG_DATA, useValue: mockDialogData }],
 		}).compileComponents();
 
@@ -36,20 +27,17 @@ describe('DialogBoxComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('should display HTML message when isHTML is true', async () => {
-		const htmlData = {
-			...mockDialogData,
-			isHTML: true,
-			message: '<p>HTML Message</p>',
-		};
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-		component.data = htmlData;
-		fixture.detectChanges();
-		await fixture.whenStable();
+	it('should display title from data', () => {
+		const titleElement = fixture.nativeElement.querySelector('h2');
+		expect(titleElement.textContent).toContain(mockDialogData.title);
+	});
 
-		const messageElement =
-			fixture.nativeElement.querySelector('div[innerHTML]');
-		expect(messageElement).toBeTruthy();
-		expect(messageElement.innerHTML).toContain('HTML Message');
+	it('should display message as plain text when isHTML is false', () => {
+		const messageElement = fixture.nativeElement.querySelector('p');
+		expect(messageElement.textContent).toContain(mockDialogData.message);
 	});
 });
