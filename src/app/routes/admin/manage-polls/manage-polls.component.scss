@@ -6,6 +6,6 @@ main {
 	@include mixins.flex(column, normal, center);
 }
 
-app-user-navbar {
+app-admin-navbar {
 	@extend %responsive-container;
 }
