@@ -17,9 +17,7 @@ import {
 	MatCheckboxModule,
 	type MatCheckbox,
 } from '@angular/material/checkbox';
-import {
-	ApiAuthResponse,
-} from '@app/core/models/authResponseType';
+import { ApiAuthResponse } from '@app/core/models/authResponseType';
 import { SnackbarService } from '@app/core/core.module';
 import { timeout } from 'rxjs';
 
@@ -71,7 +69,7 @@ export class LoginComponent {
 			'',
 			[
 				Validators.required,
-				Validators.pattern('^[0-9]{7}$'),
+				Validators.pattern('^\\d{7}$'),
 				Validators.minLength(7),
 				Validators.maxLength(7),
 			],
@@ -124,7 +122,9 @@ export class LoginComponent {
 
 	submitOtpForm(): void {
 		if (this.otpFormGroup.valid) {
-			const otp = String(this.otpFormGroup.value.otp);
+			const otp = this.otpFormGroup.value
+				.otp!.toString()
+				.padStart(7, '0');
 			this.isProcessing = true;
 
 			this._authService
@@ -133,10 +133,18 @@ export class LoginComponent {
 				.subscribe({
 					next: (response: ApiAuthResponse) => {
 						if (response.code === 'success') {
-							this._snackBarService.showSnackBar(
-								"OTP verified, you're being redirected to the home page",
-							);
-							this._router.navigate(['/u/home']);
+							console.log(response.message);
+							if (response.message == 'admin') {
+								this._router.navigate(['/a/home']);
+								this._snackBarService.showSnackBar(
+									"OTP verified, you're being redirected to the home page",
+								);
+							} else {
+								this._snackBarService.showSnackBar(
+									"OTP verified, you're being redirected to the home page",
+								);
+								this._router.navigate(['/u/home']);
+							}
 						} else {
 							this._snackBarService.showSnackBar('Invalid OTP');
 						}

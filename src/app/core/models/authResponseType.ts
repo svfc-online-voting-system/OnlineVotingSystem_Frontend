@@ -7,6 +7,11 @@ export interface ApiAuthResponse {
 	message: string;
 }
 
+export interface StandardResponse {
+	code: string;
+	message: string;
+}
+
 export interface SignUpInformation {
 	email: string;
 	first_name: string;
