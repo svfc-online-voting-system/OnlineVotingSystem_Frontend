@@ -1,5 +1,6 @@
 @use './../../../../styles/base_utilities';
 @use './../../../../styles/mixins' as mixins;
+@use './../../../../styles/variables' as var;
 
 main {
 	@extend %container;
@@ -8,4 +9,20 @@ main {
 
 app-admin-navbar {
 	@extend %responsive-container;
+}
+
+.table-container {
+	@include mixins.m-t(var.$space-6);
+	@extend %responsive-container;
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+mat-cell,
+mat-header-cell {
+	@extend %flex-center-all;
+}
+
+mat-row {
+	cursor: pointer;
 }

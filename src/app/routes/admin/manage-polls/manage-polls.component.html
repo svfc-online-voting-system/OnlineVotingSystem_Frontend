@@ -1,104 +1,122 @@
 <main class="w-full min-h-screen flex flex-col items-center">
 	<app-admin-navbar class="w-11/12 max-w-screen-2xl"></app-admin-navbar>
-	<mat-table
-		[dataSource]="votingEvents"
-		class="mat-elevation-z8 w-11/12 max-w-screen-2xl mt-8">
-		<ng-container matColumnDef="creator_fullname">
-			<mat-header-cell *matHeaderCellDef>Creator</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.creator_fullname
-			}}</mat-cell>
-		</ng-container>
+	<mat-form-field>
+		<mat-label>Filter</mat-label>
+		<input
+			matInput
+			(keyup)="applyFilter($event)"
+			placeholder="Filter by title, status, creator, etc."
+			#input />
+	</mat-form-field>
+	<section class="table-container">
+		<mat-table [dataSource]="votingEvents">
+			<ng-container matColumnDef="event_id">
+				<mat-header-cell *matHeaderCellDef>Event ID</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{
+					event.event_id
+				}}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="creator_username">
-			<mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.creator_username
-			}}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="title">
+				<mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{ event.title }}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="approved">
-			<mat-header-cell *matHeaderCellDef>Approved</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.approved ? 'Yes' : 'No'
-			}}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="status">
+				<mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{ event.status }}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="created_at">
-			<mat-header-cell *matHeaderCellDef>Created At</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.created_at | date : 'short'
-			}}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="approved">
+				<mat-header-cell *matHeaderCellDef>Approved</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{
+					event.approved ? 'Yes' : 'No'
+				}}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="created_by">
-			<mat-header-cell *matHeaderCellDef>Created By ID</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{ event.created_by }}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="created_at">
+				<mat-header-cell *matHeaderCellDef>Created At</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{
+					event.created_at | date : 'short'
+				}}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="description">
-			<mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{ event.description }}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="end_date">
+				<mat-header-cell *matHeaderCellDef>End Date</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{
+					event.end_date | date : 'short'
+				}}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="end_date">
-			<mat-header-cell *matHeaderCellDef>End Date</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.end_date | date : 'short'
-			}}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="start_date">
+				<mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{
+					event.start_date | date : 'short'
+				}}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="event_id">
-			<mat-header-cell *matHeaderCellDef>Event ID</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{ event.event_id }}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="creator_fullname">
+				<mat-header-cell *matHeaderCellDef>Creator</mat-header-cell>
+				<mat-cell *matCellDef="let event">{{
+					event.creator_fullname
+				}}</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="event_type">
-			<mat-header-cell *matHeaderCellDef>Event Type</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{ event.event_type }}</mat-cell>
-		</ng-container>
+			<ng-container matColumnDef="actions">
+				<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+				<mat-cell *matCellDef="let event">
+					<button
+						mat-icon-button
+						[matMenuTriggerFor]="menu"
+						aria-label="Additional Actions for this event">
+						<mat-icon>more_vert</mat-icon>
+					</button>
+					<mat-menu #menu="matMenu">
+						<button
+							mat-menu-item
+							[matTooltipPosition]="'above'"
+							(click)="approveEvent(event.event_id)"
+							*ngIf="!event.approved"
+							matTooltip="Approve Event">
+							<mat-icon>check</mat-icon>
+							<span> Approve Event </span>
+						</button>
+						<button
+							mat-menu-item
+							[matTooltipPosition]="'left'"
+							(click)="deleteEvent(event.event_id)"
+							matTooltip="Delete Event">
+							<mat-icon>delete</mat-icon>
+							<span> Delete Event </span>
+						</button>
+						<button
+							mat-menu-item
+							[matTooltipPosition]="'left'"
+							(click)="viewEvent(event.event_id)"
+							matTooltip="View Event">
+							<mat-icon>info</mat-icon>
+							<span> View Event </span>
+						</button>
+						<button
+							mat-menu-item
+							[matTooltipPosition]="'left'"
+							(click)="viewUser(event.creator_uuid)"
+							matTooltip="View Creator">
+							<mat-icon>person_search</mat-icon>
+							<span> View Creator </span>
+						</button>
+					</mat-menu>
+				</mat-cell>
+			</ng-container>
 
-		<ng-container matColumnDef="is_deleted">
-			<mat-header-cell *matHeaderCellDef>Deleted</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.is_deleted ? 'Yes' : 'No'
-			}}</mat-cell>
-		</ng-container>
-
-		<ng-container matColumnDef="last_modified_at">
-			<mat-header-cell *matHeaderCellDef>Last Modified</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.last_modified_at | date : 'short'
-			}}</mat-cell>
-		</ng-container>
-
-		<ng-container matColumnDef="start_date">
-			<mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{
-				event.start_date | date : 'short'
-			}}</mat-cell>
-		</ng-container>
-
-		<ng-container matColumnDef="status">
-			<mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{ event.status }}</mat-cell>
-		</ng-container>
-
-		<ng-container matColumnDef="title">
-			<mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{ event.title }}</mat-cell>
-		</ng-container>
-
-		<ng-container matColumnDef="uuid">
-			<mat-header-cell *matHeaderCellDef>UUID</mat-header-cell>
-			<mat-cell *matCellDef="let event">{{ event.uuid }}</mat-cell>
-		</ng-container>
-
-		<mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-		<mat-row
-			*matRowDef="let row; columns: columnsToDisplay"
-			matRipple
-			class="hover:bg-gray-100 cursor-pointer">
-		</mat-row>
-	</mat-table>
+			<mat-header-row
+				*matHeaderRowDef="columnsToDisplay"></mat-header-row>
+			<mat-row
+				(click)="viewEvent(row.event_id)"
+				*matRowDef="let row; columns: columnsToDisplay"
+				matRipple
+				class="hover:bg-gray-100 cursor-pointer">
+			</mat-row>
+		</mat-table>
+	</section>
 </main>

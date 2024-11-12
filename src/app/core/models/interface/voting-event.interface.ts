@@ -14,4 +14,6 @@ export interface VotingEvent {
 	status: string;
 	title: string;
 	uuid: string;
+	creator_id: number;
+	creator_uuid: string;
 }
