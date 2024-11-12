@@ -9,10 +9,8 @@ import {
 import { AuthService } from '@app/core/services/api/auth/auth.service';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import {
-	ApiAuthResponse,
-	ApiAuthErrorResponse,
-} from '@app/core/models/authResponseType';
+import { ApiAuthResponse } from '@app/core/models/authResponseType';
+import { SnackbarService } from '@app/core/core.module';
 
 @Injectable({
 	providedIn: 'root',
@@ -21,6 +19,7 @@ export class AuthGuard implements CanActivate {
 	private readonly _authService = inject(AuthService);
 	private readonly _router = inject(Router);
 	private readonly _platformId = inject(PLATFORM_ID);
+	private readonly _snackBarService = inject(SnackbarService);
 
 	canActivate(
 		route: ActivatedRouteSnapshot,
@@ -36,11 +35,17 @@ export class AuthGuard implements CanActivate {
 
 		if (isProtectedRoute) {
 			return this._authService.isTokenValid().pipe(
-				map((res: ApiAuthResponse | ApiAuthErrorResponse) => {
+				map((res: ApiAuthResponse) => {
 					if ('error' in res) {
-						console.log(
-							`Authentication failed: ${res.error.message}`,
+						console.log(`Authentication failed: ${res.message}`);
+						return false;
+					}
+					const userRole = res.message;
+					if (currentUrl.startsWith('/a') && userRole !== 'admin') {
+						this._snackBarService.showSnackBar(
+							'You do not have permission to access this page',
 						);
+						this._router.navigate(['/u/home']);
 						return false;
 					}
 					return res.code === 'success';
@@ -51,6 +56,9 @@ export class AuthGuard implements CanActivate {
 					}
 				}),
 				catchError((error) => {
+					if (error && error.message) {
+						this._snackBarService.showSnackBar(error.message);
+					}
 					console.error('An unexpected error occurred:', error);
 					this._router.navigate(['/auth/login']);
 					return of(false);
@@ -59,6 +67,5 @@ export class AuthGuard implements CanActivate {
 		} else {
 			return of(true);
 		}
-		// return of(true);
 	}
 }

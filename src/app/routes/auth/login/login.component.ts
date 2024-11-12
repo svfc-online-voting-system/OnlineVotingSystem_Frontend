@@ -19,7 +19,6 @@ import {
 } from '@angular/material/checkbox';
 import {
 	ApiAuthResponse,
-	type ApiAuthErrorResponse,
 } from '@app/core/models/authResponseType';
 import { SnackbarService } from '@app/core/core.module';
 import { timeout } from 'rxjs';
@@ -96,8 +95,8 @@ export class LoginComponent {
 						this.email = email!;
 						stepper.next();
 					},
-					error: (error: ApiAuthErrorResponse) => {
-						this._snackBarService.showSnackBar(error.error.message);
+					error: (error: ApiAuthResponse) => {
+						this._snackBarService.showSnackBar(error.message);
 						this.isProcessing = false;
 					},
 					complete: () => {
@@ -116,8 +115,8 @@ export class LoginComponent {
 				this.loginButton.disabled = true;
 				this.otpFormGroup.reset();
 			},
-			error: (error: ApiAuthErrorResponse) => {
-				this._snackBarService.showSnackBar(error.error.message);
+			error: (error: ApiAuthResponse) => {
+				this._snackBarService.showSnackBar(error.message);
 				this.isProcessing = false;
 			},
 		});
@@ -143,8 +142,8 @@ export class LoginComponent {
 						}
 						this.isProcessing = false;
 					},
-					error: (error: ApiAuthErrorResponse) => {
-						this._snackBarService.showSnackBar(error.error.message);
+					error: (error: ApiAuthResponse) => {
+						this._snackBarService.showSnackBar(error.message);
 						this.isProcessing = false;
 					},
 				});
