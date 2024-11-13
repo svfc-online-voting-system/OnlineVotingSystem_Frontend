@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +11,7 @@ import {
 	MAT_DATE_LOCALE,
 	provideNativeDateAdapter,
 } from '@angular/material/core';
+import { ProfileService } from '@app/core/services/api/profile/profile.service';
 
 @Component({
 	selector: 'app-settings',
@@ -32,27 +33,32 @@ import {
 	templateUrl: './settings.component.html',
 	styleUrl: './settings.component.scss',
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
 	private readonly _formBuilder = inject(FormBuilder);
+	private readonly _profileService = inject(ProfileService);
+	email = '';
+	username = '';
+	firstName = '';
+	lastName = '';
+	birthday = '';
+	accountCreationDate = '';
 
 	personalInfoFormGroup = this._formBuilder.group({
-		email: ['', [Validators.required]],
+		email: [{ disabled: true, value: this.email }],
 		username: ['', [Validators.required]],
 		firstName: ['', [Validators.required]],
 		lastName: ['', [Validators.required]],
 		birthday: [
 			{
-				value: '1990-01-01',
+				value: this.birthday,
 				disabled: true,
 			},
-			[Validators.required],
 		],
 		accountCreationDate: [
 			{
-				value: '2022-01-01',
+				value: this.accountCreationDate,
 				disabled: true,
 			},
-			[Validators.required],
 		],
 	});
 
@@ -67,4 +73,25 @@ export class SettingsComponent {
 		deleteMyAccountText: ['', [Validators.required]],
 		understandIrreversibleAction: ['', [Validators.required]],
 	});
+
+	ngOnInit() {
+		this._profileService.getMyDetails().subscribe((data) => {
+			// Format dates from API response
+			const birthDate = new Date(data.profile_data.date_of_birth)
+				.toISOString()
+				.split('T')[0];
+			const creationDate = new Date(data.profile_data.creation_date)
+				.toISOString()
+				.split('T')[0];
+
+			this.personalInfoFormGroup.patchValue({
+				email: data.profile_data.email,
+				username: data.profile_data.username,
+				firstName: data.profile_data.first_name,
+				lastName: data.profile_data.last_name,
+				birthday: birthDate,
+				accountCreationDate: creationDate,
+			});
+		});
+	}
 }

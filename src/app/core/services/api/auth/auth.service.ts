@@ -36,7 +36,6 @@ export class AuthService {
 		return this.httpClient.post<ApiAuthResponse>(
 			`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
 			loginInformation,
-			{ withCredentials: true },
 		);
 	}
 
