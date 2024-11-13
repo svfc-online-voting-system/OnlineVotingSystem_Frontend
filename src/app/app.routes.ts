@@ -1,4 +1,12 @@
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import {
+	Routes,
+	RouterModule,
+	PreloadAllModules,
+	Route,
+	ActivatedRouteSnapshot,
+	RouterStateSnapshot,
+	UrlSegment,
+} from '@angular/router';
 import { inject, NgModule } from '@angular/core';
 import { AuthGuard } from '@app/core/guards/auth/auth.guard';
 import { HomeComponent } from '@app/routes/home/home.component';
@@ -49,8 +57,14 @@ export const routes: Routes = [
 
 	{
 		path: 'a',
-		canActivate: [() => inject(AuthGuard)],
-		canMatch: [() => inject(AuthGuard)],
+		canActivate: [
+			(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+				inject(AuthGuard).canActivate(route, state),
+		],
+		canMatch: [
+			(route: Route, segments: UrlSegment[]) =>
+				inject(AuthGuard).canMatch(route, segments),
+		],
 		children: [
 			{
 				path: 'home',
@@ -120,8 +134,14 @@ export const routes: Routes = [
 	},
 	{
 		path: 'u',
-		canActivate: [() => inject(AuthGuard)],
-		canMatch: [() => inject(AuthGuard)],
+		canActivate: [
+			(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+				inject(AuthGuard).canActivate(route, state),
+		],
+		canMatch: [
+			(route: Route, segments: UrlSegment[]) =>
+				inject(AuthGuard).canMatch(route, segments),
+		],
 		children: [
 			{
 				path: 'home',
