@@ -1,6 +1,6 @@
 import { Component, inject, type OnInit } from '@angular/core';
 import { NavbarComponent } from '@app/shared/ui/admin/navbar/navbar.component';
-import { VotingEventService } from '@app/core/core.module';
+import { VotingEventService } from '@app/core/services';
 import { VotingEvent } from '@app/core/models/interface/voting-event.interface';
 import { StandardResponse } from '@app/core/models/authResponseType';
 import { MatRippleModule } from '@angular/material/core';

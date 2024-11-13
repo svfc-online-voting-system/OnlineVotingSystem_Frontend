@@ -9,7 +9,7 @@ import {
 	FormGroup,
 } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { PollService } from '@app/core/core.module';
+import { PollService } from '@app/core/services';
 import { MatFormField } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';

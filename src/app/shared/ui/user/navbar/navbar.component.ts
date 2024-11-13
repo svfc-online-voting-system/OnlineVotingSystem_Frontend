@@ -4,7 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService, SnackbarService } from '@app/core/core.module';
+import { AuthService, SnackbarService } from '@app/core/services';
 import { DialogService } from '@app/core/services/dialog/dialog.service';
 
 @Component({

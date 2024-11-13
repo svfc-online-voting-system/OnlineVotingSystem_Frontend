@@ -9,11 +9,11 @@ import {
 	Route,
 	UrlSegment,
 } from '@angular/router';
-import { AuthService } from '@app/core/services/api/auth/auth.service';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 import { ApiAuthResponse } from '@app/core/models/authResponseType';
-import { SnackbarService } from '@app/core/core.module';
+import { AuthService } from '@app/core/services/api/auth/auth.service';
+import { SnackbarService } from '@app/core/services/snackbar/snackbar.service';
 
 @Injectable({
 	providedIn: 'root',

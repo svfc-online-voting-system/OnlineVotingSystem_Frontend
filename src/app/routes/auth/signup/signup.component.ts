@@ -18,10 +18,8 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SnackbarService, AuthService } from '@app/core/core.module';
-import {
-	ApiAuthResponse,
-} from '@app/core/models/authResponseType';
+import { SnackbarService, AuthService } from '@app/core/services';
+import { ApiAuthResponse } from '@app/core/models/authResponseType';
 
 @Component({
 	selector: 'app-signup',

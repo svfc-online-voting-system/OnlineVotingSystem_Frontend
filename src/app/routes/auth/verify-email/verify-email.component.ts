@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService, SnackbarService } from '@app/core/core.module';
+import { AuthService, SnackbarService } from '@app/core/services';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({

@@ -1,5 +1,5 @@
 import { RouterLink, Router } from '@angular/router';
-import { AuthService } from '@app/core/core.module';
+import { AuthService } from '@app/core/services';
 import { Component, ViewChild, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import {
@@ -18,7 +18,7 @@ import {
 	type MatCheckbox,
 } from '@angular/material/checkbox';
 import { ApiAuthResponse } from '@app/core/models/authResponseType';
-import { SnackbarService } from '@app/core/core.module';
+import { SnackbarService } from '@app/core/services';
 import { timeout } from 'rxjs';
 
 @Component({
