@@ -1,5 +1,5 @@
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { AuthGuard } from '@app/core/guards/auth/auth.guard';
 import { HomeComponent } from '@app/routes/home/home.component';
 
@@ -49,8 +49,8 @@ export const routes: Routes = [
 
 	{
 		path: 'a',
-		canActivate: [AuthGuard],
-		canMatch: [AuthGuard],
+		canActivate: [() => inject(AuthGuard)],
+		canMatch: [() => inject(AuthGuard)],
 		children: [
 			{
 				path: 'home',
@@ -120,7 +120,8 @@ export const routes: Routes = [
 	},
 	{
 		path: 'u',
-		canActivate: [AuthGuard],
+		canActivate: [() => inject(AuthGuard)],
+		canMatch: [() => inject(AuthGuard)],
 		children: [
 			{
 				path: 'home',
