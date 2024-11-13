@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ManagePollsComponent } from './manage-polls.component';
 import { provideHttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 describe('ManagePollsComponent', () => {
@@ -10,7 +11,7 @@ describe('ManagePollsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [ManagePollsComponent],
+			imports: [ManagePollsComponent, BrowserAnimationsModule],
 			providers: [
 				provideHttpClient(),
 				{
