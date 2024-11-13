@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from '@app/core/interceptors/auth-interceptor';
+// import { HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { AuthInterceptor } from '@app/core/interceptors/auth-interceptor';
 import { AuthGuard } from '@app/core/guards/auth/auth.guard';
 
 // Services
@@ -20,11 +20,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 		AuthService,
 		PollService,
 		VotingEventService,
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: AuthInterceptor,
-			multi: true,
-		},
+		// {
+		// 	provide: HTTP_INTERCEPTORS,
+		// 	useClass: AuthInterceptor,
+		// 	multi: true,
+		// },
 	],
 	exports: [ReactiveFormsModule, CommonModule],
 })
