@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SnackbarService, PollService } from '@app/core/core.module';
+import { SnackbarService, PollService } from '@app/core/services';
 
 @Component({
 	selector: 'app-new-poll',

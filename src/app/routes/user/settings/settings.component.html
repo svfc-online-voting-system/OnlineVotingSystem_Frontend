@@ -11,18 +11,9 @@
 				</mat-card-subtitle>
 			</mat-card-header>
 			<mat-card-content>
-				<form [formGroup]="personalInfoFormGroup" class="personal-info-form">
-					<mat-form-field>
-						<mat-label>Email</mat-label>
-						<input
-							required
-							type="email"
-							aria-label="Email"
-							autocomplete="email"
-							matInput
-							formControlName="email" />
-					</mat-form-field>
-
+				<form
+					[formGroup]="personalInfoFormGroup"
+					class="personal-info-form">
 					<mat-form-field>
 						<mat-label>Username</mat-label>
 						<input
@@ -46,6 +37,16 @@
 							autocomplete="family-name"
 							type="text"
 							formControlName="lastName" />
+					</mat-form-field>
+
+					<mat-form-field>
+						<mat-label>Email</mat-label>
+						<input
+							type="email"
+							aria-label="Email"
+							autocomplete="email"
+							matInput
+							formControlName="email" />
 					</mat-form-field>
 
 					<mat-form-field>
@@ -83,7 +84,9 @@
 				</mat-card-subtitle>
 			</mat-card-header>
 			<mat-card-content>
-				<form [formGroup]="passwordFormGroup" class="change-password-form">
+				<form
+					[formGroup]="passwordFormGroup"
+					class="change-password-form">
 					<mat-form-field>
 						<mat-label> Current Password </mat-label>
 						<input
@@ -128,7 +131,9 @@
 				</mat-card-subtitle>
 			</mat-card-header>
 			<mat-card-content>
-				<form [formGroup]="deleteAccountFormGroup" class="delete-form">
+				<form
+					[formGroup]="deleteAccountFormGroup"
+					class="delete-form">
 					<mat-form-field>
 						<mat-label> Current Password </mat-label>
 						<input

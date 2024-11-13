@@ -1,5 +1,6 @@
 @use './../../../../styles/base_utilities';
 @use './../../../../styles/mixins' as mixins;
+@use './../../../../styles/variables' as var;
 
 main {
 	@extend %container;
@@ -8,4 +9,60 @@ main {
 
 app-admin-navbar {
 	@extend %responsive-container;
+}
+
+.table-container {
+	@include mixins.m-t(var.$space-6);
+	@extend %responsive-container;
+	border-radius: 1rem;
+	overflow: hidden;
+}
+
+mat-cell,
+mat-header-cell {
+	@extend %flex-center-all;
+}
+
+mat-row {
+	cursor: pointer;
+}
+
+// Hide columns on small devices
+.mat-column-event_id,
+.mat-column-status,
+.mat-column-approved,
+.mat-column-creator_fullname {
+	display: none;
+
+	@include mixins.responsive(var.$breakpoint-sm) {
+		display: flex;
+	}
+}
+
+// Hide date columns on medium devices
+.mat-column-created_at,
+.mat-column-start_date,
+.mat-column-end_date {
+	display: none;
+
+	@include mixins.responsive(var.$breakpoint-lg) {
+		display: flex;
+	}
+}
+
+// Always show title and actions
+.mat-column-title,
+.mat-column-actions {
+	display: flex;
+}
+
+// Adjust cell widths
+.mat-column-title {
+	flex: 1;
+	min-width: 150px;
+}
+
+.mat-column-actions {
+	min-width: 48px;
+	justify-content: flex-end;
 }

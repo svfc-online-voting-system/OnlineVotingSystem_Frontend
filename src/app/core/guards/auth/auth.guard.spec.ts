@@ -6,10 +6,7 @@ import {
 } from '@angular/router';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from '@app/core/services/api/auth/auth.service';
-import {
-	ApiAuthErrorResponse,
-	ApiAuthResponse,
-} from '@app/core/models/authResponseType';
+import { ApiAuthResponse } from '@app/core/models/authResponseType';
 import { of } from 'rxjs';
 
 describe('AuthGuard', () => {
@@ -59,11 +56,9 @@ describe('AuthGuard', () => {
 	});
 
 	it('should prevent activation and redirect to login when token is invalid', (done) => {
-		const response: ApiAuthErrorResponse = {
-			error: {
-				code: 'invalid_token',
-				message: 'Token is invalid',
-			},
+		const response: ApiAuthResponse = {
+			code: 'invalid_token',
+			message: 'Token is invalid',
 		};
 		authService.isTokenValid.and.returnValue(of(response));
 		const route = {} as ActivatedRouteSnapshot;

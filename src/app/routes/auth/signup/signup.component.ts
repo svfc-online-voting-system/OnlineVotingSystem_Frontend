@@ -18,11 +18,8 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SnackbarService, AuthService } from '@app/core/core.module';
-import {
-	ApiAuthResponse,
-	ApiAuthErrorResponse,
-} from '@app/core/models/authResponseType';
+import { SnackbarService, AuthService } from '@app/core/services';
+import { ApiAuthResponse } from '@app/core/models/authResponseType';
 
 @Component({
 	selector: 'app-signup',
@@ -151,10 +148,9 @@ export class SignupComponent {
 						});
 					this._snackBarService.showSnackBar(response.message);
 				} catch (error: unknown) {
-					console.log(error);
 					let errorMessage = 'An error occurred.';
-					const errorObj = error as ApiAuthErrorResponse;
-					errorMessage = errorObj.error.message;
+					const errorObj = error as ApiAuthResponse;
+					errorMessage = errorObj.message;
 					this._snackBarService.showSnackBar(errorMessage);
 				} finally {
 					this.submitting = false;

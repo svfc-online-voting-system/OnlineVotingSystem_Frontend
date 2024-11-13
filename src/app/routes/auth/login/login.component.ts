@@ -1,5 +1,5 @@
 import { RouterLink, Router } from '@angular/router';
-import { AuthService } from '@app/core/core.module';
+import { AuthService } from '@app/core/services';
 import { Component, ViewChild, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import {
@@ -17,11 +17,8 @@ import {
 	MatCheckboxModule,
 	type MatCheckbox,
 } from '@angular/material/checkbox';
-import {
-	ApiAuthResponse,
-	type ApiAuthErrorResponse,
-} from '@app/core/models/authResponseType';
-import { SnackbarService } from '@app/core/core.module';
+import { ApiAuthResponse } from '@app/core/models/authResponseType';
+import { SnackbarService } from '@app/core/services';
 import { timeout } from 'rxjs';
 
 @Component({
@@ -72,7 +69,7 @@ export class LoginComponent {
 			'',
 			[
 				Validators.required,
-				Validators.pattern('^[0-9]{7}$'),
+				Validators.pattern('^\\d{7}$'),
 				Validators.minLength(7),
 				Validators.maxLength(7),
 			],
@@ -96,8 +93,8 @@ export class LoginComponent {
 						this.email = email!;
 						stepper.next();
 					},
-					error: (error: ApiAuthErrorResponse) => {
-						this._snackBarService.showSnackBar(error.error.message);
+					error: (error: ApiAuthResponse) => {
+						this._snackBarService.showSnackBar(error.message);
 						this.isProcessing = false;
 					},
 					complete: () => {
@@ -116,8 +113,8 @@ export class LoginComponent {
 				this.loginButton.disabled = true;
 				this.otpFormGroup.reset();
 			},
-			error: (error: ApiAuthErrorResponse) => {
-				this._snackBarService.showSnackBar(error.error.message);
+			error: (error: ApiAuthResponse) => {
+				this._snackBarService.showSnackBar(error.message);
 				this.isProcessing = false;
 			},
 		});
@@ -125,7 +122,9 @@ export class LoginComponent {
 
 	submitOtpForm(): void {
 		if (this.otpFormGroup.valid) {
-			const otp = String(this.otpFormGroup.value.otp);
+			const otp = this.otpFormGroup.value
+				.otp!.toString()
+				.padStart(7, '0');
 			this.isProcessing = true;
 
 			this._authService
@@ -134,17 +133,24 @@ export class LoginComponent {
 				.subscribe({
 					next: (response: ApiAuthResponse) => {
 						if (response.code === 'success') {
-							this._snackBarService.showSnackBar(
-								"OTP verified, you're being redirected to the home page",
-							);
-							this._router.navigate(['/u/home']);
+							if (response.message == 'admin') {
+								this._router.navigate(['/a/home']);
+								this._snackBarService.showSnackBar(
+									"OTP verified, you're being redirected to the home page",
+								);
+							} else {
+								this._snackBarService.showSnackBar(
+									"OTP verified, you're being redirected to the home page",
+								);
+								this._router.navigate(['/u/home']);
+							}
 						} else {
 							this._snackBarService.showSnackBar('Invalid OTP');
 						}
 						this.isProcessing = false;
 					},
-					error: (error: ApiAuthErrorResponse) => {
-						this._snackBarService.showSnackBar(error.error.message);
+					error: (error: ApiAuthResponse) => {
+						this._snackBarService.showSnackBar(error.message);
 						this.isProcessing = false;
 					},
 				});

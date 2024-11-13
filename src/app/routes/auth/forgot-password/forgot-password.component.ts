@@ -2,13 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import {
-	MatFormFieldModule,
-} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
-import { SnackbarService } from '@app/core/core.module';
+import { SnackbarService } from '@app/core/services';
 import { ReactiveFormsModule } from '@angular/forms';
 @Component({
 	selector: 'app-forgot-password',

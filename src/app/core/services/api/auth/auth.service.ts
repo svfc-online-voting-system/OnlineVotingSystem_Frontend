@@ -8,7 +8,6 @@ import {
 import {
 	ApiAuthResponse,
 	SignUpInformation,
-	ApiAuthErrorResponse,
 } from '@app/core/models/authResponseType';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -37,24 +36,22 @@ export class AuthService {
 		return this.httpClient.post<ApiAuthResponse>(
 			`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
 			loginInformation,
-			{ withCredentials: true },
 		);
 	}
 
-	isTokenValid(): Observable<ApiAuthResponse | ApiAuthErrorResponse> {
+	isTokenValid(): Observable<ApiAuthResponse
+	> {
 		return this.httpClient
-			.get<ApiAuthResponse>(
-				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyJWT}`,
-				{
-					withCredentials: true,
-				},
-			)
+			.get<ApiAuthResponse>(`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyJWT}`, {
+				withCredentials: true,
+			})
 			.pipe(
 				catchError((error: HttpErrorResponse) => {
 					if (error.status === 401) {
 						return of({
-							error: error.error,
-						} as ApiAuthErrorResponse);
+							code: error.error.code,
+							message: error.error.message,
+						});
 					}
 					throw error;
 				}),

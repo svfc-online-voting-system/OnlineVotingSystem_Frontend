@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '@app/core/interceptors/auth-interceptor';
 import { AuthGuard } from '@app/core/guards/auth/auth.guard';
-
-// Services
-import { SnackbarService } from '@app/core/services/snackbar/snackbar.service';
-import { AuthService } from '@app/core/services/api/auth/auth.service';
-import { PollService } from '@app/core/services/api/poll/poll.service';
-
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import {
+	SnackbarService,
+	AuthService,
+	PollService,
+	VotingEventService,
+} from '@app/core/services';
 
 @NgModule({
 	imports: [CommonModule, ReactiveFormsModule],
@@ -18,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 		SnackbarService,
 		AuthService,
 		PollService,
+		VotingEventService,
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthInterceptor,
@@ -27,4 +29,3 @@ import { ReactiveFormsModule } from '@angular/forms';
 	exports: [ReactiveFormsModule, CommonModule],
 })
 export class CoreModule {}
-export { AuthService, SnackbarService, PollService };

@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
 	provideHttpClient,
 	withFetch,
+	withInterceptors,
 	withInterceptorsFromDi,
 	withJsonpSupport,
 } from '@angular/common/http';
@@ -16,6 +17,7 @@ import {
 } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { indefiniteLoaderInterceptor } from './core/interceptors/indefinite-loader,interceptor';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -25,6 +27,8 @@ export const appConfig: ApplicationConfig = {
 		provideClientHydration(),
 		provideAnimationsAsync(),
 		provideHttpClient(
+			withInterceptors([indefiniteLoaderInterceptor]),
+			withInterceptorsFromDi(),
 			withFetch(),
 			withJsonpSupport(),
 			withInterceptorsFromDi(),
