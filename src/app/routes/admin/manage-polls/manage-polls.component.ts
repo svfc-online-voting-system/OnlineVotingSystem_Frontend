@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
 	selector: 'app-manage-polls',
@@ -29,6 +30,7 @@ import { MatTableDataSource } from '@angular/material/table';
 		MatTooltipModule,
 		MatInputModule,
 		MatFormFieldModule,
+		MatButtonToggleModule,
 	],
 	templateUrl: './manage-polls.component.html',
 	styleUrl: './manage-polls.component.scss',

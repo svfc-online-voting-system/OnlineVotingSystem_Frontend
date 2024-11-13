@@ -15,17 +15,7 @@ import { AsyncPipe } from '@angular/common';
 			<mat-progress-bar mode="indeterminate"></mat-progress-bar>
 		</div>
 	`,
-	styles: [
-		`
-			.progress-bar-container {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				z-index: 9999;
-			}
-		`,
-	],
+	styleUrls: ['./indefinite-loader.component.scss'],
 })
 export class IndefiniteLoaderComponent {
 	public readonly loaderService = inject(IndefiniteLoaderService);

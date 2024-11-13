@@ -74,9 +74,6 @@ export class EditPollComponent implements OnInit {
 			error: (err) => {
 				console.error('Error loading poll data', err);
 			},
-			complete: () => {
-				console.log('Poll data loading complete');
-			},
 		});
 	}
 

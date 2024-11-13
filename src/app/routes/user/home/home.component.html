@@ -1,4 +1,101 @@
-<main>
-	<app-user-navbar></app-user-navbar>
-	<app-filter-nav></app-filter-nav>
+<!-- home.component.html -->
+<main class="w-full min-h-screen flex flex-col items-center">
+	<app-user-navbar class="w-11/12 max-w-screen-2xl"></app-user-navbar>
+
+	<section class="filter w-full flex flex-row min-h-screen">
+		<div class="flex flex-row w-full gap-4 filter-section">
+			<div>
+				<p class="label">Filter by voting type</p>
+				<mat-button-toggle-group
+					name="voting-type"
+					class="h-auto"
+					aria-label="Filter by voting type"
+					multiple
+					[value]="selectedTypes"
+					(change)="filterEvents($event.value, undefined)">
+					@for (type of VOTING_TYPE; track type) {
+					<mat-button-toggle value="{{ type }}">
+						{{ type }}
+					</mat-button-toggle>
+					}
+				</mat-button-toggle-group>
+			</div>
+			<div>
+				<p class="label">Filter by voting schedule</p>
+				<mat-button-toggle-group
+					name="filter-schedule"
+					class="h-auto"
+					aria-label="Filter by schedule"
+					multiple
+					[value]="selectedSchedules"
+					(change)="filterEvents(undefined, $event.value)">
+					@for (schedule of VOTING_SCHEDULE; track schedule) {
+					<mat-button-toggle value="{{ schedule }}">
+						{{ schedule }}
+					</mat-button-toggle>
+					}
+				</mat-button-toggle-group>
+			</div>
+			<button
+				mat-fab
+				(click)="openCreationMenu()"
+				extended
+				class="button-with-icon">
+				<mat-icon>add_circle</mat-icon>
+				New vote
+			</button>
+		</div>
+	</section>
+
+	<section
+		class="w-11/12 max-w-screen-2xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+		<mat-card
+			*ngFor="let event of votingEvents"
+			class="voting-event-card"
+			appearance="outlined">
+			<mat-card-header>
+				<div
+					mat-card-avatar
+					class="avatar">
+					<span>
+						{{ event.creator_firstname.charAt(0) }}
+					</span>
+				</div>
+				<mat-card-title>{{ event.title }}</mat-card-title>
+				<mat-card-subtitle>{{ event.description }}</mat-card-subtitle>
+			</mat-card-header>
+
+			<mat-card-content>
+				<div class="dates">
+					<p>Starts: {{ event.start_date | date : 'short' }}</p>
+					<p>Ends: {{ event.end_date | date : 'short' }}</p>
+				</div>
+				<p class="creator">Created by {{ event.creator_firstname }}</p>
+				<p class="created-date">
+					{{ event.created_at | date : 'short' }}
+				</p>
+			</mat-card-content>
+
+			<mat-card-footer>
+				<mat-chip-set aria-label="Voting Event Tags">
+					<mat-chip>{{ event.event_type }}</mat-chip>
+					<mat-chip>{{ event.status }}</mat-chip>
+				</mat-chip-set>
+			</mat-card-footer>
+			<mat-card-actions>
+				<button
+					mat-button
+					color="primary"
+					[routerLink]="['/u/events', event.event_uuid]">
+					VIEW DETAILS
+				</button>
+				<button
+					mat-button
+					color="accent"
+					[disabled]="event.status !== 'ongoing'">
+					PARTICIPATE
+				</button>
+			</mat-card-actions>
+		</mat-card>
+	</section>
 </main>

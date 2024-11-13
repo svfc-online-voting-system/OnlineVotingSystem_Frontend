@@ -150,7 +150,6 @@ export class SignupComponent {
 						});
 					this._snackBarService.showSnackBar(response.message);
 				} catch (error: unknown) {
-					console.log(error);
 					let errorMessage = 'An error occurred.';
 					const errorObj = error as ApiAuthResponse;
 					errorMessage = errorObj.message;

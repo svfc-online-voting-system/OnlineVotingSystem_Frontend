@@ -11,4 +11,6 @@ export const environment = {
 	API_RESEND_OTP: 'v1/auth/generate-otp',
 
 	API_GET_ALL_VOTING_EVENTS: '/v1/admin/get-all-voting-events',
+
+	API_GET_ALL_VOTING_EVENTS_USER: '/v1/user/get-voting-event-by'
 };

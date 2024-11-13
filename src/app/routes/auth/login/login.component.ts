@@ -133,7 +133,6 @@ export class LoginComponent {
 				.subscribe({
 					next: (response: ApiAuthResponse) => {
 						if (response.code === 'success') {
-							console.log(response.message);
 							if (response.message == 'admin') {
 								this._router.navigate(['/a/home']);
 								this._snackBarService.showSnackBar(

@@ -1,13 +1,78 @@
 @use './../../../../styles/base_utilities';
 @use './../../../../styles/mixins' as mixins;
+@use './../../../../styles/variables' as var;
 
 main {
 	@extend %container;
 	@include mixins.flex(column, normal, center);
-
 }
 
 app-user-navbar,
 app-filter-nav {
 	@extend %responsive-container;
+}
+
+mat-card-subtitle {
+	@include mixins.flex(column, start, center);
+	@include mixins.gap(var.$space-2);
+}
+
+.status-badge {
+	@include mixins.text-size(var.$font-sm);
+	@include mixins.flex(row, center, center);
+	border-radius: 50%;
+}
+
+.event-type-badge {
+	@include mixins.text-size(var.$font-sm);
+	@include mixins.flex(row, center, center);
+	border-radius: 50%;
+}
+
+section {
+	@include mixins.grid(1, auto, 1rem, center);
+	@include mixins.m-t(var.$space-6);
+	@include mixins.responsive(var.$breakpoint-md) {
+		@include mixins.grid(2, auto, 1rem, center);
+	}
+
+	@include mixins.responsive(var.$breakpoint-lg) {
+		@include mixins.grid(3, auto, 1rem, center);
+	}
+}
+
+.avatar {
+	@include mixins.square(2rem);
+	@extend %highlight-color-bg, %flex-center-all;
+	border-radius: 50%;
+}
+
+mat-card-footer {
+	@include mixins.m-t(var.$space-4);
+	@include mixins.p-l(var.$space-4);
+}
+
+.filter {
+	@extend %w-full;
+	@include mixins.flex(row);
+}
+
+.filter-section {
+	@extend %w-full;
+	@include mixins.gap(var.$space-4);
+	@include mixins.grid(1, auto, 1rem, normal);
+
+	@include mixins.responsive(var.$breakpoint-md) {
+		@include mixins.flex(row, normal, center);
+	}
+}
+
+.button-with-icon {
+	width: auto;
+	max-width: fit-content;
+	align-self: flex-end;
+}
+
+.label {
+	@extend %font-bold;
 }

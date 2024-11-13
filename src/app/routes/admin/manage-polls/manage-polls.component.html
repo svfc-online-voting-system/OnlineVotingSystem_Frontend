@@ -8,6 +8,14 @@
 			placeholder="Filter by title, status, creator, etc."
 			#input />
 	</mat-form-field>
+	<section>
+		<h3>Filter by status:</h3>
+		<mat-button-toggle-group>
+			<mat-button-toggle value="upcoming"> Upcoming </mat-button-toggle>
+			<mat-button-toggle value="ongoing">Ongoing</mat-button-toggle>
+			<mat-button-toggle value="completed">Completed</mat-button-toggle>
+		</mat-button-toggle-group>
+	</section>
 	<section class="table-container">
 		<mat-table [dataSource]="votingEvents">
 			<ng-container matColumnDef="event_id">

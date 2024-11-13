@@ -35,7 +35,6 @@ export class AuthGuard implements CanActivate, CanMatch {
 		return this._authService.isTokenValid().pipe(
 			map((res: ApiAuthResponse) => {
 				if ('error' in res) {
-					console.log(`Authentication failed: ${res.message}`);
 					return false;
 				}
 				const userRole = res.message;

@@ -21,7 +21,6 @@ export class AuthenticatedInterceptor implements HttpInterceptor {
 		const userPath = '/u/';
 
 		const originUrl = req.url;
-		console.log('Request Origin URL:', originUrl);
 
 		if (originUrl.startsWith(adminPath) || originUrl.startsWith(userPath)) {
 			if (!this.authService.isTokenValid()) {
