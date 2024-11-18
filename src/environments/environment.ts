@@ -12,7 +12,8 @@ export const environment = {
 
 	API_GET_ALL_VOTING_EVENTS: 'api/v1/admin/get-all-voting-events',
 
-	API_GET_ALL_VOTING_EVENTS_USER: 'api/v1/user/get-voting-event-by',
+	API_GET_ALL_VOTING_EVENTS_USER:
+		'api/v1/voting-event/user/get-voting-event-by',
 
 	API_GET_MY_PROFILE: 'api/v1/user/get-my-profile-settings',
 };

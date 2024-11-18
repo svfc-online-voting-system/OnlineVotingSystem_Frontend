@@ -152,6 +152,22 @@ export const routes: Routes = [
 					),
 			},
 			{
+				path: 'event/p/details/:uuid',
+				title: 'votevoyage Poll Event Details | User',
+				loadComponent: () =>
+					import(
+						'@app/routes/user/poll-event-details/poll-event-details.component'
+					).then((m) => m.PollEventDetailsComponent),
+			},
+			{
+				path: 'event/e/details/:uuid',
+				title: 'votevoyage Electoral Event Details | User',
+				loadComponent: () =>
+					import(
+						'@app/routes/user/electoral-event-details/electoral-event-details.component'
+					).then((m) => m.ElectoralEventDetailsComponent),
+			},
+			{
 				path: 'contact-us',
 				title: 'votevoyage Contact Us | User',
 				loadComponent: () =>

@@ -47,7 +47,7 @@ export class VotingEventService {
 			voting_status,
 		});
 
-		const url = `${this.apiBaseURL}:${this.apiPort}${
+		const url = `${this.apiBaseURL}:${this.apiPort}/${
 			this.userApiGetAllVotingEvents
 		}?${params.toString()}`;
 
