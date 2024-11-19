@@ -144,14 +144,6 @@ export const routes: Routes = [
 		],
 		children: [
 			{
-				path: 'home',
-				title: 'votevoyage Home | User',
-				loadComponent: () =>
-					import('@app/routes/user/home/home.component').then(
-						(m) => m.UserHomeComponent,
-					),
-			},
-			{
 				path: 'event/p/details/:uuid',
 				title: 'votevoyage Poll Event Details | User',
 				loadComponent: () =>
@@ -166,6 +158,22 @@ export const routes: Routes = [
 					import(
 						'@app/routes/user/electoral-event-details/electoral-event-details.component'
 					).then((m) => m.ElectoralEventDetailsComponent),
+			},
+			{
+				path: 'poll/:uuid/participate',
+				title: 'votevoyage Participate Poll | User',
+				loadComponent: () =>
+					import(
+						'@app/routes/user/participate-poll/participate-poll.component'
+					).then((m) => m.ParticipatePollComponent),
+			},
+			{
+				path: 'home',
+				title: 'votevoyage Home | User',
+				loadComponent: () =>
+					import('@app/routes/user/home/home.component').then(
+						(m) => m.UserHomeComponent,
+					),
 			},
 			{
 				path: 'contact-us',

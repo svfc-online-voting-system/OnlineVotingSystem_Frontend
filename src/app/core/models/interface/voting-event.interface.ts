@@ -30,6 +30,7 @@ export interface VotingEventDetails {
 	title: string;
 	uuid: string;
 	poll_options: PollEventOptions[];
+	creator_username: string;
 }
 
 export interface PollEventOptions {

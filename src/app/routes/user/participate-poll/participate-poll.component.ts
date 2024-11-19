@@ -1,39 +1,47 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { SnackbarService, VotingEventService } from '@app/core/services';
 import {
-	VotingEventDetails,
 	PollEventOptions,
+	VotingEventDetails,
 } from '@app/core/models/interface/voting-event.interface';
+import { VotingEventService, SnackbarService } from '@app/core/services';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
-import { Router } from '@angular/router';
-import { TitleCasePipe } from '@angular/common';
 import { MatRadioModule } from '@angular/material/radio';
+import { DatePipe, TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-	selector: 'app-poll-event-details',
+	selector: 'app-participate-poll',
 	standalone: true,
 	imports: [
-		CommonModule,
 		MatCardModule,
 		MatButtonModule,
-		NavbarComponent,
-		TitleCasePipe,
 		MatRadioModule,
+		TitleCasePipe,
+		FormsModule,
+		NgFor,
 		MatTooltipModule,
+		NavbarComponent,
+		UpperCasePipe,
+		DatePipe,
+		MatIconModule,
 	],
-	templateUrl: './poll-event-details.component.html',
-	styleUrl: './poll-event-details.component.scss',
+	templateUrl: './participate-poll.component.html',
+	styleUrl: './participate-poll.component.scss',
 })
-export class PollEventDetailsComponent implements OnInit {
+export class ParticipatePollComponent implements OnInit {
 	private readonly _route = inject(ActivatedRoute);
 	private readonly _votingEventService = inject(VotingEventService);
 	private readonly _snackBarService = inject(SnackbarService);
 	readonly _router = inject(Router);
+	selectedOptionID = 0;
+
 	eventUuid = '';
 	pollOptions: PollEventOptions[] = [];
 	eventDetails: VotingEventDetails = {
@@ -63,12 +71,21 @@ export class PollEventDetailsComponent implements OnInit {
 				}) => {
 					if (response.code === 'success') {
 						this.eventDetails = response.voting_event;
-						this.eventDetails.uuid = this.eventDetails.uuid.replace(
-							/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/,
-							'$1-$2-$3-$4-$5',
-						);
-
 						console.log('Event details:', this.eventDetails);
+
+						if (this.eventDetails.status === 'completed') {
+							this._snackBarService.showSnackBar(
+								'This poll has ended',
+							);
+							this._router.navigateByUrl('/u/home');
+						} else if (this.eventDetails.status === 'upcoming') {
+							this._snackBarService.showSnackBar(
+								'This poll has not started yet',
+							);
+							this._router.navigateByUrl('/u/home');
+						} else {
+							console.log('Event details:', this.eventDetails);
+						}
 					}
 				},
 				error: (error: {
@@ -87,5 +104,14 @@ export class PollEventDetailsComponent implements OnInit {
 					}
 				},
 			});
+	}
+
+	castVote(): void {
+		console.log(typeof this.selectedOptionID);
+		if (this.selectedOptionID === 0 || this.selectedOptionID === null) {
+			this._snackBarService.showSnackBar('Please select an option');
+			return;
+		}
+		console.log('Selected option:', this.selectedOptionID);
 	}
 }

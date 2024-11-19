@@ -57,6 +57,8 @@
 							? 'Event is not active'
 							: ' Participate in this event'
 					"
+                    (click)="eventDetails.status === 'active' ?
+                    this._router.navigateByUrl('/u/poll/' + eventDetails.uuid + '/participate') : null"
 					[disabled]="eventDetails.status !== 'active'">
 					PARTICIPATE
 				</button>
