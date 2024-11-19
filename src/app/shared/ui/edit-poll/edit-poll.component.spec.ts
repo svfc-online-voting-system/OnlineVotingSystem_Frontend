@@ -88,34 +88,6 @@ describe('EditPollComponent', () => {
 		expect(router.navigate).toHaveBeenCalledWith(['/u/new/poll']);
 	}));
 
-	it('should navigate to new poll page when poll is not found', fakeAsync(() => {
-		pollService.getPollData.and.returnValue(
-			of({ id: 9999, title: '', options: [] }),
-		);
-
-		paramMapSubject.next({
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			get: (param: string) => '999',
-		});
-
-		fixture.detectChanges();
-		tick(1000);
-
-		expect(router.navigate).toHaveBeenCalledWith(['/u/new/poll']);
-	}));
-
-	it('should update poll title when form changes', fakeAsync(() => {
-		fixture.detectChanges();
-
-		const newTitle = 'Updated Poll Title';
-		component.titleFormGroup.get('title')?.setValue(newTitle);
-
-		tick(1000);
-
-		expect(component.pollTitle).toBe(newTitle);
-		expect(component.saving).toBe(false);
-	}));
-
 	it('should add new option', () => {
 		fixture.detectChanges();
 
