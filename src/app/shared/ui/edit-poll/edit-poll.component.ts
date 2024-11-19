@@ -8,7 +8,7 @@ import {
 	Validators,
 	FormGroup,
 } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+// import { debounceTime } from 'rxjs/operators';
 import { PollService } from '@app/core/services';
 import { MatFormField } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
@@ -59,7 +59,7 @@ export class EditPollComponent implements OnInit {
 	}
 
 	loadPoll(pollId: number): void {
-		alert('Poll loaded successfully');
+		alert('Poll loaded successfully' + pollId);
 	}
 
 	deleteOption(id: number): void {
