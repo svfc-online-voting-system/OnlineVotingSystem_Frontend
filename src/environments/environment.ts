@@ -12,6 +12,7 @@ export const environment = {
 
 	API_GET_ALL_VOTING_EVENTS: 'api/v1/admin/get-all-voting-events',
 
+	API_GET_VOTING_EVENT: 'api/v1/voting-event/user/get-voting-event',
 	API_GET_ALL_VOTING_EVENTS_USER:
 		'api/v1/voting-event/user/get-voting-event-by',
 

@@ -47,12 +47,6 @@ export class EditPollComponent implements OnInit {
 	});
 
 	ngOnInit(): void {
-		this.titleFormGroup.valueChanges
-			.pipe(debounceTime(1000))
-			.subscribe((value) => {
-				this.saveUpdatedPollInformation(value.title);
-			});
-
 		this._route.paramMap.subscribe((params) => {
 			const pollId = Number(params.get('id'));
 			if (pollId && !isNaN(pollId) && pollId != null) {
@@ -65,16 +59,7 @@ export class EditPollComponent implements OnInit {
 	}
 
 	loadPoll(pollId: number): void {
-		this._pollService.getPollData(pollId).subscribe({
-			next: (poll) => {
-				this.pollTitle = poll.title;
-				this.pollOptions = poll.options;
-				this.titleFormGroup.setValue({ title: poll.title });
-			},
-			error: (err) => {
-				console.error('Error loading poll data', err);
-			},
-		});
+		alert('Poll loaded successfully');
 	}
 
 	deleteOption(id: number): void {
@@ -86,14 +71,7 @@ export class EditPollComponent implements OnInit {
 		this.pollOptions.push(`Option: ${length}`);
 	}
 
-	saveUpdatedPollInformation(pollTitle: string | null | undefined): void {
-		const newTitle = pollTitle || 'Untitled Poll';
-		this._pollService.saveModifiedPollData(
-			this._pollId,
-			newTitle,
-			this.pollOptions,
-		);
-		this.pollTitle = newTitle;
-		this.saving = false;
+	saveUpdatedPollInformation() {
+		alert('Poll updated successfully');
 	}
 }

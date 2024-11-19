@@ -17,3 +17,22 @@ export interface VotingEvent {
 	creator_id: number;
 	creator_uuid: string;
 }
+
+export interface VotingEventDetails {
+	created_at: string;
+	created_by: number;
+	description: string;
+	end_date: string;
+	event_type: string;
+	last_modified_at: string;
+	start_date: string;
+	status: string;
+	title: string;
+	uuid: string;
+	poll_options: PollEventOptions[];
+}
+
+export interface PollEventOptions {
+	option_id: number;
+	option_text: string;
+}

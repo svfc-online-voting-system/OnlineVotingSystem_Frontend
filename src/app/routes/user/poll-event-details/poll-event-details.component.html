@@ -1,1 +1,92 @@
-<p>poll-event-details works!</p>
+<main>
+	<app-user-navbar class="w-11/12 max-w-screen-2xl"></app-user-navbar>
+
+	<section class="container">
+		<mat-card appearance="outlined">
+			<mat-card-header>
+				<mat-card-title>{{ eventDetails.title }}</mat-card-title>
+				<mat-card-subtitle
+					>{{
+						eventDetails.event_type | titlecase
+					}}
+					Event</mat-card-subtitle
+				>
+			</mat-card-header>
+
+			<mat-card-content class="p-4">
+				<div class="mb-4">
+					<h3 class="font-bold mb-2">Description</h3>
+					<p>{{ eventDetails.description }}</p>
+				</div>
+
+				<div class="grid grid-cols-2 gap-4 mb-4">
+					<div>
+						<h3 class="font-bold">Start Date</h3>
+						<p>{{ eventDetails.start_date | date : 'medium' }}</p>
+					</div>
+					<div>
+						<h3 class="font-bold">End Date</h3>
+						<p>{{ eventDetails.end_date | date : 'medium' }}</p>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-2 gap-4">
+					<div>
+						<h3 class="font-bold">Status</h3>
+						<p>{{ eventDetails.status | titlecase }}</p>
+					</div>
+					<div>
+						<h3 class="font-bold">Last Modified</h3>
+						<p>
+							{{
+								eventDetails.last_modified_at | date : 'medium'
+							}}
+						</p>
+					</div>
+				</div>
+			</mat-card-content>
+
+			<mat-card-actions
+				class="actions"
+				align="end">
+				<button
+					mat-flat-button
+					color="primary"
+					[matTooltip]="
+						eventDetails.status !== 'active'
+							? 'Event is not active'
+							: ' Participate in this event'
+					"
+					[disabled]="eventDetails.status !== 'active'">
+					PARTICIPATE
+				</button>
+				<button
+					mat-button
+					matTooltip="Go back to the home page"
+					color="warn"
+					(click)="this._router.navigateByUrl('/u/home')">
+					BACK
+				</button>
+			</mat-card-actions>
+		</mat-card>
+
+		<mat-card appearance="outlined">
+			<mat-card-header>
+				<mat-card-title>Options: </mat-card-title>
+				<mat-card-subtitle> Subject for changes* </mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<div class="poll-options">
+					<mat-radio-group>
+						<mat-radio-button
+							disabled
+							*ngFor="let option of eventDetails.poll_options"
+							[value]="option">
+							{{ option.option_text }}
+						</mat-radio-button>
+					</mat-radio-group>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</section>
+</main>
