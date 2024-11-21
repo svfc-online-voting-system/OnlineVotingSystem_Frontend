@@ -55,12 +55,31 @@
 					[matTooltip]="
 						eventDetails.status !== 'active'
 							? 'Event is not active'
-							: ' Participate in this event'
+							: eventDetails.has_user_voted
+							? 'You have already voted'
+							: 'Participate in this event'
 					"
-                    (click)="eventDetails.status === 'active' ?
-                    this._router.navigateByUrl('/u/poll/' + eventDetails.uuid + '/participate') : null"
-					[disabled]="eventDetails.status !== 'active'">
-					PARTICIPATE
+					(click)="
+						eventDetails.status === 'active' &&
+						!eventDetails.has_user_voted
+							? this._router.navigateByUrl(
+									'/u/poll/' +
+										eventDetails.uuid +
+										'/participate'
+							  )
+							: null
+					"
+					[disabled]="
+						eventDetails.status !== 'active' ||
+						eventDetails.has_user_voted
+					">
+					{{
+						eventDetails.status !== 'active'
+							? 'Event not yet started'
+							: eventDetails.has_user_voted
+							? 'Already voted'
+							: 'Participate'
+					}}
 				</button>
 				<button
 					mat-button
@@ -83,7 +102,8 @@
 						<mat-radio-button
 							disabled
 							*ngFor="let option of eventDetails.poll_options"
-							[value]="option">
+							[value]="option"
+							[checked]="eventDetails.vote_data?.poll_option_id">
 							{{ option.option_text }}
 						</mat-radio-button>
 					</mat-radio-group>

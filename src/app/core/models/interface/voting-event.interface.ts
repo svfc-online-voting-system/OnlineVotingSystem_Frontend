@@ -31,6 +31,12 @@ export interface VotingEventDetails {
 	uuid: string;
 	poll_options: PollEventOptions[];
 	creator_username: string;
+	has_user_voted: boolean;
+	vote_data?: {
+		user_id: number;
+		event_uuid: string;
+		poll_option_id: number;
+	};
 }
 
 export interface PollEventOptions {

@@ -35,7 +35,6 @@ export class PollEventDetailsComponent implements OnInit {
 	private readonly _snackBarService = inject(SnackbarService);
 	readonly _router = inject(Router);
 	eventUuid = '';
-	pollOptions: PollEventOptions[] = [];
 	eventDetails: VotingEventDetails = {
 		created_at: '',
 		created_by: 0,
@@ -47,8 +46,14 @@ export class PollEventDetailsComponent implements OnInit {
 		status: '',
 		title: '',
 		uuid: '',
-		poll_options: this.pollOptions,
+		poll_options: [],
 		creator_username: '',
+		has_user_voted: false,
+		vote_data: {
+			user_id: 0,
+			event_uuid: '',
+			poll_option_id: 0,
+		},
 	};
 
 	ngOnInit(): void {
@@ -68,6 +73,7 @@ export class PollEventDetailsComponent implements OnInit {
 							'$1-$2-$3-$4-$5',
 						);
 
+						console.log('Response:', response);
 						console.log('Event details:', this.eventDetails);
 					}
 				},

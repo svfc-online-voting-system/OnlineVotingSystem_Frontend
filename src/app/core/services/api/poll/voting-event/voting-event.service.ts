@@ -86,11 +86,8 @@ export class VotingEventService {
 			);
 	}
 
-	//  function to check whether a user was already participated in a voting event
 	checkUserParticipation(eventUuid: string, event_type: string) {
-		const url = `${this.apiBaseURL}:${this.apiPort}/${
-			this.userApiGetVotingEvent
-		}?uuid=${eventUuid}&event_type=${event_type}`;
+		const url = `${this.apiBaseURL}:${this.apiPort}/${this.userApiGetVotingEvent}?uuid=${eventUuid}&event_type=${event_type}`;
 
 		return this._httpClient
 			.get<{ code: string; voting_event: VotingEventDetails }>(url, {

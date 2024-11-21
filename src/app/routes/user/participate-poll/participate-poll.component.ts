@@ -44,6 +44,7 @@ export class ParticipatePollComponent implements OnInit {
 	private readonly _votingEventService = inject(VotingEventService);
 	private readonly _snackBarService = inject(SnackbarService);
 	private readonly _pollService = inject(PollService);
+	private readonly _hasAlreadyVoted = false;
 	readonly _router = inject(Router);
 	selectedOptionID = 0;
 
@@ -62,6 +63,7 @@ export class ParticipatePollComponent implements OnInit {
 		uuid: '',
 		poll_options: this.pollOptions,
 		creator_username: '',
+		has_user_voted: this._hasAlreadyVoted,
 	};
 
 	ngOnInit(): void {
@@ -76,7 +78,6 @@ export class ParticipatePollComponent implements OnInit {
 				}) => {
 					if (response.code === 'success') {
 						this.eventDetails = response.voting_event;
-						console.log('Event details:', this.eventDetails);
 
 						if (this.eventDetails.status === 'completed') {
 							this._snackBarService.showSnackBar(
