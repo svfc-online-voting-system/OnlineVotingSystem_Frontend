@@ -18,4 +18,7 @@ export const environment = {
 
 	API_GET_MY_PROFILE: '/api/v1/profile/my-profile',
 	API_UPDATE_PROFILE: '/api/v1/profile/update-profile',
+
+	// Casting related routes:
+	API_CAST_POLL_VOTE: '/api/v1/respondent/poll/cast'
 };

@@ -4,7 +4,11 @@ import {
 	PollEventOptions,
 	VotingEventDetails,
 } from '@app/core/models/interface/voting-event.interface';
-import { VotingEventService, SnackbarService } from '@app/core/services';
+import {
+	VotingEventService,
+	SnackbarService,
+	PollService,
+} from '@app/core/services';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -39,6 +43,7 @@ export class ParticipatePollComponent implements OnInit {
 	private readonly _route = inject(ActivatedRoute);
 	private readonly _votingEventService = inject(VotingEventService);
 	private readonly _snackBarService = inject(SnackbarService);
+	private readonly _pollService = inject(PollService);
 	readonly _router = inject(Router);
 	selectedOptionID = 0;
 
@@ -112,6 +117,28 @@ export class ParticipatePollComponent implements OnInit {
 			this._snackBarService.showSnackBar('Please select an option');
 			return;
 		}
-		console.log('Selected option:', this.selectedOptionID);
+
+		this._pollService
+			.castPollVote(this.eventUuid, this.selectedOptionID)
+			.subscribe({
+				next: (response: { code: string; message: string }) => {
+					if (response.code === 'success') {
+						this._snackBarService.showSnackBar(
+							'Vote casted successfully',
+						);
+						this._router.navigateByUrl('/u/home');
+					} else {
+						this._snackBarService.showSnackBar(
+							'Failed to cast vote',
+						);
+					}
+				},
+				error: (error: {
+					error: { code: string; message: string };
+				}) => {
+					this._snackBarService.showSnackBar('Failed to cast vote');
+					console.error(error);
+				},
+			});
 	}
 }
