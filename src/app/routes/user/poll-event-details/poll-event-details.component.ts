@@ -1,11 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SnackbarService, VotingEventService } from '@app/core/services';
+import { ChartConfiguration, ChartData, DoughnutController } from 'chart.js';
+import { ArcElement, Legend, Tooltip } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
+import { Chart } from 'chart.js/auto';
+import { isPlatformBrowser } from '@angular/common';
 import {
-	VotingEventDetails,
-	PollEventOptions,
-} from '@app/core/models/interface/voting-event.interface';
+	PollService,
+	SnackbarService,
+	VotingEventService,
+} from '@app/core/services';
+import { VotingEventDetails } from '@app/core/models/interface/voting-event.interface';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { NavbarComponent } from '@app/shared/ui/user/navbar/navbar.component';
@@ -21,6 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 		CommonModule,
 		MatCardModule,
 		MatButtonModule,
+		BaseChartDirective,
 		NavbarComponent,
 		TitleCasePipe,
 		MatRadioModule,
@@ -31,9 +38,51 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class PollEventDetailsComponent implements OnInit {
 	private readonly _route = inject(ActivatedRoute);
+	readonly _platformId = inject(PLATFORM_ID);
 	private readonly _votingEventService = inject(VotingEventService);
+	private readonly _pollService = inject(PollService);
 	private readonly _snackBarService = inject(SnackbarService);
 	readonly _router = inject(Router);
+	totalVotes = 0;
+	isBrowser = false;
+	constructor() {
+		this.isBrowser = isPlatformBrowser(this._platformId);
+		if (this.isBrowser) {
+			Chart.register(DoughnutController, ArcElement, Legend, Tooltip);
+		}
+	}
+	public chartData: ChartData<'doughnut'> = {
+		labels: [],
+		datasets: [
+			{
+				data: [],
+				backgroundColor: [
+					'#FF6384',
+					'#36A2EB',
+					'#FFCE56',
+					'#4BC0C0',
+					'#9966FF',
+					'#FF9F40',
+					'#FF6384',
+					'#36A2EB',
+					'#FFCE56',
+					'#4BC0C0',
+				],
+			},
+		],
+	};
+
+	public chartOptions: ChartConfiguration['options'] = {
+		responsive: true,
+		maintainAspectRatio: true,
+		aspectRatio: 1,
+		plugins: {
+			legend: {
+				display: true,
+				position: 'right',
+			},
+		},
+	};
 	eventUuid = '';
 	eventDetails: VotingEventDetails = {
 		created_at: '',
@@ -93,5 +142,26 @@ export class PollEventDetailsComponent implements OnInit {
 					}
 				},
 			});
+
+		if (isPlatformBrowser(this._platformId)) {
+			this._pollService.getPollCurrentTally(this.eventUuid).subscribe({
+				next: (response) => {
+					console.log('Current tally:', response);
+					const tallyData = Object.values(response.tally_info);
+					this.chartData.labels = tallyData.map((item) => item.text);
+					this.chartData.datasets[0].data = tallyData.map(
+						(item) => item.count,
+					);
+
+					this.totalVotes = tallyData.reduce(
+						(acc, item) => acc + item.count,
+						0,
+					);
+				},
+				error: (error) => {
+					console.error('Error getting current tally:', error);
+				},
+			});
+		}
 	}
 }

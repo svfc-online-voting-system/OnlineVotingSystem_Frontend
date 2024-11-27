@@ -31,3 +31,11 @@ mat-radio-group {
 .actions {
 	@include mixins.gap(var.$space-4);
 }
+
+.chart-container {
+	position: relative;
+	width: 100%;
+	max-width: 600px;
+	margin: 2rem auto;
+	height: 400px;
+}
