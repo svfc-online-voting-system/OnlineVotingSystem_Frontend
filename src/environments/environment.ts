@@ -20,5 +20,8 @@ export const environment = {
 	API_UPDATE_PROFILE: '/api/v1/profile/update-profile',
 
 	// Casting related routes:
-	API_CAST_POLL_VOTE: '/api/v1/respondent/poll/cast'
+	API_CAST_POLL_VOTE: '/api/v1/respondent/poll/cast',
+
+	// Statistics related routes:
+	API_GET_POLL_TALLY: '/api/v1/voting-event/user/get-current-tally',
 };

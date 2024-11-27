@@ -109,6 +109,22 @@
 					</mat-radio-group>
 				</div>
 			</mat-card-content>
+			<mat-card-footer>
+				<p>
+					Current Votes:
+				</p>
+			</mat-card-footer>
 		</mat-card>
 	</section>
+
+	<div
+		class="chart-container"
+		*ngIf="isBrowser">
+		<canvas
+			baseChart
+			[data]="chartData"
+			[options]="chartOptions"
+			[type]="'doughnut'">
+		</canvas>
+	</div>
 </main>

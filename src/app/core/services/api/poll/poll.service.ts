@@ -6,6 +6,7 @@ import { inject } from '@angular/core';
 import { environment } from '@env/environment';
 import { StandardResponse } from '@app/core/models/authResponseType';
 import { CookieService } from '@app/core/core.module';
+import type { TallyResponse } from '@app/core/models/interface/tally.interface';
 
 @Injectable({
 	providedIn: 'any',
@@ -17,6 +18,7 @@ export class PollService {
 	private readonly apiBaseURL = environment.API_BASE_URL;
 	private readonly apiPort = environment.API_PORT;
 	private readonly apiCastPoll = environment.API_CAST_POLL_VOTE;
+	private readonly apiGetPollTally = environment.API_GET_POLL_TALLY;
 
 	pollList: { id: number; title: string; options: string[] }[] = [];
 
@@ -51,6 +53,24 @@ export class PollService {
 				poll_option_id: pollOptionId,
 			},
 			{
+				withCredentials: true,
+				headers: headers,
+			},
+		);
+	}
+	getPollCurrentTally(eventUuid: string): Observable<TallyResponse> {
+		const csrfToken = this._cookieService.getCookie('X-CSRF-TOKEN');
+		const headers = new HttpHeaders({
+			'X-CSRF-TOKEN': csrfToken,
+		});
+
+		return this._httpClient.get<TallyResponse>(
+			`${this.apiBaseURL}:${this.apiPort}/${this.apiGetPollTally}`,
+			{
+				params: {
+					uuid: eventUuid,
+					event_type: 'poll',
+				},
 				withCredentials: true,
 				headers: headers,
 			},
