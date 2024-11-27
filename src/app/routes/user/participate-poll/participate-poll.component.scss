@@ -1,0 +1,41 @@
+@use './../../../../styles/base_utilities';
+@use './../../../../styles/mixins' as mixins;
+@use './../../../../styles/variables' as var;
+
+main {
+	@extend %container;
+	@include mixins.flex(column, normal, center);
+}
+
+app-user-navbar {
+	@extend %responsive-container;
+}
+
+.avatar {
+	@extend %avatar;
+}
+
+section {
+	@extend %max-w-screen-2xl, %w-11-12;
+	@include mixins.grid(1, auto, 1rem, center);
+	@include mixins.m-t(var.$space-6);
+	@include mixins.responsive(var.$breakpoint-md) {
+		@include mixins.grid(2, auto, 1rem, center);
+	}
+}
+
+.legend {
+	@extend %flex-center-all-column;
+}
+
+mat-radio-group {
+	@include mixins.grid(1, auto, 1rem, center);
+
+	@include mixins.responsive(var.$breakpoint-md) {
+		@include mixins.grid(2, auto, 1rem, center);
+	}
+}
+
+mat-card-actions {
+	@include mixins.gap(var.$space-4);
+}

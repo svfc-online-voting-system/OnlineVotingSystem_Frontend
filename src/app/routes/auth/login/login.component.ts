@@ -93,8 +93,8 @@ export class LoginComponent {
 						this.email = email!;
 						stepper.next();
 					},
-					error: (error: ApiAuthResponse) => {
-						this._snackBarService.showSnackBar(error.message);
+					error: (error: { error: ApiAuthResponse }) => {
+						this._snackBarService.showSnackBar(error.error.message);
 						this.isProcessing = false;
 					},
 					complete: () => {
@@ -107,14 +107,15 @@ export class LoginComponent {
 	resendOTP(): void {
 		this.isProcessing = true;
 		this._authService.resendOTP(this.email).subscribe({
-			next: (response: ApiAuthResponse) => {
-				this._snackBarService.showSnackBar(response.message);
+			next: () => {
+				this._snackBarService.showSnackBar('OTP sent to your email');
 				this.isProcessing = false;
 				this.loginButton.disabled = true;
 				this.otpFormGroup.reset();
 			},
 			error: (error: ApiAuthResponse) => {
 				this._snackBarService.showSnackBar(error.message);
+				console.error(error);
 				this.isProcessing = false;
 			},
 		});
@@ -149,8 +150,8 @@ export class LoginComponent {
 						}
 						this.isProcessing = false;
 					},
-					error: (error: ApiAuthResponse) => {
-						this._snackBarService.showSnackBar(error.message);
+					error: (error: { error: ApiAuthResponse }) => {
+						this._snackBarService.showSnackBar(error.error.message);
 						this.isProcessing = false;
 					},
 				});
