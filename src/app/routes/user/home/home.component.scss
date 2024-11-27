@@ -30,6 +30,7 @@ mat-card-subtitle {
 }
 
 section {
+	@extend %max-w-screen-2xl, %w-11-12;
 	@include mixins.grid(1, auto, 1rem, center);
 	@include mixins.m-t(var.$space-6);
 	@include mixins.responsive(var.$breakpoint-md) {
@@ -42,9 +43,7 @@ section {
 }
 
 .avatar {
-	@include mixins.square(2rem);
-	@extend %highlight-color-bg, %flex-center-all;
-	border-radius: 50%;
+	@extend %avatar;
 }
 
 mat-card-footer {

@@ -144,6 +144,30 @@ export const routes: Routes = [
 		],
 		children: [
 			{
+				path: 'event/p/details/:uuid',
+				title: 'votevoyage Poll Event Details | User',
+				loadComponent: () =>
+					import(
+						'@app/routes/user/poll-event-details/poll-event-details.component'
+					).then((m) => m.PollEventDetailsComponent),
+			},
+			{
+				path: 'event/e/details/:uuid',
+				title: 'votevoyage Electoral Event Details | User',
+				loadComponent: () =>
+					import(
+						'@app/routes/user/electoral-event-details/electoral-event-details.component'
+					).then((m) => m.ElectoralEventDetailsComponent),
+			},
+			{
+				path: 'poll/:uuid/participate',
+				title: 'votevoyage Participate Poll | User',
+				loadComponent: () =>
+					import(
+						'@app/routes/user/participate-poll/participate-poll.component'
+					).then((m) => m.ParticipatePollComponent),
+			},
+			{
 				path: 'home',
 				title: 'votevoyage Home | User',
 				loadComponent: () =>
