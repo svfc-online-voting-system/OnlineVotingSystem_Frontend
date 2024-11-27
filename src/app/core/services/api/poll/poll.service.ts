@@ -58,7 +58,6 @@ export class PollService {
 			},
 		);
 	}
-
 	getPollCurrentTally(eventUuid: string): Observable<TallyResponse> {
 		const csrfToken = this._cookieService.getCookie('X-CSRF-TOKEN');
 		const headers = new HttpHeaders({
