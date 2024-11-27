@@ -171,11 +171,18 @@
 
 								<div class="otp-button-container">
 									<button
+										[disabled]="isProcessing"
 										type="submit"
 										mat-flat-button>
 										Verify OTP
 									</button>
-									<button mat-button>Resend OTP</button>
+									<button
+										[disabled]="isProcessing"
+										(click)="resendOTP()"
+										type="button"
+										mat-button>
+										Resend OTP
+									</button>
 								</div>
 							</form>
 						</mat-step>

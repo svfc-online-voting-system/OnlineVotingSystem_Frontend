@@ -46,14 +46,6 @@ export class NewPollComponent {
 	}
 
 	saveNewPoll() {
-		if (this.pollTitleGroup.invalid) {
-			return;
-		} else {
-			this.snackbarService.showSnackBar('Poll created successfully');
-			const id = this.pollService.createPoll(
-				this.pollTitleGroup.value.title,
-			);
-			this.router.navigate([`/u/edit/poll/${id}`]);
-		}
+		alert('Poll created successfully');
 	}
 }

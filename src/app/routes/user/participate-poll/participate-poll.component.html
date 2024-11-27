@@ -1,0 +1,66 @@
+<main>
+	<app-user-navbar class="w-11/12 max-w-screen-2xl"></app-user-navbar>
+	<section>
+		<div class="legend">
+			<h1>
+				{{ eventDetails.title | titlecase }}
+			</h1>
+			<p>
+				{{ eventDetails.description }}
+			</p>
+		</div>
+		<mat-card appearance="outlined">
+			<mat-card-header>
+				<div
+					mat-card-avatar
+					class="avatar">
+					<span>
+						{{
+							eventDetails.creator_username.charAt(0) | uppercase
+						}}
+					</span>
+				</div>
+				<mat-card-title>{{
+					eventDetails.creator_username
+				}}</mat-card-title>
+				<mat-card-subtitle>
+					<p>{{ eventDetails.start_date | date : 'medium' }}</p>
+					<p>{{ eventDetails.end_date | date : 'medium' }}</p>
+				</mat-card-subtitle>
+			</mat-card-header>
+
+			<mat-card-content>
+				<mat-radio-group [(ngModel)]="selectedOptionID">
+					<mat-radio-button
+						required="true"
+						*ngFor="let option of eventDetails.poll_options"
+						[value]="option.option_id">
+						{{ option.option_text }}
+					</mat-radio-button>
+				</mat-radio-group>
+			</mat-card-content>
+
+			<mat-card-actions
+				class="actions"
+				align="end">
+				<button
+					mat-flat-button
+					color="primary"
+					matTooltip="Cast your vote"
+					(click)="castVote()"
+					[disabled]="this.selectedOptionID === 0 ? true : false">
+					<mat-icon>check</mat-icon>
+					Cast Vote
+				</button>
+				<button
+					mat-stroked-button
+					matTooltip="Go back to the home page"
+					color="warn"
+					(click)="this._router.navigateByUrl('/u/home')">
+					<mat-icon>arrow_back</mat-icon>
+					BACK
+				</button>
+			</mat-card-actions>
+		</mat-card>
+	</section>
+</main>

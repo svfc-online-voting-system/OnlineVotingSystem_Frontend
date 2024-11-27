@@ -72,8 +72,21 @@
 	min-height: vars.$height-vh-100;
 }
 
+%avatar {
+	@include mixins.square(2rem);
+	@extend %highlight-color-bg, %flex-center-all;
+	border-radius: 50%;
+}
+
 %flex-center-all {
 	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+%flex-center-all-column {
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
@@ -114,4 +127,9 @@
 
 %font-4xl {
 	font-size: vars.$font-4xl;
+}
+
+
+%max-w-screen-2xl {
+	max-width: vars.$max-w-screen-2xl;
 }

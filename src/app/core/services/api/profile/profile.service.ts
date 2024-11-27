@@ -28,6 +28,5 @@ export class ProfileService {
 					throw error;
 				}),
 			);
-    }
-
+	}
 }

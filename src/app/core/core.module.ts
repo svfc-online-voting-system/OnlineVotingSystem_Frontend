@@ -12,6 +12,8 @@ import {
 	VotingEventService,
 } from '@app/core/services';
 
+import { CookieService } from '@app/core/services/utils/cookie/cookie.service';
+
 @NgModule({
 	imports: [CommonModule, ReactiveFormsModule],
 	providers: [
@@ -20,6 +22,7 @@ import {
 		AuthService,
 		PollService,
 		VotingEventService,
+		CookieService,
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthInterceptor,
@@ -29,3 +32,4 @@ import {
 	exports: [ReactiveFormsModule, CommonModule],
 })
 export class CoreModule {}
+export { CookieService };

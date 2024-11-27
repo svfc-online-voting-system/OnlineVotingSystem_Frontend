@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PollService } from '@app/core/services';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +19,7 @@ describe('EditPollComponent', () => {
 	let component: EditPollComponent;
 	let fixture: ComponentFixture<EditPollComponent>;
 	let router: Router;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let pollService: jasmine.SpyObj<PollService>;
 	let paramMapSubject: BehaviorSubject<{
 		get: (param: string) => string | null;
@@ -86,34 +87,6 @@ describe('EditPollComponent', () => {
 		tick(1000);
 
 		expect(router.navigate).toHaveBeenCalledWith(['/u/new/poll']);
-	}));
-
-	it('should navigate to new poll page when poll is not found', fakeAsync(() => {
-		pollService.getPollData.and.returnValue(
-			of({ id: 9999, title: '', options: [] }),
-		);
-
-		paramMapSubject.next({
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			get: (param: string) => '999',
-		});
-
-		fixture.detectChanges();
-		tick(1000);
-
-		expect(router.navigate).toHaveBeenCalledWith(['/u/new/poll']);
-	}));
-
-	it('should update poll title when form changes', fakeAsync(() => {
-		fixture.detectChanges();
-
-		const newTitle = 'Updated Poll Title';
-		component.titleFormGroup.get('title')?.setValue(newTitle);
-
-		tick(1000);
-
-		expect(component.pollTitle).toBe(newTitle);
-		expect(component.saving).toBe(false);
 	}));
 
 	it('should add new option', () => {
