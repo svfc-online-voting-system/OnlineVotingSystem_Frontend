@@ -24,5 +24,4 @@ export const environment = {
 
 	// Statistics related routes:
 	API_GET_POLL_TALLY: '/api/v1/voting-event/user/get-current-tally',
-	API_CAST_POLL_VOTE: '/api/v1/respondent/poll/cast'
 };
