@@ -16,7 +16,6 @@ export class PollService {
 	private readonly _cookieService = inject(CookieService);
 	private readonly _router = inject(Router);
 	private readonly apiBaseURL = environment.API_BASE_URL;
-	private readonly apiPort = environment.API_PORT;
 	private readonly apiCastPoll = environment.API_CAST_POLL_VOTE;
 	private readonly apiGetPollTally = environment.API_GET_POLL_TALLY;
 
@@ -47,7 +46,7 @@ export class PollService {
 		});
 
 		return this._httpClient.post<StandardResponse>(
-			`${this.apiBaseURL}:${this.apiPort}/${this.apiCastPoll}`,
+			`${this.apiBaseURL}/${this.apiCastPoll}`,
 			{
 				event_uuid: eventUuid,
 				poll_option_id: pollOptionId,
@@ -65,7 +64,7 @@ export class PollService {
 		});
 
 		return this._httpClient.get<TallyResponse>(
-			`${this.apiBaseURL}:${this.apiPort}/${this.apiGetPollTally}`,
+			`${this.apiBaseURL}/${this.apiGetPollTally}`,
 			{
 				params: {
 					uuid: eventUuid,

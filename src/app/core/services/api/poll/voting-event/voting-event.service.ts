@@ -16,7 +16,6 @@ import { VotingEventCard } from '@app/core/models/interface/voting-event-card.in
 export class VotingEventService {
 	private readonly _httpClient = inject(HttpClient);
 	private readonly apiBaseURL = environment.API_BASE_URL;
-	private readonly apiPort = environment.API_PORT;
 	private readonly adminApiGetAllVotingEvents =
 		environment.API_GET_ALL_VOTING_EVENTS;
 
@@ -27,7 +26,7 @@ export class VotingEventService {
 	getAllVotingEvents(
 		by: string,
 	): Observable<{ code: string; voting_events: VotingEvent[] }> {
-		const url = `${this.apiBaseURL}:${this.apiPort}/${this.adminApiGetAllVotingEvents}?by=${by}`;
+		const url = `${this.apiBaseURL}/${this.adminApiGetAllVotingEvents}?by=${by}`;
 		return this._httpClient
 			.get<{ code: string; voting_events: VotingEvent[] }>(url, {
 				withCredentials: true,
@@ -52,7 +51,7 @@ export class VotingEventService {
 			voting_status,
 		});
 
-		const url = `${this.apiBaseURL}:${this.apiPort}/${
+		const url = `${this.apiBaseURL}/${
 			this.userApiGetAllVotingEvents
 		}?${params.toString()}`;
 
@@ -72,7 +71,7 @@ export class VotingEventService {
 		uuid: string,
 		event_type: string,
 	): Observable<{ code: string; voting_event: VotingEventDetails }> {
-		const url = `${this.apiBaseURL}:${this.apiPort}/${this.userApiGetVotingEvent}?uuid=${uuid}&event_type=${event_type}`;
+		const url = `${this.apiBaseURL}/${this.userApiGetVotingEvent}?uuid=${uuid}&event_type=${event_type}`;
 
 		return this._httpClient
 			.get<{ code: string; voting_event: VotingEventDetails }>(url, {
@@ -87,7 +86,7 @@ export class VotingEventService {
 	}
 
 	checkUserParticipation(eventUuid: string, event_type: string) {
-		const url = `${this.apiBaseURL}:${this.apiPort}/${this.userApiGetVotingEvent}?uuid=${eventUuid}&event_type=${event_type}`;
+		const url = `${this.apiBaseURL}/${this.userApiGetVotingEvent}?uuid=${eventUuid}&event_type=${event_type}`;
 
 		return this._httpClient
 			.get<{ code: string; voting_event: VotingEventDetails }>(url, {

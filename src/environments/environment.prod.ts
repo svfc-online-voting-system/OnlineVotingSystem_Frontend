@@ -1,6 +1,5 @@
 export const environment = {
-	API_BASE_URL: 'https://localhost',
-	API_PORT: 5000,
+	API_BASE_URL: 'https://onlinevotingsystem-backend.onrender.com',
 
 	API_AUTH_LOGIN_ROUTE: 'api/v1/auth/login',
 	API_CREATE_ACCOUNT_ROUTE: 'api/v1/auth/create-account',

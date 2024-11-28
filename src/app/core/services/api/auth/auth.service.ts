@@ -22,7 +22,6 @@ export class AuthService {
 	private readonly _router = inject(Router);
 	private readonly _httpClient = inject(HttpClient);
 	private readonly apiBaseURL = environment.API_BASE_URL;
-	private readonly apiPort = environment.API_PORT;
 	private readonly apiAuthLoginRoute = environment.API_AUTH_LOGIN_ROUTE;
 	private readonly apiCreateAccountRoute =
 		environment.API_CREATE_ACCOUNT_ROUTE;
@@ -37,7 +36,7 @@ export class AuthService {
 		password: string;
 	}): Observable<ApiAuthResponse> {
 		return this._httpClient.post<ApiAuthResponse>(
-			`${this.apiBaseURL}:${this.apiPort}/${this.apiAuthLoginRoute}`,
+			`${this.apiBaseURL}/${this.apiAuthLoginRoute}`,
 			loginInformation,
 		);
 	}
@@ -45,7 +44,7 @@ export class AuthService {
 	isTokenValid(): Observable<ApiAuthResponse> {
 		return this._httpClient
 			.get<ApiAuthResponse>(
-				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyJWT}`,
+				`${this.apiBaseURL}/${this.apiVerifyJWT}`,
 				{
 					withCredentials: true,
 				},
@@ -70,7 +69,7 @@ export class AuthService {
 		};
 		return this._httpClient
 			.patch<ApiAuthResponse>(
-				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyOTP}`,
+				`${this.apiBaseURL}/${this.apiVerifyOTP}`,
 				data,
 				{ withCredentials: true },
 			)
@@ -100,7 +99,7 @@ export class AuthService {
 		}
 		return lastValueFrom(
 			this._httpClient.post<ApiAuthResponse>(
-				`${this.apiBaseURL}:${this.apiPort}/${this.apiCreateAccountRoute}`,
+				`${this.apiBaseURL}/${this.apiCreateAccountRoute}`,
 				{
 					email,
 					firstname: first_name,
@@ -119,7 +118,7 @@ export class AuthService {
 
 		return lastValueFrom(
 			this._httpClient.get<ApiAuthResponse>(
-				`${this.apiBaseURL}:${this.apiPort}/${this.apiVerifyEmail}/${token}`,
+				`${this.apiBaseURL}/${this.apiVerifyEmail}/${token}`,
 				{ withCredentials: true },
 			),
 		);
@@ -140,7 +139,7 @@ export class AuthService {
 		});
 
 		return this._httpClient.post<ApiAuthResponse>(
-			`${this.apiBaseURL}:${this.apiPort}/${this.apiLogoutRoute}`,
+			`${this.apiBaseURL}/${this.apiLogoutRoute}`,
 			{},
 			{
 				headers,
@@ -151,7 +150,7 @@ export class AuthService {
 
 	resendOTP(email: string): Observable<ApiAuthResponse> {
 		return this._httpClient.patch<ApiAuthResponse>(
-			`${this.apiBaseURL}:${this.apiPort}/${this.apiResendOTP}`,
+			`${this.apiBaseURL}/${this.apiResendOTP}`,
 			{ email: email }, // Send email in the body
 			{ withCredentials: true },
 		);
